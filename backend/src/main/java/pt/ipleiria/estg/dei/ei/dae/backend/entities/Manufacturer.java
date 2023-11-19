@@ -1,10 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
-public class Fabricante extends User{
-    public Fabricante() {
+public class Manufacturer extends User{
+    public Manufacturer() {
     }
 
-    public Fabricante(String username, String password, String name, String email) {
-        super(username, password, name, email);
+    public Manufacturer(String username, String password, String name, String email, String role) {
+        super(username, password, name, email, role);
     }
 }
