@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public class Product extends Versionable{
     @NotNull
     private String name;
-    @NotNull
+
     private Package productPackage;
 
     public Product() {
