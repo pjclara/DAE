@@ -37,6 +37,18 @@ public class ManufacturerService {
         );
     }
 
+    @GET
+    @Path("{username}")
+    public Response getManufacturerDetails(@PathParam("username") String username) {
+        Manufacturer manufacturer = manufacturerBean.find(username);
+        if (manufacturer != null) {
+            return Response.ok(toDTO(manufacturer)).entity(toDTO(manufacturer)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_MANUFACTURER")
+                .build();
+    }
+
     @POST
     @Path("/")
     public Response createNewManufacturer(ManufacturerDTO manufacturerDTO) throws Exception {
@@ -79,7 +91,7 @@ public class ManufacturerService {
                 manufacturerDTO.getEmail(),
                 manufacturerDTO.getRole()
         );
-        return Response.ok().build();
+        return Response.ok().entity(toDTO(manufacturer)).build();
     }
 
     @DELETE
