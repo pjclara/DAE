@@ -1,5 +1,12 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.NamedQuery;
+
+@Entity
+@NamedQuery(
+        name = "getAllManufacturers",
+        query = "SELECT m FROM Manufacturer m ORDER BY m.name ") // JPQL
 public class Manufacturer extends User{
     public Manufacturer() {
     }
@@ -7,4 +14,5 @@ public class Manufacturer extends User{
     public Manufacturer(String username, String password, String name, String email, String role) {
         super(username, password, name, email, role);
     }
+
 }
