@@ -1,31 +1,23 @@
-package pt.ipleiria.estg.dei.ei.dae.backend.entities;
+package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.validation.constraints.NotNull;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllPackages",
-                query = ".." // JPQL // TODO: Fazer SQL para as Pacages...
-        )
-})
-public class Package extends Versionable{
-    @NotNull
-    private String packagingType;  // [1º,2º,3º(Produto) ou encomenda]
-    @NotNull
+public class PackageDTO {
+
+    private String packagingType;
     private String packagingMaterial;
+    private List<Sensor> sensorData; // passar para SensorDTO -- mudar depois no construtor
 
-    private List<Sensor> sensorData;
-
-    public Package() {
+    public PackageDTO() {
+        this.sensorData = new ArrayList<>();
     }
-    public Package(String packagingType, String packagingMaterial, List<Sensor> sensorData) {
+    public PackageDTO(String packagingType, String packagingMaterial, List<Sensor> sensorData) {
         this.packagingType = packagingType;
-        this.packagingMaterial = packagingMaterial;
+        this.packagingMaterial = packagingType;
         this.sensorData = sensorData;
     }
 
