@@ -1,8 +1,8 @@
 <template>
   <div>
     <Header titulo="Dashboard do consumidor final" />  
-    <h1>Endconsumer Details</h1>
-    <!-- Add your content here -->
+    <h1>endConsumer Details</h1>
+
   </div>
 </template>
 
