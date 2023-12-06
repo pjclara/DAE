@@ -6,32 +6,48 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @NamedQueries({
         @NamedQuery(
                 name = "getAllPackages",
-                query = "SELECT p FROM Package p ORDER BY p.packagingType" // JPQL
+                query = "SELECT p FROM Package p ORDER BY p.packageCode" // JPQL
         )
 })
-
-public class Package extends Versionable{
+@Table(
+        name = "packages",
+        uniqueConstraints = @UniqueConstraint(columnNames = { "code" })
+)
+public class Package extends Versionable {
 
     @Id
-    private long id; // TODO: ver se o id é tambem passado para o construtor
+    @Column(name = "code")
+    private long packageCode;
     @NotNull
     private String packagingType;  // [1º,2º,3º(Produto) ou encomenda]
     @NotNull
     private String packagingMaterial;
 
-    private List<Sensor> sensors; // ver depois o tipo de ligação (one to many....)
+    @ManyToOne
+    private List<Sensor> sensors; // ver depois o tipo de ligação (one to many.. many to one..)
 
     public Package() {
         this.sensors =  new ArrayList<>();
     }
-    public Package(String packagingType, String packagingMaterial) {
+    public Package(long packageCode, String packagingType, String packagingMaterial) {
+        this();
+        this.packageCode = packageCode;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
         this.sensors =  new ArrayList<>();
+    }
+
+    public long getPackageCode() {
+        return packageCode;
+    }
+
+    public void setPackageCode(long packageCode) {
+        this.packageCode = packageCode;
     }
 
     public String getPackagingType() {
@@ -68,10 +84,4 @@ public class Package extends Versionable{
         sensors.remove(sensor);
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-    public long getId() {
-        return id;
-    }
 }

@@ -17,6 +17,10 @@ public class ConfigBean {
     private ManufacturerBean manufacturerBean;
     @EJB
     private LogisticsOperatorBean logisticsOperatorBean;
+
+    @EJB
+    private PackageBean packageBean;
+
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
@@ -42,6 +46,13 @@ public class ConfigBean {
             logisticsOperatorBean.create("Operador2", "123", "Operador2", "Operador2@gmail.com", "Cliente");
             logisticsOperatorBean.create("Operador3", "123", "Operador3", "Operador3@gmail.com", "Cliente");
         }catch (Exception e){
+            logger.severe(e.getMessage());
+        }
+
+        try{
+            packageBean.create( 111, "Principal", "Plastico");
+            packageBean.create( 222, "Test", "Vidro");
+        } catch (Exception e) {
             logger.severe(e.getMessage());
         }
     }

@@ -1,23 +1,32 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PackageDTO {
 
+    private long packagingCode;
     private String packagingType;
     private String packagingMaterial;
-    private List<Sensor> sensorData; // passar para SensorDTO -- mudar depois no construtor
-    // TODO: depois passas de Sensor para SensorDTO
+    private List<Sensor> sensors; // passar para SensorDTO -- mudar depois no construtor
+    // TODO: depois passas de <Sensor> para <SensorDTO>
 
-    public PackageDTO() {
-        this.sensorData = new ArrayList<>();
-    }
-    public PackageDTO(String packagingType, String packagingMaterial, List<Sensor> sensorData) { // passar para SensorDTO
+    public PackageDTO(long packagingCode, String packagingType, String packagingMaterial, List<Sensor> sensors) { //TODO: passar para SensorDTO
+        this.packagingCode = packagingCode;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-        this.sensorData = sensorData;
+        this.sensors = new ArrayList<>();
+    }
+
+    public long getPackagingCode() {
+        return packagingCode;
+    }
+
+    public void setPackagingCode(long packagingCode) {
+        this.packagingCode = packagingCode;
     }
 
     public String getPackagingType() {
@@ -36,11 +45,25 @@ public class PackageDTO {
         this.packagingMaterial = packagingMaterial;
     }
 
-    public List<Sensor> getSensorData() {
-        return sensorData;
+    public List<Sensor> getSensors() {
+        return sensors;
     }
 
-    public void setSensorData(List<Sensor> sensorData) {
-        this.sensorData = sensorData;
+    public void setSensors(List<Sensor> sensorData) {
+        this.sensors = sensorData;
+    }
+
+
+    public static PackageDTO from(Package package_) { // o nome esta como 'package_' pois dava conflito sem o '_'
+        return new PackageDTO(
+                package_.getPackageCode(),
+                package_.getPackagingType(),
+                package_.getPackagingMaterial(),
+                package_.getSensors()
+        );
+    }
+
+    public static List<PackageDTO> from(List<Package> packages) {
+        return packages.stream().map(PackageDTO::from).collect(Collectors.toList());
     }
 }
