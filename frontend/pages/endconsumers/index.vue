@@ -1,10 +1,8 @@
-<!-- pages/DashboardFabricante.vue -->
-
 <template>
     <div>
         <Header titulo="Dashboard do consumidor final" />    
-        add endconsumer
-        <nuxt-link class="link" :to="`/endconsumers/create`">add endconsumer</nuxt-link>
+        add endConsumer
+        <nuxt-link class="link" :to="`/endConsumers/create`">add endConsumer</nuxt-link>
 
 
         <table>
@@ -17,14 +15,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="endconsumer in endconsumers" :key="endconsumer.id">
-                    <td>{{ endconsumer.name }}</td>
-                    <td>{{ endconsumer.email }}</td>
+                <tr v-for="endConsumer in endConsumers" :key="endConsumer.id">
+                    <td>{{ endConsumer.name }}</td>
+                    <td>{{ endConsumer.email }}</td>
                     <td>
-                        <nuxt-link class="link" :to="`/endconsumers/${endconsumer.username}/details`">Details</nuxt-link>
+                        <nuxt-link class="link" :to="`/endConsumers/${endConsumer.username}/details`">Details</nuxt-link>
                     </td>
                     <td>
-                        <nuxt-link class="link" :to="`/endconsumers/${endconsumer.username}/edit`">Edit</nuxt-link>
+                        <nuxt-link class="link" :to="`/endConsumers/${endConsumer.username}/edit`">Edit</nuxt-link>
                     </td>
                 </tr>
             </tbody>
@@ -36,7 +34,7 @@
 <script setup>
 const config = useRuntimeConfig()
 const api = config.public.API_URL
-const { data: endconsumers, error, refresh } = await useFetch(`${api}/endconsumers`)
+const { data: endConsumers, error, refresh } = await useFetch(`${api}/endConsumers`)
 </script>
 
 <style>

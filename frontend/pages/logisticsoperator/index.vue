@@ -1,8 +1,8 @@
 <template>
     <div>
         <Header titulo="Dashboard do consumidor final" />    
-        add manufacturer
-        <nuxt-link class="link" :to="`/manufacturers/create`">add manufacturer</nuxt-link>
+        add logisticsOperator
+        <nuxt-link class="link" :to="`/logisticsOperators/create`">add logisticsOperator</nuxt-link>
 
 
         <table>
@@ -15,14 +15,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="manufacturer in manufacturers" :key="manufacturer.id">
-                    <td>{{ manufacturer.name }}</td>
-                    <td>{{ manufacturer.email }}</td>
+                <tr v-for="logisticsOperator in logisticsOperators" :key="logisticsOperator.id">
+                    <td>{{ logisticsOperator.name }}</td>
+                    <td>{{ logisticsOperator.email }}</td>
                     <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/details`">Details</nuxt-link>
+                        <nuxt-link class="link" :to="`/logisticsOperators/${logisticsOperator.username}/details`">Details</nuxt-link>
                     </td>
                     <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/edit`">Edit</nuxt-link>
+                        <nuxt-link class="link" :to="`/logisticsOperators/${logisticsOperator.username}/edit`">Edit</nuxt-link>
                     </td>
                 </tr>
             </tbody>
@@ -34,7 +34,7 @@
 <script setup>
 const config = useRuntimeConfig()
 const api = config.public.API_URL
-const { data: manufacturers, error, refresh } = await useFetch(`${api}/manufacturers`)
+const { data: logisticsOperators, error, refresh } = await useFetch(`${api}/logisticsOperators`)
 </script>
 
 <style>

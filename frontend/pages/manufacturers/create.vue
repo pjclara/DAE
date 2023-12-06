@@ -1,26 +1,26 @@
 <template>
     <div>
         <Header titulo="Dashboard do consumidor final" /> 
-        <h1>Create a endConsumer</h1>
+        <h1>Create a manufacturer</h1>
         <form @submit.prevent="create">
         <div>Username:
-            <input v-model.trim="endConsumerForm.username" type="text">
-            <span v-if="endConsumerForm.username !== null && !isUsernameValid" class="error">
+            <input v-model.trim="manufacturerForm.username" type="text">
+            <span v-if="manufacturerForm.username !== null && !isUsernameValid" class="error">
                 ERROR: {{ formFeedback.username }}</span>
         </div>
         <div>Password:
-            <input v-model.trim="endConsumerForm.password" type="password">
-            <span v-if="endConsumerForm.username !== null && !isPasswordValid" class="error">
+            <input v-model.trim="manufacturerForm.password" type="password">
+            <span v-if="manufacturerForm.username !== null && !isPasswordValid" class="error">
                 ERROR: {{ formFeedback.password }}</span>
         </div>
         <div>Name:
-            <input v-model.trim="endConsumerForm.name" type="text">
-            <span v-if="endConsumerForm.username !== null && !isNameValid" class="error">
+            <input v-model.trim="manufacturerForm.name" type="text">
+            <span v-if="manufacturerForm.username !== null && !isNameValid" class="error">
                 ERROR: {{ formFeedback.name }}</span>
         </div>
         <div>E-mail:
-            <input v-model.trim="endConsumerForm.email" type="email">
-            <span v-if="endConsumerForm.username !== null && !isEmailValid" class="error">
+            <input v-model.trim="manufacturerForm.email" type="email">
+            <span v-if="manufacturerForm.username !== null && !isEmailValid" class="error">
                 ERROR: {{ formFeedback.email }}</span>
         </div>       
         <button type="reset">RESET</button>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-const endConsumerForm = reactive({
+const manufacturerForm = reactive({
     username: null,
     password: null,
     email: null,
@@ -50,15 +50,15 @@ const config = useRuntimeConfig()
 const api = config.public.API_URL
 
 const isUsernameValid = computed(() => {
-    if (!endConsumerForm.username) {
+    if (!manufacturerForm.username) {
         formFeedback.username = 'username is required'
         return false
     }
-    if (endConsumerForm.username.length < 3) {
+    if (manufacturerForm.username.length < 3) {
         formFeedback.username = 'username must be at least 3 characters'
         return false
     }
-    if (endConsumerForm.username.length > 15) {
+    if (manufacturerForm.username.length > 15) {
         formFeedback.username = 'username must be at most 15 characters'
         return false
     }
@@ -66,15 +66,15 @@ const isUsernameValid = computed(() => {
 })
 
 const isPasswordValid = computed(() => {
-    if (!endConsumerForm.password) {
+    if (!manufacturerForm.password) {
         formFeedback.password = 'password is required'
         return false
     }
-    if (endConsumerForm.password.length < 3) {
+    if (manufacturerForm.password.length < 3) {
         formFeedback.password = 'password must be at least 3 characters'
         return false
     }
-    if (endConsumerForm.password.length > 15) {
+    if (manufacturerForm.password.length > 15) {
         formFeedback.password = 'password must be at most 15 characters'
         return false
     }
@@ -82,15 +82,15 @@ const isPasswordValid = computed(() => {
 })
 
 const isNameValid = computed(() => {
-    if (!endConsumerForm.name) {
+    if (!manufacturerForm.name) {
         formFeedback.name = 'name is required'
         return false
     }
-    if (endConsumerForm.name.length < 3) {
+    if (manufacturerForm.name.length < 3) {
         formFeedback.name = 'name must be at least 3 characters'
         return false
     }
-    if (endConsumerForm.name.length > 15) {
+    if (manufacturerForm.name.length > 15) {
         formFeedback.name = 'name must be at most 15 characters'
         return false
     }
@@ -98,21 +98,21 @@ const isNameValid = computed(() => {
 })
 
 const isEmailValid = computed(() => {
-    if (!endConsumerForm.email) {
+    if (!manufacturerForm.email) {
         formFeedback.email = 'email is required'
         return false
     }
-    if (endConsumerForm.email.length < 3) {
+    if (manufacturerForm.email.length < 3) {
         formFeedback.email = 'email must be at least 3 characters'
         return false
     }
-    if (endConsumerForm.email.length > 15) {
+    if (manufacturerForm.email.length > 15) {
         formFeedback.email = 'email must be at most 15 characters'
         return false
     }
     // is a email format
     const emailRegex = /\S+@\S+\.\S+/
-    if (!emailRegex.test(endConsumerForm.email)) {
+    if (!emailRegex.test(manufacturerForm.email)) {
         formFeedback.email = 'email must be a valid email'
         return false
     }
@@ -132,10 +132,10 @@ async function create() {
     const requestOptions = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(endConsumerForm)
+        body: JSON.stringify(manufacturerForm)
     }
-    const { error } = await useFetch(`${api}/endConsumers`, requestOptions)
-    if (!error.value) navigateTo('/endConsumers')
+    const { error } = await useFetch(`${api}/manufacturers`, requestOptions)
+    if (!error.value) navigateTo('/manufacturers')
     message.value = error.value
 }
 </script>

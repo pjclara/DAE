@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
+import pt.ipleiria.estg.dei.ei.dae.backend.security.Hasher;
 
 import java.util.List;
 
@@ -12,8 +13,10 @@ public class EndConsumerBean {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private Hasher hasher = new Hasher();
+
     public void create(String username, String password, String name, String email, String role) {
-        var endConsumer = new EndConsumer(username, password, name, email, role);
+        var endConsumer = new EndConsumer(username, hasher.hash(password), name, email, role);
         entityManager.persist(endConsumer);
     }
 

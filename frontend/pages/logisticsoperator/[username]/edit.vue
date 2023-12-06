@@ -1,22 +1,22 @@
 <template>
     <div>
         <Header titulo="Dashboard do consumidor final" />  
-        <h1>Edit endConsumer</h1>
+        <h1>Edit logisticsOperator</h1>
         <form @submit.prevent="update">
             <div>Username:
-                <input v-model="endConsumerForm.username" type="text" placeholder="user name">
+                <input v-model="logisticsOperatorForm.username" type="text" placeholder="user name">
             </div>
             <div>Password:
-                <input v-model="endConsumerForm.password" type="password" placeholder="password">
+                <input v-model="logisticsOperatorForm.password" type="password" placeholder="password">
             </div>
             <div>Name:
-                <input v-model="endConsumerForm.name" type="text" placeholder="name">
+                <input v-model="logisticsOperatorForm.name" type="text" placeholder="name">
             </div>
             <div>E-mail:
-                <input v-model="endConsumerForm.email" type="text" placeholder="email">
+                <input v-model="logisticsOperatorForm.email" type="text" placeholder="email">
             </div>
             <div>Course:
-                <select v-model="endConsumerForm.courseCode">
+                <select v-model="logisticsOperatorForm.courseCode">
                     <option value="">Select a course</option>
                     <option v-for="course in courses" :value="course.code">
                         {{ course.name }}
@@ -25,7 +25,7 @@
             </div>
             <button type="reset">RESET</button>
             <button type="submit">update</button>
-            <nuxt-link class="link" to="/endConsumers">Return</nuxt-link>
+            <nuxt-link class="link" to="/logisticsOperators">Return</nuxt-link>
         </form>
     </div>
 </template>
@@ -35,19 +35,19 @@ const config = useRuntimeConfig()
 const api = config.public.API_URL
 const route = useRoute()
 const username = route.params.username
-const { data: endConsumer, error: endConsumerErr } = await
-useFetch(`${api}/endConsumers/${username}`)
-const endConsumerForm = reactive(endConsumer)
+const { data: logisticsOperator, error: logisticsOperatorErr } = await
+useFetch(`${api}/logisticsOperators/${username}`)
+const logisticsOperatorForm = reactive(logisticsOperator)
 async function update() {
-    console.log(endConsumerForm)
+    console.log(logisticsOperatorForm)
     const requestOptions = {
         method: 'PUT',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(endConsumerForm.value)
+        body: JSON.stringify(logisticsOperatorForm.value)
     }
-    const { error } = await useFetch(`${api}/endConsumers/` + username, requestOptions)
+    const { error } = await useFetch(`${api}/logisticsOperators/` + username, requestOptions)
     if (!error.value)
-        navigateTo('/endConsumers')
+        navigateTo('/logisticsOperators')
     else {
         message.value = error.value
         console.log(message.value)

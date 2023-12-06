@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.security.Hasher;
 
 import java.util.List;
 
@@ -13,8 +14,10 @@ public class ManufacturerBean {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private Hasher hasher = new Hasher();
+
     public void create(String username, String password, String name, String email, String role) {
-        var manufacturer = new Manufacturer(username, password, name, email, role);
+        var manufacturer = new Manufacturer(username, hasher.hash(password), name, email, role);
         entityManager.persist(manufacturer);
     }
 
