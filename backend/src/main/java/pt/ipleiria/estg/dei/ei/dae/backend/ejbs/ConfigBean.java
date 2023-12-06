@@ -17,6 +17,8 @@ public class ConfigBean {
     private ManufacturerBean manufacturerBean;
     @EJB
     private LogisticsOperatorBean logisticsOperatorBean;
+
+
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
@@ -44,5 +46,7 @@ public class ConfigBean {
         }catch (Exception e){
             logger.severe(e.getMessage());
         }
+
+
     }
 }

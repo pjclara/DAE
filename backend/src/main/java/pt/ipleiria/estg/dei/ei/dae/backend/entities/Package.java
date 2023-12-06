@@ -12,6 +12,8 @@ public class Package extends Versionable{
 
     private List<Sensor> sensorData;
 
+    private Package transportPackage; // ????
+
     public Package() {
     }
     public Package(String packagingType, String packagingMaterial, List<Sensor> sensorData) {

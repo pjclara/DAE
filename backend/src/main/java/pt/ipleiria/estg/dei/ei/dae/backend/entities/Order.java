@@ -8,6 +8,9 @@ public class Order extends Versionable{
     private List<Product> products;
     @NotNull
     private Package transportPackage;
+    private EndConsumer endConsumer;
+
+    private LogisticsOperator logisticsOperator; // ????
     @NotNull
     private boolean isDelivered;
 
