@@ -49,6 +49,7 @@ public class ConfigBean {
             logger.severe(e.getMessage());
         }
 
+
         try{
             packageBean.create( 111, "Principal", "Plastico");
             packageBean.create( 222, "Test", "Vidro");

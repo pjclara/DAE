@@ -7,6 +7,8 @@ public class Product extends Versionable{
     @NotNull
     private String name;
 
+    private Manufacturer manufacturer;
+
     private Package productPackage;
 
     public Product() {

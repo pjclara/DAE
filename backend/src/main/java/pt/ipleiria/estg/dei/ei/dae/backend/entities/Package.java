@@ -31,6 +31,8 @@ public class Package extends Versionable {
     @ManyToOne
     private List<Sensor> sensors; // ver depois o tipo de ligação (one to many.. many to one..)
 
+    private Package transportPackage; // ????
+
     public Package() {
         this.sensors =  new ArrayList<>();
     }

@@ -6,9 +6,15 @@ public class Sensor extends Versionable {
     @NotNull
     private String source;  // tipo de embalagem (Produto/Encomenda) é preciso?
     @NotNull
-    private String type;    // tipo de Sensor (Temperatura, Humidade, Pressão, etc.)
+    private String type;    // enum / tabela tipo de Sensor (Temperatura, Humidade, Pressão, integridade, localização)
     @NotNull
     private String value;
+    @NotNull
+    private String unit;    // enum / tabela unidade de medida (ºC, %, Pa, m/s, m, etc)
+    @NotNull
+    private String max;     // valor máximo aceitável
+    @NotNull
+    private String min;     // valor mínimo aceitável
     @NotNull
     private long timestamp;
     @NotNull
@@ -17,10 +23,13 @@ public class Sensor extends Versionable {
     public Sensor() {
     }
 
-    public Sensor(String source, String type, String value, long timestamp, Package packagging) {
+    public Sensor(String source, String type, String value, String unit, String max, String min, long timestamp, Package packagging) {
         this.source = source;
         this.type = type;
         this.value = value;
+        this.unit = unit;
+        this.max = max;
+        this.min = min;
         this.timestamp = timestamp;
         this.packagging = packagging;
     }
@@ -64,4 +73,6 @@ public class Sensor extends Versionable {
     public void setPackagging(Package packagging) {
         this.packagging = packagging;
     }
+
+
 }
