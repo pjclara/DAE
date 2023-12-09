@@ -5,10 +5,16 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.EndConsumerDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.EndConsumerBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Order;
+import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityExistsException;
+import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/endconsumers")
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
@@ -18,29 +24,18 @@ public class EndConsumerService {
     @EJB
     private EndConsumerBean endConsumerBean;
 
+    // get all end consumers
     @GET
     @Path("/")
     public List<EndConsumerDTO> getAllEndConsumers() {
         return toDTOs(endConsumerBean.all());
     }
 
-    private List<EndConsumerDTO> toDTOs(List<EndConsumer> all) {
-        return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
-    }
-
-    private EndConsumerDTO toDTO(EndConsumer endConsumer) {
-        return new EndConsumerDTO(
-                endConsumer.getUsername(),
-                endConsumer.getPassword(),
-                endConsumer.getName(),
-                endConsumer.getEmail(),
-                endConsumer.getRole()
-        );
-    }
-
+    // create new end consumer
     @POST
     @Path("/")
-    public Response createNewEndConsumer(EndConsumerDTO endConsumerDTO) {
+    public Response createNewEndConsumer(EndConsumerDTO endConsumerDTO)
+            throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         endConsumerBean.create(
                 endConsumerDTO.getUsername(),
                 endConsumerDTO.getPassword(),
@@ -54,16 +49,7 @@ public class EndConsumerService {
         }
         return Response.status(Response.Status.CREATED).entity(toDo(endConsumer)).build();
     }
-
-    private EndConsumerDTO toDo(EndConsumer endConsumer) {
-        return new EndConsumerDTO(
-                endConsumer.getUsername(),
-                endConsumer.getPassword(),
-                endConsumer.getName(),
-                endConsumer.getEmail(),
-                endConsumer.getRole()
-        );
-    }
+    // get end consumer by username
     @GET
     @Path("{username}")
     public Response getEndConsumerDetails(@PathParam("username") String username) {
@@ -75,14 +61,11 @@ public class EndConsumerService {
                 .entity("ERROR_FINDING_ENDCONSUMER")
                 .build();
     }
-
+    // update end consumer
     @PUT
     @Path("{username}")
-    public Response updateEndConsumer(@PathParam("username") String username, EndConsumerDTO endConsumerDTO) {
-        var endConsumer = endConsumerBean.find(username);
-        if (endConsumer == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    public Response updateEndConsumer(@PathParam("username") String username, EndConsumerDTO endConsumerDTO)
+    throws MyEntityExistsException, MyEntityNotFoundException {
         endConsumerBean.update(
                 endConsumerDTO.getUsername(),
                 endConsumerDTO.getPassword(),
@@ -90,14 +73,64 @@ public class EndConsumerService {
                 endConsumerDTO.getEmail(),
                 endConsumerDTO.getRole()
         );
-        return Response.ok().entity(toDTO(endConsumer)).build();
+        EndConsumer endConsumer = endConsumerBean.find(username);
+        if (endConsumer == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).entity(toDTO(endConsumer)).build();
     }
-
+    // delete end consumer
     @DELETE
     @Path("{username}")
     public Response deleteEndConsumer(@PathParam("username") String username) {
         endConsumerBean.delete(username);
         return Response.ok().build();
+    }
+
+    // get all orders from end consumer
+    @GET
+    @Path("{username}/orders")
+    public Response getOrdersFromEndConsumer(@PathParam("username") String username)
+            throws MyEntityExistsException, MyEntityNotFoundException{
+        EndConsumer endConsumer = endConsumerBean.getOrdersFromEndConsumer(username);
+
+        if (endConsumer != null) {
+            var dtos = ordersToDTOs(endConsumer.getOrders());
+            return Response.ok(dtos).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_ENDCONSUMER")
+                .build();
+    }
+    // Auxiliary functions
+    private List<EndConsumerDTO> toDTOs(List<EndConsumer> all) {
+        return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
+    }
+
+    private EndConsumerDTO toDTO(EndConsumer endConsumer) {
+        return new EndConsumerDTO(
+                endConsumer.getUsername(),
+                endConsumer.getPassword(),
+                endConsumer.getName(),
+                endConsumer.getEmail(),
+                endConsumer.getRole()
+        );
+    }
+    private List<OrderDTO> ordersToDTOs(List<Order> orders) {
+        return orders.stream().map(this::orderToDTOs).collect(java.util.stream.Collectors.toList());
+    }
+    private OrderDTO orderToDTOs(Order order) {
+        // TODO make orderToDTOs
+        return null;
+    }
+    private EndConsumerDTO toDo(EndConsumer endConsumer) {
+        return new EndConsumerDTO(
+                endConsumer.getUsername(),
+                endConsumer.getPassword(),
+                endConsumer.getName(),
+                endConsumer.getEmail(),
+                endConsumer.getRole()
+        );
     }
 
 }

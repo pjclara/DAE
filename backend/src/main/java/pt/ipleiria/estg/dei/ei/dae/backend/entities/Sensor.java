@@ -1,7 +1,12 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 
+@Entity
 public class Sensor extends Versionable {
     @NotNull
     private String source;  // tipo de embalagem (Produto/Encomenda) é preciso?
@@ -18,7 +23,13 @@ public class Sensor extends Versionable {
     @NotNull
     private long timestamp;
     @NotNull
+    @OneToOne
     private Package packagging;
+    @Id
+    private Long id;
+
+    @ManyToOne
+    private Product productSensor;
 
     public Sensor() {
     }
@@ -75,4 +86,11 @@ public class Sensor extends Versionable {
     }
 
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
