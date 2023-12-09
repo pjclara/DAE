@@ -9,6 +9,7 @@
           <option value="     &quot;name&quot;" />
           <option value="     &quot;email&quot;" />
           <option value="     &quot;role&quot;" />
+          <option value="  &quot;name&quot;" />
         </set>
       </option>
     </inspection_tool>

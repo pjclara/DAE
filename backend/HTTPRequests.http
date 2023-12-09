@@ -1,0 +1,99 @@
+
+### CRUD endonsumers
+### GET all endconsumers
+GET http://localhost:8080/backend/api/endconsumers
+
+### GET endconsumer by id
+GET http://localhost:8080/backend/api/endconsumers/endConsumer2
+
+### POST endconsumer
+POST http://localhost:8080/backend/api/endconsumers
+Content-Type: application/json
+
+  {
+    "username": "endConsumer3",
+    "password": "endConsumer3",
+    "name": "endConsumer3",
+    "email": "endConsumer3",
+    "role": "endConsumer"
+    }
+
+### PUT endconsumer
+PUT http://localhost:8080/backend/api/endconsumers/endConsumer3
+Content-Type: application/json
+
+{
+  "username": "endConsumer3",
+  "password": "endConsumer3",
+  "name": "endConsumer33333",
+  "email": "endConsumer3",
+  "role": "endConsumer"
+}
+
+### DELETE endconsumer
+DELETE http://localhost:8080/backend/api/endconsumers/endConsumer3
+
+### CRUD manufacturers
+### GET all manufacturers
+GET http://localhost:8080/backend/api/manufacturers
+
+### GET manufacturer by id
+GET http://localhost:8080/backend/api/manufacturers/manufacturer2
+
+### POST manufacturer
+POST http://localhost:8080/backend/api/manufacturers
+Content-Type: application/json
+
+{
+  "username": "manufacturer3",
+  "password": "manufacturer3",
+  "name": "manufacturer3",
+  "email": "manufacturer3@manufacturer3.pt",
+  "role": "manufacturer"
+}
+
+### PUT manufacturer
+PUT http://localhost:8080/backend/api/manufacturers/manufacturer3
+Content-Type: application/json
+
+{
+  "username": "manufacturer3",
+  "password": "manufacturer3",
+  "name": "manufacturer333333",
+  "email": "manufacturer3@manufacturer3.pt",
+  "role": "manufacturer"
+}
+
+### DELETE manufacturer
+DELETE http://localhost:8080/backend/api/manufacturers/manufacturer3
+
+### Get all products
+GET http://localhost:8080/backend/api/products
+
+### Get product by id
+GET http://localhost:8080/backend/api/products/1
+
+### Post product
+POST http://localhost:8080/backend/api/products
+Content-Type: application/json
+
+{
+  "id"  : 11,
+  "name": "product3",
+  "stock": 10,
+  "manufacturerUsername": "manufacturer1"
+}
+
+### Put product
+PUT http://localhost:8080/backend/api/products/1
+Content-Type: application/json
+
+{
+  "id"  : 1,
+  "name": "product_teste",
+  "stock": 1,
+  "manufacturerUsername": "manufacturer1"
+}
+
+### Delete product
+DELETE http://localhost:8080/backend/api/products/11

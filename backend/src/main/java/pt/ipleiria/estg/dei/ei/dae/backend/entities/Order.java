@@ -1,41 +1,42 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Order extends Versionable{
-    private List<Product> products;
-    @NotNull
-    private Package transportPackage;
-    private EndConsumer endConsumer;
-
-    private LogisticsOperator logisticsOperator; // ????
+    @Id
+    private Long id;
     @NotNull
     private boolean isDelivered;
-
+    @ManyToOne
+    @JoinColumn(name = "endConsumer_username")
+    private EndConsumer endConsumer;
+    @ManyToOne()
+    private LogisticsOperator logisticsOperators;
     public Order() {
     }
-    public Order(List<Product> products, Package transportPackage) {
-        this.products = products;
-        this.transportPackage = transportPackage;
-        this.isDelivered = false;
+
+    public Order(Long id, boolean isDelivered, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
+        this.id = id;
+        this.isDelivered = isDelivered;
+        this.endConsumer = endConsumer;
+        this.logisticsOperators = logisticsOperators;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Order(boolean isDelivered) {
+        this.isDelivered = isDelivered;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Package getTransportPackage() {
-        return transportPackage;
-    }
-
-    public void setTransportPackage(Package transportPackage) {
-        this.transportPackage = transportPackage;
+    public Long getId() {
+        return id;
     }
 
     public boolean isDelivered() {
@@ -44,5 +45,22 @@ public class Order extends Versionable{
 
     public void setDelivered(boolean delivered) {
         isDelivered = delivered;
+    }
+
+
+    public EndConsumer getEndConsumer() {
+        return endConsumer;
+    }
+
+    public void setEndConsumer(EndConsumer endConsumer) {
+        this.endConsumer = endConsumer;
+    }
+
+    public LogisticsOperator getLogisticsOperators() {
+        return logisticsOperators;
+    }
+
+    public void setLogisticsOperators(LogisticsOperator logisticsOperators) {
+        this.logisticsOperators = logisticsOperators;
     }
 }
