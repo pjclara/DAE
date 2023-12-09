@@ -14,7 +14,7 @@ public class PackageDTO {
     private List<Sensor> sensors; // passar para SensorDTO -- mudar depois no construtor
     // TODO: depois passas de <Sensor> para <SensorDTO>
 
-    public PackageDTO(long packagingCode, String packagingType, String packagingMaterial, List<Sensor> sensors) { //TODO: passar para SensorDTO
+    public PackageDTO(long packagingCode, String packagingType, String packagingMaterial) { //TODO: passar para SensorDTO
         this.packagingCode = packagingCode;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
@@ -58,8 +58,8 @@ public class PackageDTO {
         return new PackageDTO(
                 package_.getPackageCode(),
                 package_.getPackagingType(),
-                package_.getPackagingMaterial(),
-                package_.getSensors()
+                package_.getPackagingMaterial()
+                //package_.getSensors() // TODO: remove comment after fix
         );
     }
 

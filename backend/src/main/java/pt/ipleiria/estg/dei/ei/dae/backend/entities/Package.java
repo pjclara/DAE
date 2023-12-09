@@ -28,20 +28,21 @@ public class Package extends Versionable {
     @NotNull
     private String packagingMaterial;
 
-    @ManyToOne
-    private List<Sensor> sensors; // ver depois o tipo de ligação (one to many.. many to one..)
+    //@ManyToOne
+    // private List<Sensor> sensors; // ver depois o tipo de ligação (one to many.. many to one..)
+    // TODO: remove comment after fix
 
-    private Package transportPackage; // ????
+    // private Package transportPackage; // ????
 
     public Package() {
-        this.sensors =  new ArrayList<>();
+        //this.sensors =  new ArrayList<>();
     }
     public Package(long packageCode, String packagingType, String packagingMaterial) {
         this();
         this.packageCode = packageCode;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-        this.sensors =  new ArrayList<>();
+        //this.sensors =  new ArrayList<>(); // TODO: remove comment after fix
     }
 
     public long getPackageCode() {
@@ -68,7 +69,7 @@ public class Package extends Versionable {
         this.packagingMaterial = packagingMaterial;
     }
 
-    public List<Sensor> getSensors() {
+    /*public List<Sensor> getSensors() { // TODO: remove comment after fix
         return sensors;
     }
 
@@ -84,6 +85,6 @@ public class Package extends Versionable {
             return;
         }
         sensors.remove(sensor);
-    }
+    }*/
 
 }
