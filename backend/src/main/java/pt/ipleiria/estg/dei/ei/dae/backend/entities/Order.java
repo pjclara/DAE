@@ -30,10 +30,6 @@ public class Order extends Versionable{
         this.logisticsOperators = logisticsOperators;
     }
 
-    public Order(String status) {
-        this.status = status;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -47,7 +43,7 @@ public class Order extends Versionable{
     }
 
     public void setStatus(String status) {
-        status = status;
+        this.status = status;
     }
 
     public EndConsumer getEndConsumer() {

@@ -39,7 +39,7 @@ public class OrderDTO {
         this.endConsumerName = name;
     }
 
-    public String getLogisticsOperator() {
+    public String getLogisticsOperatorName() {
         return logisticsOperatorName;
     }
 

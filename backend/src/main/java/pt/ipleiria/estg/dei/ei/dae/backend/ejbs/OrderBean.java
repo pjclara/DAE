@@ -52,12 +52,11 @@ public class OrderBean {
     public void update(Long id, String status, String endConsumerName, String logisticOptName)
             throws MyEntityNotFoundException {
 
-        /*if (orderBean.find(id) == null){
-            throw new EntityNotFoundException("Order with id '" + id + "' not found in database");
-        }*/
-        var orderId = findOrFail(id).getId();
+        var order = findOrFail(id);
 
-        Order order = entityManager.find(Order.class, orderId);
+        if (order == null){
+            throw new EntityNotFoundException("Order with id '" + id + "' not found in database");
+        }
         entityManager.lock(order, LockModeType.OPTIMISTIC);
 
         order.setStatus(status);
@@ -77,6 +76,13 @@ public class OrderBean {
         entityManager.merge(order);
     }
 
+    public void delete(Long id) throws MyEntityNotFoundException {
+        var order = findOrFail(id);
+        if (order != null) {
+            entityManager.remove(order);
+        }
+    }
+
     public Order find(Long id) throws MyEntityNotFoundException {
         return entityManager.find(Order.class, id);
     }
@@ -89,6 +95,5 @@ public class OrderBean {
         Hibernate.initialize(order);
         return order;
     }
-
 
 }
