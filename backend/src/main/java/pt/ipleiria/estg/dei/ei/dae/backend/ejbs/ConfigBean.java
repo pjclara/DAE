@@ -51,8 +51,8 @@ public class ConfigBean {
 
 
         try{
-            packageBean.create( 111, "Principal", "Plastico");
-            packageBean.create( 222, "Test", "Vidro");
+            packageBean.create( 111L, "Principal", "Plastico");
+            packageBean.create( 222L, "Test", "Vidro");
         } catch (Exception e) {
             logger.severe(e.getMessage());
         }

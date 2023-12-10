@@ -8,49 +8,36 @@ import java.util.List;
 
 
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllPackages",
-                query = "SELECT p FROM Package p ORDER BY p.packageCode" // JPQL
-        )
-})
-@Table(
-        name = "packages",
-        uniqueConstraints = @UniqueConstraint(columnNames = { "code" })
-)
+@NamedQuery(name = "getAllPackages", query = "SELECT p FROM Package p ORDER BY p.packagingType")
 public class Package extends Versionable {
 
     @Id
-    @Column(name = "code")
-    private long packageCode;
+    private Long id;
     @NotNull
     private String packagingType;  // [1º,2º,3º(Produto) ou encomenda]
     @NotNull
     private String packagingMaterial;
 
     //@ManyToOne
-    // private List<Sensor> sensors; // ver depois o tipo de ligação (one to many.. many to one..)
+    //private List<Sensor> sensors; // ver depois o tipo de ligação (one to many.. many to one..)
     // TODO: remove comment after fix
-
-    // private Package transportPackage; // ????
 
     public Package() {
         //this.sensors =  new ArrayList<>();
     }
-    public Package(long packageCode, String packagingType, String packagingMaterial) {
-        this();
-        this.packageCode = packageCode;
+    public Package(Long id, String packagingType, String packagingMaterial) {
+        this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
         //this.sensors =  new ArrayList<>(); // TODO: remove comment after fix
     }
 
-    public long getPackageCode() {
-        return packageCode;
+    public Long getPackagingId() {
+        return id;
     }
 
-    public void setPackageCode(long packageCode) {
-        this.packageCode = packageCode;
+    public void setPackagingId(Long id) {
+        this.id = id;
     }
 
     public String getPackagingType() {

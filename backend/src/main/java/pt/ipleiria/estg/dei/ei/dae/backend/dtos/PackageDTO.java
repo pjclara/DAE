@@ -1,32 +1,29 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PackageDTO {
-
-    private long packagingCode;
+    private Long id;
     private String packagingType;
     private String packagingMaterial;
     private List<Sensor> sensors; // passar para SensorDTO -- mudar depois no construtor
     // TODO: depois passas de <Sensor> para <SensorDTO>
 
-    public PackageDTO(long packagingCode, String packagingType, String packagingMaterial) { //TODO: passar para SensorDTO
-        this.packagingCode = packagingCode;
+    public PackageDTO(Long id, String packagingType, String packagingMaterial) { //TODO: passar para SensorDTO
+        this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
         this.sensors = new ArrayList<>();
     }
 
-    public long getPackagingCode() {
-        return packagingCode;
+    public long getPackagingId() {
+        return id;
     }
 
-    public void setPackagingCode(long packagingCode) {
-        this.packagingCode = packagingCode;
+    public void setPackagingId(Long packagingId) {
+        this.id = id;
     }
 
     public String getPackagingType() {
@@ -51,19 +48,5 @@ public class PackageDTO {
 
     public void setSensors(List<Sensor> sensorData) {
         this.sensors = sensorData;
-    }
-
-
-    public static PackageDTO from(Package package_) { // o nome esta como 'package_' pois dava conflito sem o '_'
-        return new PackageDTO(
-                package_.getPackageCode(),
-                package_.getPackagingType(),
-                package_.getPackagingMaterial()
-                //package_.getSensors() // TODO: remove comment after fix
-        );
-    }
-
-    public static List<PackageDTO> from(List<Package> packages) {
-        return packages.stream().map(PackageDTO::from).collect(Collectors.toList());
     }
 }
