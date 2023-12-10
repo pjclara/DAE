@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQuery(
+        name = "getAllOrders",
+        query = "SELECT o FROM Order o ORDER BY o.status")
 public class Order extends Versionable{
     @Id
     private Long id;
     @NotNull
-    private boolean isDelivered;
+    private String status;
     @ManyToOne
     @JoinColumn(name = "endConsumer_username")
     private EndConsumer endConsumer;
@@ -20,15 +23,15 @@ public class Order extends Versionable{
     public Order() {
     }
 
-    public Order(Long id, boolean isDelivered, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
+    public Order(Long id, String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
         this.id = id;
-        this.isDelivered = isDelivered;
+        this.status = status;
         this.endConsumer = endConsumer;
         this.logisticsOperators = logisticsOperators;
     }
 
-    public Order(boolean isDelivered) {
-        this.isDelivered = isDelivered;
+    public Order(String status) {
+        this.status = status;
     }
 
     public void setId(Long id) {
@@ -39,14 +42,13 @@ public class Order extends Versionable{
         return id;
     }
 
-    public boolean isDelivered() {
-        return isDelivered;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDelivered(boolean delivered) {
-        isDelivered = delivered;
+    public void setStatus(String status) {
+        status = status;
     }
-
 
     public EndConsumer getEndConsumer() {
         return endConsumer;
