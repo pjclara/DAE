@@ -18,24 +18,25 @@ public class ProductBean {
 
     @PersistenceContext
     private EntityManager entityManager;
-    public void create(Long id, String name, int stock, String manufacturerUsername) throws MyConstraintViolationException {
+
+    public List<Product> all() {
+        return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
+    }
+
+    public void create(Long id, String name, int stock, String manufacturerUsername)
+            throws MyConstraintViolationException, MyEntityNotFoundException {
         // if manufacturer exists
         Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
 
-        if (manufacturer == null) throw new IllegalArgumentException("Manufacturer with username " + null + " not found in database");
+        if (manufacturer == null) throw new MyEntityNotFoundException("Manufacturer with username " + null + " not found in database");
 
         try {
             Product product = new Product(id, name, stock, manufacturer);
-            entityManager.persist(product);
+            //entityManager.persist(product);
             manufacturer.addProduct(product);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
-    }
-
-
-    public List<Product> all() {
-        return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
     public Product find(Long id) throws MyEntityNotFoundException {

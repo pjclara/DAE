@@ -20,6 +20,9 @@ public class ConfigBean {
     @EJB
     private ProductBean productBean;
 
+    @EJB
+    private OrderBean orderBean;
+
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
@@ -47,6 +50,13 @@ public class ConfigBean {
         try {
             productBean.create(1L, "product1", 10, "manufacturer1");
             productBean.create(2L, "product2", 2, "manufacturer2");
+        }catch (Exception e){
+            logger.warning(e.getMessage());
+        }
+
+        try {
+            orderBean.create(1L, "status1", "endConsumer1", "logisticsOperator1");
+            System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
         }

@@ -1,29 +1,26 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@NamedQuery(
-        name = "getAllOrders",
-        query = "SELECT o FROM Order o ORDER BY o.status")
-public class Order extends Versionable{
+public class Orderr {
     @Id
     private Long id;
     @NotNull
     private String status;
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "endConsumer_username")
     private EndConsumer endConsumer;
-    @ManyToOne()
+    @ManyToOne
     private LogisticsOperator logisticsOperators;
-    public Order() {
+
+    public Orderr() {
     }
 
-    public Order(Long id, String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
+    public Orderr(Long id, String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
         this.id = id;
         this.status = status;
         this.endConsumer = endConsumer;

@@ -6,12 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
-import jakarta.validation.ConstraintViolationException;
-import org.hibernate.Hibernate;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.LogisticsOperator;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Order;
-import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
@@ -25,37 +20,37 @@ public class OrderBean {
     @EJB
     private OrderBean orderBean;
 
-    public List<Order> all() {
-        return entityManager.createNamedQuery("getAllOrders", Order.class).getResultList();
+    public List<Orderr> all() {
+        return entityManager.createNamedQuery("getAllOrders", Orderr.class).getResultList();
     }
 
-    public void create(Long id, String status, String endConsumerName, String logisticOptName) throws MyConstraintViolationException, MyEntityNotFoundException {
-        if (orderBean.find(id) != null){
-            throw new EntityNotFoundException("Order with id '" + id + "' already exists");
-        }
-        // check LogisticOpt.
-        LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptName);
+    public void create(Long id, String status, String endConsumerUsername, String logisticOptUsername) {
+        // check logisticOpt exists
+        LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptUsername);
+        if (logisticOpt == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticOptUsername + " not found");
         // check endCostumer
-        EndConsumer consumer = entityManager.find(EndConsumer.class, endConsumerName);
+        EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
+        if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
 
-        if (logisticOpt == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticOptName + " not found");
-        if (consumer == null) throw new IllegalArgumentException("End Consumer with username " + consumer + " not found");
+        // check if order already exists
+        //Orderr order = entityManager.find(Orderr.class, id);
+        //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
 
-        try {
-            Order order = new Order(id, status, consumer, logisticOpt);
-            entityManager.persist(order);
-        } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(e);
-        }
+        Orderr order = new Orderr(id, status, endConsumer, logisticOpt);
+        entityManager.persist(order);
+        System.out.println("add order to endConsumer");
+        endConsumer.addOrder(order);
+        System.out.println("add order to logisticOpt");
+        logisticOpt.addOrder(order);
     }
 
     public void update(Long id, String status, String endConsumerName, String logisticOptName)
             throws MyEntityNotFoundException {
 
-        var order = findOrFail(id);
+        Orderr order = findOrFail(id);
 
         if (order == null){
-            throw new EntityNotFoundException("Order with id '" + id + "' not found in database");
+            throw new EntityNotFoundException("Orderr with id '" + id + "' not found in database");
         }
         entityManager.lock(order, LockModeType.OPTIMISTIC);
 
@@ -83,17 +78,14 @@ public class OrderBean {
         }
     }
 
-    public Order find(Long id) throws MyEntityNotFoundException {
-        return entityManager.find(Order.class, id);
+    public Orderr find(Long id) throws MyEntityNotFoundException {
+        return null;
     }
 
-    public Order findOrFail(Long id) throws MyEntityNotFoundException {
-        var order = find(id);
-        if (order == null) {
-            throw new jakarta.persistence.EntityNotFoundException("Order with id '" + id + "' not found");
-        }
-        Hibernate.initialize(order);
-        return order;
+    public Orderr findOrFail(Long id) throws MyEntityNotFoundException {
+
+        //Hibernate.initialize(order);
+        return null;
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
         query = "SELECT ec FROM EndConsumer ec ORDER BY ec.name ") // JPQL
 public class EndConsumer extends User{
     @OneToMany(mappedBy = "endConsumer")
-    private List<Order> orders;
+    private List<Orderr> orders;
     public EndConsumer() {
         this.orders = new ArrayList<>();
     }
@@ -22,11 +22,11 @@ public class EndConsumer extends User{
         this.orders = new ArrayList<>();
     }
 
-    public List<Order> getOrders() {
+    public List<Orderr> getOrders() {
         return orders;
     }
 
-    public void addOrder(Order order) {
+    public void addOrder(Orderr order) {
         this.orders.add(order);
         order.setEndConsumer(this);
     }

@@ -6,9 +6,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Order;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
-import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class OrderService {
                 orderDTO.getEndConsumerName()
         );
 
-        Order order = orderBean.findOrFail(orderDTO.getId());
+        Orderr order = orderBean.findOrFail(orderDTO.getId());
         if (order == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -50,7 +49,7 @@ public class OrderService {
     @GET
     @Path("{id}")
     public Response getEndConsumerDetails(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Order order = orderBean.findOrFail(orderId);
+        Orderr order = orderBean.findOrFail(orderId);
         if (order != null) {
             return Response.ok(toDTO(order)).entity(toDTO(order)).build();
         }
@@ -69,7 +68,7 @@ public class OrderService {
                 orderDTO.getLogisticsOperatorName(),
                 orderDTO.getEndConsumerName()
         );
-        Order order = orderBean.findOrFail(id);
+        Orderr order = orderBean.findOrFail(id);
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -84,11 +83,11 @@ public class OrderService {
     }
 
     // -----------------------------------------------------
-    private List<OrderDTO> toDTOs(List<Order> orders) {
+    private List<OrderDTO> toDTOs(List<Orderr> orders) {
         return orders.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    private OrderDTO toDTO(Order order) {
+    private OrderDTO toDTO(Orderr order) {
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
@@ -97,7 +96,7 @@ public class OrderService {
         );
     }
 
-    private OrderDTO toDo(Order order) {
+    private OrderDTO toDo(Orderr order) {
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
