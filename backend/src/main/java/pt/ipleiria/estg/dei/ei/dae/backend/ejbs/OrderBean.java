@@ -41,7 +41,7 @@ public class OrderBean {
         System.out.println("add order to endConsumer");
         endConsumer.addOrder(order);
         System.out.println("add order to logisticOpt");
-        logisticOpt.addOrder(order);
+        //logisticOpt.addOrder(order);
     }
 
     public void update(Long id, String status, String endConsumerName, String logisticOptName)

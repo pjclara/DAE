@@ -7,7 +7,7 @@ import jakarta.ws.rs.core.Response;
 import org.glassfish.jaxb.core.v2.TODO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.EndConsumerDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDto;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.ProductBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
