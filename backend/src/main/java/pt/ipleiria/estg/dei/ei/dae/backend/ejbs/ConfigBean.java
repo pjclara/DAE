@@ -22,6 +22,9 @@ public class ConfigBean {
     @EJB
     private SensorBean sensorBean;
 
+    @EJB
+    private OrderBean orderBean;
+
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
@@ -56,6 +59,13 @@ public class ConfigBean {
             sensorBean.create(1L, "Produto", "Temperatura", "20", "ºC", "10", "30", 123456789L);
             sensorBean.create(2L, "Produto", "Humidade", "50", "%", "30", "70", 123456789L);
             sensorBean.create(3L, "Produto", "Pressão", "1000", "Pa", "900", "1100", 123456789L);
+        }catch (Exception e){
+            logger.warning(e.getMessage());
+        }
+        
+        try {
+            orderBean.create(1L, "status1", "endConsumer1", "logisticsOperator1");
+            System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
         }

@@ -8,13 +8,12 @@ import pt.ipleiria.estg.dei.ei.dae.backend.dtos.EndConsumerDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.EndConsumerBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Order;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/endconsumers")
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
@@ -116,10 +115,10 @@ public class EndConsumerService {
                 endConsumer.getRole()
         );
     }
-    private List<OrderDTO> ordersToDTOs(List<Order> orders) {
+    private List<OrderDTO> ordersToDTOs(List<Orderr> orders) {
         return orders.stream().map(this::orderToDTOs).collect(java.util.stream.Collectors.toList());
     }
-    private OrderDTO orderToDTOs(Order order) {
+    private OrderDTO orderToDTOs(Orderr order) {
         // TODO make orderToDTOs
         return null;
     }

@@ -1,34 +1,30 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-public class Order extends Versionable{
+public class Orderr {
     @Id
     private Long id;
     @NotNull
-    private boolean isDelivered;
+    private String status;
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "endConsumer_username")
     private EndConsumer endConsumer;
-    @ManyToOne()
+    @ManyToOne
     private LogisticsOperator logisticsOperators;
-    public Order() {
+
+    public Orderr() {
     }
 
-    public Order(Long id, boolean isDelivered, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
+    public Orderr(Long id, String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
         this.id = id;
-        this.isDelivered = isDelivered;
+        this.status = status;
         this.endConsumer = endConsumer;
         this.logisticsOperators = logisticsOperators;
-    }
-
-    public Order(boolean isDelivered) {
-        this.isDelivered = isDelivered;
     }
 
     public void setId(Long id) {
@@ -39,14 +35,13 @@ public class Order extends Versionable{
         return id;
     }
 
-    public boolean isDelivered() {
-        return isDelivered;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDelivered(boolean delivered) {
-        isDelivered = delivered;
+    public void setStatus(String status) {
+        this.status = status;
     }
-
 
     public EndConsumer getEndConsumer() {
         return endConsumer;

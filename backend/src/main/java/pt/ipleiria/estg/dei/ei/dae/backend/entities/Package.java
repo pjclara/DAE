@@ -18,7 +18,6 @@ public class Package extends Versionable{
     private String packagingMaterial;
     @OneToMany
     private List<Sensor> sensorData;
-
     @OneToOne(mappedBy = "productPackage")
     private Product product;
 
