@@ -8,21 +8,24 @@ public class PackageDTO {
     private Long id;
     private String packagingType;
     private String packagingMaterial;
-    private List<Sensor> sensors; // passar para SensorDTO -- mudar depois no construtor
-    // TODO: depois passas de <Sensor> para <SensorDTO>
+    private List<SensorDTO> sensors;
 
-    public PackageDTO(Long id, String packagingType, String packagingMaterial) { //TODO: passar para SensorDTO
+    public PackageDTO() {
+        this.sensors = new ArrayList<>();
+    }
+
+    public PackageDTO(Long id, String packagingType, String packagingMaterial) {
         this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
         this.sensors = new ArrayList<>();
     }
 
-    public long getPackagingId() {
+    public long getId() {
         return id;
     }
 
-    public void setPackagingId(Long packagingId) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,11 +45,11 @@ public class PackageDTO {
         this.packagingMaterial = packagingMaterial;
     }
 
-    public List<Sensor> getSensors() {
+    public List<SensorDTO> getSensors() {
         return sensors;
     }
 
-    public void setSensors(List<Sensor> sensorData) {
+    public void setSensors(List<SensorDTO> sensorData) {
         this.sensors = sensorData;
     }
 }

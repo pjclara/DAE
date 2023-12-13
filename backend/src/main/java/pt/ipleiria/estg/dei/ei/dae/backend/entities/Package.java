@@ -35,11 +35,11 @@ public class Package extends Versionable {
         this.product = product;
     }
 
-    public Long getPackagingId() {
+    public Long getId() {
         return id;
     }
 
-    public void setPackagingId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -70,7 +70,6 @@ public class Package extends Versionable {
         sensors.add(sensor);
     }
 
-
     public void removeSensor(Sensor sensor) {
         if (sensor == null || sensors.contains(sensor)) {
             return;
@@ -83,5 +82,8 @@ public class Package extends Versionable {
 
     public void setProduct(Product product) {
         this.product = product;
+        if (product != null) {
+            product.setProductPackage(this);
+        }
     }
 }

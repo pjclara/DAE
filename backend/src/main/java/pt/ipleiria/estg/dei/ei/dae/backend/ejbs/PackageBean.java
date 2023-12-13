@@ -36,16 +36,16 @@ public class PackageBean {
         return entityManager.find(Package.class, packageId);
     }
 
-    public Package findOrFail(long packageCode) throws MyEntityNotFoundException {
-        var package_ = find(packageCode);
+    public Package findOrFail(long packageId) throws MyEntityNotFoundException {
+        var package_ = find(packageId);
         if (package_ == null) {
-            throw new MyEntityNotFoundException("Package with code '" + packageCode + "' not found");
+            throw new MyEntityNotFoundException("Package with code '" + packageId + "' not found");
         }
         return package_;
     }
 
-    public void update(long code, String type, String material) throws MyEntityNotFoundException {
-        var package_ = findOrFail(code);
+    public void update(Long id, String type, String material) throws MyEntityNotFoundException {
+        var package_ = findOrFail(id);
 
         entityManager.lock(package_, LockModeType.OPTIMISTIC);
 
@@ -59,8 +59,8 @@ public class PackageBean {
         }*/
     }
 
-    public void remove(Long packageId) throws MyEntityNotFoundException {
-        var product = find(packageId);
+    public void remove(Long id) throws MyEntityNotFoundException {
+        var product = find(id);
         if (product != null) {
             entityManager.remove(product);
         }

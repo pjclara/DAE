@@ -47,11 +47,12 @@ public class PackageService {
     public Response createNewPackage (PackageDTO packageDTO) throws MyConstraintViolationException {
 
         packageBean.create(
-                packageDTO.getPackagingId(),
+                packageDTO.getId(),
                 packageDTO.getPackagingType(),
                 packageDTO.getPackagingMaterial()
+                //packageDTO.getSensors()
         );
-        Package newPackage = packageBean.find(packageDTO.getPackagingId());
+        Package newPackage = packageBean.find(packageDTO.getId());
         return Response.status(Response.Status.CREATED).entity(toDTO(newPackage)).build();
     }
 
@@ -61,10 +62,10 @@ public class PackageService {
             throws MyEntityNotFoundException {
         // incomplato, falta o update dos sensores
         packageBean.update(
-                packageDTO.getPackagingId(),
+                packageDTO.getId(),
                 packageDTO.getPackagingType(),
                 packageDTO.getPackagingMaterial()
-                // packageDTO.getPackagingSensor()
+                // packageDTO.getSensors()
         );
         Package package_ = packageBean.find(id);
         return Response.status(Response.Status.OK).entity(toDTO(package_)).build();
@@ -83,10 +84,10 @@ public class PackageService {
 
     private PackageDTO toDTO(Package package_) { // o nome esta como 'package_' pois dava conflito sem o '_'
         return new PackageDTO(
-                package_.getPackagingId(),
+                package_.getId(),
                 package_.getPackagingType(),
                 package_.getPackagingMaterial()
-                //package_.getSensors() // TODO: remove comment after fix
+                //package_.getSensors()
         );
     }
 
