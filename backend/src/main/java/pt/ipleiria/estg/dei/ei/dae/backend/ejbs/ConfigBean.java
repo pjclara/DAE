@@ -17,38 +17,63 @@ public class ConfigBean {
     private ManufacturerBean manufacturerBean;
     @EJB
     private LogisticsOperatorBean logisticsOperatorBean;
+    @EJB
+    private ProductBean productBean;
+    @EJB
+    private SensorBean sensorBean;
 
     @EJB
     private PackageBean packageBean;
+
+    @EJB
+    private OrderBean orderBean;
+
 
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
 
-        try{
-            endConsumerBean.create("Cliente1", "123", "Cliente1", "Cliente1@gmail.com", "Cliente");
-            endConsumerBean.create("Cliente2", "123", "Cliente2", "Cliente2@gmail.com", "Cliente");
-            endConsumerBean.create("Cliente3", "123", "Cliente3", "Cliente3@gmail.com", "Cliente");
+        try {
+            endConsumerBean.create("endConsumer1", "endConsumer1", "endConsumer1", "endConsumer1@teste.pt", "endConsumer");
+            endConsumerBean.create("endConsumer2", "endConsumer2", "endConsumer2", "endConsumer2@teste.pt", "endConsumer");
         }catch (Exception e){
-            logger.severe(e.getMessage());
+            logger.warning(e.getMessage());
         }
 
-        try{
-            manufacturerBean.create("Fabricante1", "123", "Fabricante1", "Fabricante1@gmail.com", "Cliente");
-            manufacturerBean.create("Fabricante2", "123", "Fabricante2", "Fabricante2@gmail.com", "Cliente");
-            manufacturerBean.create("Fabricante3", "123", "Fabricante3", "Fabricante3@gmail.com", "Cliente");
+        try {
+            manufacturerBean.create("manufacturer1", "manufacturer1", "manufacturer1", "manufacturer1@teste.pt", "manufacturer");
+            manufacturerBean.create("manufacturer2", "manufacturer2", "manufacturer2", "manufacturer2@teste.pt", "manufacturer");
         }catch (Exception e){
-            logger.severe(e.getMessage());
+            logger.warning(e.getMessage());
         }
 
-        try{
-            logisticsOperatorBean.create("Operador1", "123", "Operador1", "Operador1@gmail.com", "Cliente");
-            logisticsOperatorBean.create("Operador2", "123", "Operador2", "Operador2@gmail.com", "Cliente");
-            logisticsOperatorBean.create("Operador3", "123", "Operador3", "Operador3@gmail.com", "Cliente");
+        try {
+            logisticsOperatorBean.create("logisticsOperator1", "logisticsOperator1", "logisticsOperator1", "logisticsOperator1@teste.pt", "logisticsOperator");
         }catch (Exception e){
-            logger.severe(e.getMessage());
+            logger.warning(e.getMessage());
         }
 
+        try {
+            productBean.create(1L, "product1", 10, "manufacturer1");
+            productBean.create(2L, "product2", 2, "manufacturer2");
+        }catch (Exception e){
+            logger.warning(e.getMessage());
+        }
+        try {
+            sensorBean.create(1L, "Produto", "Temperatura", "20", "ºC", "10", "30", 123456789L);
+            sensorBean.create(2L, "Produto", "Humidade", "50", "%", "30", "70", 123456789L);
+            sensorBean.create(3L, "Produto", "Pressão", "1000", "Pa", "900", "1100", 123456789L);
+        }catch (Exception e){
+            logger.warning(e.getMessage());
+        }
+        
+        try {
+            orderBean.create(1L, "status1", "endConsumer1", "logisticsOperator1");
+            System.out.println("final orderBean");
+        }catch (Exception e){
+            logger.warning(e.getMessage());
+
+        }
 
         try{
             packageBean.create( 111L, "Principal", "Plastico");

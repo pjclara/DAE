@@ -18,18 +18,21 @@ public class Package extends Versionable {
     @NotNull
     private String packagingMaterial;
 
-    //@ManyToOne
-    //private List<Sensor> sensors; // ver depois o tipo de ligação (one to many.. many to one..)
-    // TODO: remove comment after fix
+    @OneToOne(mappedBy = "productPackage")
+    private Product product;
+
+    @OneToMany
+    private List<Sensor> sensors;
 
     public Package() {
-        //this.sensors =  new ArrayList<>();
+        this.sensors =  new ArrayList<>();
     }
     public Package(Long id, String packagingType, String packagingMaterial) {
         this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-        //this.sensors =  new ArrayList<>(); // TODO: remove comment after fix
+        this.sensors =  new ArrayList<>();
+        this.product = product;
     }
 
     public Long getPackagingId() {
@@ -56,22 +59,29 @@ public class Package extends Versionable {
         this.packagingMaterial = packagingMaterial;
     }
 
-    /*public List<Sensor> getSensors() { // TODO: remove comment after fix
+    public List<Sensor> getSensors() {
         return sensors;
     }
 
-    public void addSensor(Sensor sensor) { // setStudent
+    public void addSensor(Sensor sensor) {
         if (sensor == null || sensors.contains(sensor)) {
             return;
         }
         sensors.add(sensor);
     }
 
+
     public void removeSensor(Sensor sensor) {
         if (sensor == null || sensors.contains(sensor)) {
             return;
         }
         sensors.remove(sensor);
-    }*/
+    }
+    public Product getProduct() {
+        return product;
+    }
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

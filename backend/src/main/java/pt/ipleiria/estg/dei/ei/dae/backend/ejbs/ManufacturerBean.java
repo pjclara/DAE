@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Hasher;
 
 import java.util.List;
@@ -25,18 +26,18 @@ public class ManufacturerBean {
         return entityManager.createNamedQuery("getAllManufacturers", Manufacturer.class).getResultList();
     }
 
-    public Manufacturer find(String username) {
+    public Manufacturer find(String username) throws MyEntityNotFoundException {
         return entityManager.find(Manufacturer.class, username);
     }
 
-    public void delete(String username) {
+    public void delete(String username) throws MyEntityNotFoundException {
         var manufacturer = find(username);
         if (manufacturer != null) {
             entityManager.remove(manufacturer);
         }
     }
 
-    public void update(String username, String password, String name, String email, String role) {
+    public void update(String username, String password, String name, String email, String role) throws MyEntityNotFoundException {
         var manufacturer = find(username);
         if (manufacturer != null) {
             manufacturer.setPassword(password);
@@ -46,6 +47,13 @@ public class ManufacturerBean {
             entityManager.merge(manufacturer);
         }
     }
+    public Manufacturer getAllProductsFromManufacturer(String username) {
+        Manufacturer manufacturer = entityManager.find(Manufacturer.class, username);
 
+        if(manufacturer == null) throw new IllegalArgumentException("Manufacturer with username " + username + " not found in database");
 
+        System.out.println("Manufacturer products: "+manufacturer.getProducts());
+
+        return manufacturer;
+    }
 }

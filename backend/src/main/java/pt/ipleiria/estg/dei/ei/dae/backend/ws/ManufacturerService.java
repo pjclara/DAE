@@ -5,8 +5,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ManufacturerDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.ManufacturerBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
+import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
 
@@ -20,26 +23,11 @@ public class ManufacturerService {
 
     @GET
     @Path("/")
-    public List<ManufacturerDTO> getAllManufacturers() {
-        return toDTOs(manufacturerBean.all());   }
-
-    private List<ManufacturerDTO> toDTOs(List<Manufacturer> all) {
-        return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
-    }
-
-    private ManufacturerDTO toDTO(Manufacturer manufacturer) {
-        return new ManufacturerDTO(
-                manufacturer.getUsername(),
-                manufacturer.getPassword(),
-                manufacturer.getName(),
-                manufacturer.getEmail(),
-                manufacturer.getRole()
-        );
-    }
+    public List<ManufacturerDTO> getAllManufacturers() { return toDTOs(manufacturerBean.all());   }
 
     @GET
     @Path("{username}")
-    public Response getManufacturerDetails(@PathParam("username") String username) {
+    public Response getManufacturerDetails(@PathParam("username") String username) throws MyEntityNotFoundException {
         Manufacturer manufacturer = manufacturerBean.find(username);
         if (manufacturer != null) {
             return Response.ok(toDTO(manufacturer)).entity(toDTO(manufacturer)).build();
@@ -51,7 +39,7 @@ public class ManufacturerService {
 
     @POST
     @Path("/")
-    public Response createNewManufacturer(ManufacturerDTO manufacturerDTO) throws Exception {
+    public Response createNewManufacturer(ManufacturerDTO manufacturerDTO) throws MyEntityNotFoundException {
         manufacturerBean.create(
                 manufacturerDTO.getUsername(),
                 manufacturerDTO.getPassword(),
@@ -66,6 +54,44 @@ public class ManufacturerService {
         return Response.status(Response.Status.CREATED).entity(toDo(manufacturer)).build();
     }
 
+    @PUT
+    @Path("{username}")
+    public Response updateManufacturer(@PathParam("username") String username, ManufacturerDTO manufacturerDTO) throws MyEntityNotFoundException {
+        manufacturerBean.update(
+                manufacturerDTO.getUsername(),
+                manufacturerDTO.getPassword(),
+                manufacturerDTO.getName(),
+                manufacturerDTO.getEmail(),
+                manufacturerDTO.getRole()
+        );
+        Manufacturer manufacturer = manufacturerBean.find(username);
+        return Response.status(Response.Status.OK).entity(toDTO(manufacturer)).build();
+    }
+
+    @DELETE
+    @Path("{username}")
+    public Response deleteManufacturer(@PathParam("username") String username) throws MyEntityNotFoundException {
+        manufacturerBean.delete(username);
+        return Response.ok().build();
+    }
+
+
+    // get all products from manufacturer
+    @GET
+    @Path("{username}/products")
+    public Response getAllProductsFromManufacturer(@PathParam("username") String username) {
+        Manufacturer manufacturer = manufacturerBean.getAllProductsFromManufacturer(username);
+        if (manufacturer != null) {
+            var dtos = productsToDo(manufacturer.getProducts());
+            return Response.ok(dtos).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_MANUFACTURER")
+                .build();
+    }
+
+    // AUXILIARY FUNCTIONS
+
     private ManufacturerDTO toDo(Manufacturer manufacturer) {
         return new ManufacturerDTO(
                 manufacturer.getUsername(),
@@ -74,30 +100,32 @@ public class ManufacturerService {
                 manufacturer.getEmail(),
                 manufacturer.getRole()
         );
-
+    }
+    private List<ManufacturerDTO> toDTOs(List<Manufacturer> all) {
+        return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
     }
 
-    @PUT
-    @Path("{username}")
-    public Response updateManufacturer(@PathParam("username") String username, ManufacturerDTO manufacturerDTO) {
-        var manufacturer = manufacturerBean.find(username);
-        if (manufacturer == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        manufacturerBean.update(
-                manufacturerDTO.getUsername(),
-                manufacturerDTO.getPassword(),
-                manufacturerDTO.getName(),
-                manufacturerDTO.getEmail(),
-                manufacturerDTO.getRole()
+    private ManufacturerDTO toDTO(Manufacturer manufacturer) {
+        return new ManufacturerDTO(
+                manufacturer.getUsername(),
+                manufacturer.getPassword(),
+                manufacturer.getName(),
+                manufacturer.getEmail(),
+                manufacturer.getRole()
         );
-        return Response.ok().entity(toDTO(manufacturer)).build();
     }
 
-    @DELETE
-    @Path("{username}")
-    public Response deleteManufacturer(@PathParam("username") String username) {
-        manufacturerBean.delete(username);
-        return Response.ok().build();
+    private List<ProductDTO> productsToDo(List<Product> products) {
+        return products.stream().map(this::productToDo).collect(java.util.stream.Collectors.toList());
     }
+
+    private ProductDTO productToDo(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getStock(),
+                product.getManufacturer().getUsername()
+        );
+    }
+    // get all orders from manufacturer
 }

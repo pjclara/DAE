@@ -1,40 +1,35 @@
-package pt.ipleiria.estg.dei.ei.dae.backend.entities;
+package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "sensors")
-@NamedQuery(name = "getAllSensors", query = "SELECT s FROM Sensor s ORDER BY s.id")
-public class Sensor extends Versionable {
-    @Id
+public class SensorDTO implements Serializable {
+    
     private long id;
-    @NotNull
-    private String source;  // tipo de embalagem (Produto/Encomenda) é preciso?
-    @NotNull
-    private String type;    // enum / tabela tipo de Sensor (Temperatura, Humidade, Pressão, integridade, localização)
-    @NotNull
+    
+    private String source;
+    
+    private String type;
+    
     private String value;
-    @NotNull
-    private String unit;    // enum / tabela unidade de medida (ºC, %, Pa, m/s, m, etc)
-    @NotNull
-    private String max;     // valor máximo aceitável
-    @NotNull
-    private String min;     // valor mínimo aceitável
-    @NotNull
+    
+    private String unit;
+    
+    private String max;
+    
+    private String min;
+    
     private long timestamp;
+    
+    private long packageId;
 
-    @OneToOne
-    private Package packagging;
-
-    //@ManyToOne
-    //private Product productSensor;
-
-    public Sensor() {
+    public SensorDTO() {
     }
 
-    public Sensor(long id, String source, String type, String value, String unit, String max, String min, long timestamp) {
+    public SensorDTO(long id, String source, String type, String value, String unit, String max, String min, long timestamp) {
         this.id = id;
         this.source = source;
         this.type = type;
@@ -108,12 +103,11 @@ public class Sensor extends Versionable {
         this.timestamp = timestamp;
     }
 
-    public Package getPackagging() {
-        return packagging;
+    public long getPackageId() {
+        return packageId;
     }
 
-    public void setPackagging(Package packagging) {
-        this.packagging = packagging;
+    public void setPackageId(long packageId) {
+        this.packageId = packageId;
     }
-
 }
