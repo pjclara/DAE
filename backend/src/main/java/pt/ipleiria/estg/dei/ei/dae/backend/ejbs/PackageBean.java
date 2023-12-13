@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.*;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
@@ -16,7 +17,7 @@ public class PackageBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-     public void create(Long id, String type, String material)
+     public void create(Long id, PackagingType type, String material)
             throws EntityExistsException, EntityNotFoundException, MyConstraintViolationException {
 
         try {
@@ -44,7 +45,7 @@ public class PackageBean {
         return package_;
     }
 
-    public void update(Long id, String type, String material) throws MyEntityNotFoundException {
+    public void update(Long id, PackagingType type, String material) throws MyEntityNotFoundException {
         var package_ = findOrFail(id);
 
         entityManager.lock(package_, LockModeType.OPTIMISTIC);

@@ -14,7 +14,7 @@ public class Package extends Versionable {
     @Id
     private Long id;
     @NotNull
-    private String packagingType;  // [1º,2º,3º(Produto) ou encomenda]
+    private PackagingType packagingType;  // [1º,2º,3º(Produto) ou encomenda / transporte]
     @NotNull
     private String packagingMaterial;
 
@@ -27,7 +27,9 @@ public class Package extends Versionable {
     public Package() {
         this.sensors =  new ArrayList<>();
     }
-    public Package(Long id, String packagingType, String packagingMaterial) {
+
+
+    public Package(Long id, PackagingType packagingType, String packagingMaterial) {
         this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
@@ -43,11 +45,11 @@ public class Package extends Versionable {
         this.id = id;
     }
 
-    public String getPackagingType() {
+    public PackagingType getPackagingType() {
         return packagingType;
     }
 
-    public void setPackagingType(String packagingType) {
+    public void setPackagingType(PackagingType packagingType) {
         this.packagingType = packagingType;
     }
 

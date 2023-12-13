@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 
 import java.util.logging.Logger;
 
@@ -76,8 +77,8 @@ public class ConfigBean {
         }
 
         try{
-            packageBean.create( 111L, "Principal", "Plastico");
-            packageBean.create( 222L, "Test", "Vidro");
+            packageBean.create( 111L, PackagingType.SECONDARY, "Plastico");
+            packageBean.create( 222L, PackagingType.PRIMARY, "Vidro");
         } catch (Exception e) {
             logger.severe(e.getMessage());
         }

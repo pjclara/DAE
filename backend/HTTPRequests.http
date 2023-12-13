@@ -109,7 +109,7 @@ Content-Type: application/json
 
 {
   "id"  : 123,
-  "packagingType": "package_test_type",
+  "packagingType": "SECONDARY",
   "packagingMaterial": "test_material"
 }
 
@@ -119,7 +119,7 @@ Content-Type: application/json
 
 {
   "id": 111,
-  "packagingType": "package_update_type",
+  "packagingType": "THIRD",
   "packagingMaterial": "Plastico"
 }
 

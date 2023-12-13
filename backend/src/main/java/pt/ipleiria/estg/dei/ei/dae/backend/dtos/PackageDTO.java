@@ -1,4 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 
 import java.util.ArrayList;
@@ -6,7 +7,7 @@ import java.util.List;
 
 public class PackageDTO {
     private Long id;
-    private String packagingType;
+    private PackagingType packagingType;
     private String packagingMaterial;
     private List<SensorDTO> sensors;
 
@@ -14,7 +15,7 @@ public class PackageDTO {
         this.sensors = new ArrayList<>();
     }
 
-    public PackageDTO(Long id, String packagingType, String packagingMaterial) {
+    public PackageDTO(Long id, PackagingType packagingType, String packagingMaterial) {
         this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
@@ -29,11 +30,11 @@ public class PackageDTO {
         this.id = id;
     }
 
-    public String getPackagingType() {
+    public PackagingType getPackagingType() {
         return packagingType;
     }
 
-    public void setPackagingType(String packagingType) {
+    public void setPackagingType(PackagingType packagingType) {
         this.packagingType = packagingType;
     }
 
