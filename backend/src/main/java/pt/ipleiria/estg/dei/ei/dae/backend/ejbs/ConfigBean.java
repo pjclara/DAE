@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 
 import java.util.logging.Logger;
 
@@ -23,7 +24,11 @@ public class ConfigBean {
     private SensorBean sensorBean;
 
     @EJB
+    private PackageBean packageBean;
+
+    @EJB
     private OrderBean orderBean;
+
 
     @PostConstruct
     public void populateDB() {
@@ -68,6 +73,14 @@ public class ConfigBean {
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
+
+        }
+
+        try{
+            packageBean.create( 111L, PackagingType.SECONDARY, "Plastico");
+            packageBean.create( 222L, PackagingType.PRIMARY, "Vidro");
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
         }
     }
 }
