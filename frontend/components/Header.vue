@@ -1,21 +1,19 @@
 <template>
-    <header>
-      <h1>{{ titulo }}</h1>
-      <!-- Adicione mais elementos do cabeçalho conforme necessário -->
-      <nav>
-        <ul>
-          <li><router-link to="/">Página Inicial</router-link></li>
-          <!-- Adicione mais itens de navegação -->
-        </ul>
-      </nav>
-    </header>
+    <v-app-bar
+        class="flex-wrap"
+        color="primary"
+        density="compact"
+        relative
+      >
+        <v-app-bar class="flex-grow-1">DAE PROJECT</v-app-bar>
+        <v-app-bar-title><nuxt-link to="/">Home</nuxt-link></v-app-bar-title>
+        <v-app-bar-title><nuxt-link to="/about">About</nuxt-link></v-app-bar-title>
+      </v-app-bar>
   </template>
   
   <script>
   export default {
-    props: {
-      titulo: String,
-    },
+    name: "Header",
   };
   </script>
   
