@@ -1,18 +1,20 @@
 <template>
   <div>
-    <Header></Header>
-    <v-layout>
-      <NuxtPage />
-    </v-layout>
+    <v-app>
+      <HeaderTemplate></HeaderTemplate>
+      <v-main>
+        <NuxtPage />
+      </v-main>
+    </v-app>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
+import HeaderTemplate from "@/components/Header.vue";
 
 export default {
   components: {
-    Header,
+    HeaderTemplate,
   },
 };
 </script>
