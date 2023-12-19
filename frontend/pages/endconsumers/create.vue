@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Header titulo="Dashboard do consumidor final" /> 
         <h1>Create a endConsumer</h1>
         <form @submit.prevent="create">
         <div>Username:

@@ -2,6 +2,8 @@
   <v-app-bar
       color="primary"
     >
+    <v-app-bar-nav-icon button></v-app-bar-nav-icon>
+
     <v-col align="center">
       <v-row>
         <v-app-bar-title justify="center">PROJETO DAE</v-app-bar-title>

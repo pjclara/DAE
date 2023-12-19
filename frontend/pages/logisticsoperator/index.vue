@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Header titulo="Dashboard do consumidor final" />    
         add logisticsOperator
         <nuxt-link class="link" :to="`/logisticsOperators/create`">add logisticsOperator</nuxt-link>
 

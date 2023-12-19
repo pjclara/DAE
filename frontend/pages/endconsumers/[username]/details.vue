@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header titulo="Dashboard do consumidor final" />  
     <h1>endConsumer Details</h1>
 
   </div>

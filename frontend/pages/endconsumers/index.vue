@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Header titulo="Dashboard do consumidor final" />    
         add endConsumer
         <nuxt-link class="link" :to="`/endConsumers/create`">add endConsumer</nuxt-link>
 

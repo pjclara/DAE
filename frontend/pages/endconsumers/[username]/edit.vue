@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Header titulo="Dashboard do consumidor final" />  
         <h1>Edit endConsumer</h1>
         <form @submit.prevent="update">
             <div>Username:
