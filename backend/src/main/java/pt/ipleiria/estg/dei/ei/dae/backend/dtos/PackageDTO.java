@@ -50,7 +50,21 @@ public class PackageDTO {
         return sensors;
     }
 
-    public void setSensors(List<SensorDTO> sensorData) {
-        this.sensors = sensorData;
+    public void addSensor(SensorDTO sensorDTO) {
+        if (sensorDTO != null) {
+            this.sensors.add(sensorDTO);
+        }
     }
+
+    public void removeSensor(SensorDTO sensorDTO) {
+        this.sensors.remove(sensorDTO);
+    }
+
+    public void editSensor(SensorDTO oldSensor, SensorDTO newSensor) {
+        int index = this.sensors.indexOf(oldSensor);
+        if (index != -1) {
+            this.sensors.set(index, newSensor);
+        }
+    }
+
 }
