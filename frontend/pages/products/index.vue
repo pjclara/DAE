@@ -1,52 +1,45 @@
 <template>
-    <div>
-        add manufacturer
-        <nuxt-link class="link" :to="`/manufacturers/create`">add manufacturer</nuxt-link>
+    <v-col align="center">
+        <h1> Listagem de Produtos </h1>
 
+        <v-container class="grid">  
+            {{ products  }}
+            <v-card v-for="product in products" :key="product.id">
+                <v-card-title justify="center">
+                    {{ product.name }}
+                </v-card-title>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Details</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="manufacturer in manufacturers" :key="manufacturer.id">
-                    <td>{{ manufacturer.name }}</td>
-                    <td>{{ manufacturer.email }}</td>
-                    <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/details`">Details</nuxt-link>
-                    </td>
-                    <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/edit`">Edit</nuxt-link>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                <v-card-text>
+                    <div v-if="product.image">
+                        <v-img :src="product.image" />
+                    </div>
+                    <div v-else>
+                        <v-img width="200" height="200" src="https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg" />
+                    </div>
+                </v-card-text>
 
+                <v-card-actions class="justify-center">
+                    <v-btn>Add to Card</v-btn>
+                </v-card-actions>
+
+            </v-card>
+        </v-container>
+    </v-col>
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
-const api = config.public.API_URL
-const { data: manufacturers, error, refresh } = await useFetch(`${api}/manufacturers`)
+    const config = useRuntimeConfig()
+    const api = config.public.API_URL
+    const { data: products, error, refresh } = await useFetch(`${api}/products`)
+
+    console.log("products: ", products);
 </script>
 
-<style>
-table {
-    border-collapse: collapse;
-    width: 50%;
-    margin: 10px;
-}
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}   
-
+<style scoped>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
 </style>
 
