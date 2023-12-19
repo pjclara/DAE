@@ -21,7 +21,6 @@
                 <v-card-actions class="justify-center">
                     <v-btn>Add to Card</v-btn>
                 </v-card-actions>
-
             </v-card>
         </v-container>
     </v-col>
