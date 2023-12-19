@@ -11,16 +11,16 @@
                         <v-text-field v-model="productForm.stock" label="Stock"/>
                     </div>
                     <div>
-                        <v-text-field v-model="productForm.packageId" label="Embalagem de Produto"/>
+                        <v-text-field v-model="productForm.manufacturerUsername" label="Nome do Fabricante"/>
                     </div>
                     <div>
-                        <v-text-field v-model="productForm.packageId" label="Embalagem de Produto"/>
+                        <v-text-field v-model="productForm.packageId" label="ID da embalagem do Produto"/>
                     </div>
                     <div>
                         <v-text-field v-model="productForm.image" label="URL Imagem de Produto"/>
                     </div>
                     <v-btn block rounded="xl" size="x-large" @click="create">Create</v-btn>
-                    <div v-if="messages.length > 0">
+                    <div v-if="messages?.length > 0">
                         <h2>Messages</h2>
                         <div v-for="message in messages">
                             <pre>{{ message }}</pre>

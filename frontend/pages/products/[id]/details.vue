@@ -14,13 +14,13 @@
               <div v-else>
                 <v-img width="200" height="200" src="https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg" />
               </div>
-              <p>{{ product.stock }}</p>
-              <p>{{ product.manufacturer }}</p>
-              <p>{{ product.productPackage }}</p>
+              <p>Stock :{{ product.stock }}</p>
+              <p>Manufacturer: {{ product.manufacturerUsername }}</p>
+              <p>Product Package: {{ product.productPackage }}</p>
             </v-card-text>
 
-            <v-card-actions justify="center">
-              <v-btn><nuxt-link class="link" :to="`/products/${product.id}/edit`">Editar</nuxt-link></v-btn>
+            <v-card-actions class="justify-center">
+              <v-btn><nuxt-link class="link " :to="`/products/${product.id}/edit`">Editar</nuxt-link></v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -35,6 +35,7 @@
     const route = useRoute()
     const id = route.params.id
     const { data: product, error: productErr } = await useFetch(`${api}/products/${id}`)
+    console.log("product: ", product.value)
   </script>
 
   <style scoped>

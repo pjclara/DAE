@@ -32,7 +32,7 @@ public class ProductBean {
 
         try {
             Product product = new Product(id, name, stock, manufacturer);
-            //entityManager.persist(product);
+            entityManager.persist(product);
             manufacturer.addProduct(product);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);

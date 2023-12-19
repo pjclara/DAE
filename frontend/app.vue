@@ -3,7 +3,7 @@
     <v-app>
       <HeaderTemplate></HeaderTemplate>
       <v-main>
-        <NuxtPage />
+        <NuxtPage class="pa-2" />
       </v-main>
     </v-app>
   </div>

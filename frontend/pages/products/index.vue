@@ -2,8 +2,7 @@
     <v-col align="center">
         <h1> Listagem de Produtos </h1>
 
-        <v-container class="grid">  
-            {{ products  }}
+        <v-container class="grid">
             <v-card v-for="product in products" :key="product.id">
                 <v-card-title justify="center">
                     {{ product.name }}

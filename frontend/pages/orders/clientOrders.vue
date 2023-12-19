@@ -2,7 +2,7 @@
     <div>
         <v-data-table
           :headers="headers"
-          :items="products"
+          :items="orders"
           :items-per-page="5"
           class="elevation-1"
         />
@@ -12,7 +12,8 @@
 <script setup>
     const config = useRuntimeConfig()
     const api = config.public.API_URL
-    const { data: products, error, refresh } = await useFetch(`${api}/products`)
+    const { data: orders, error, refresh } = await useFetch(`${api}/products`)
+    
     const headers = ref([
         { text: 'Name', value: 'name', align: 'center' },
         { text: 'Stock', value: 'stock', align: 'center' },
