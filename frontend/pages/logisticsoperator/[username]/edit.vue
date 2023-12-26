@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Header titulo="Dashboard do consumidor final" />  
         <h1>Edit logisticsOperator</h1>
         <form @submit.prevent="update">
             <div>Username:
@@ -15,17 +14,10 @@
             <div>E-mail:
                 <input v-model="logisticsOperatorForm.email" type="text" placeholder="email">
             </div>
-            <div>Course:
-                <select v-model="logisticsOperatorForm.courseCode">
-                    <option value="">Select a course</option>
-                    <option v-for="course in courses" :value="course.code">
-                        {{ course.name }}
-                    </option>
-                </select>
-            </div>
+           
             <button type="reset">RESET</button>
             <button type="submit">update</button>
-            <nuxt-link class="link" to="/logisticsOperators">Return</nuxt-link>
+            <nuxt-link class="link" to="/logisticsOperator">Return</nuxt-link>
         </form>
     </div>
 </template>
@@ -47,7 +39,7 @@ async function update() {
     }
     const { error } = await useFetch(`${api}/logisticsOperators/` + username, requestOptions)
     if (!error.value)
-        navigateTo('/logisticsOperators')
+        navigateTo('/logisticsOperator')
     else {
         message.value = error.value
         console.log(message.value)

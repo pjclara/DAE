@@ -1,50 +1,54 @@
 <template>
-    <header>
-      <h1>{{ titulo }}</h1>
-      <!-- Adicione mais elementos do cabeçalho conforme necessário -->
-      <nav>
-        <ul>
-          <li><router-link to="/">Página Inicial</router-link></li>
-          <!-- Adicione mais itens de navegação -->
-        </ul>
-      </nav>
-    </header>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      titulo: String,
-    },
-  };
-  </script>
-  
-  <style scoped>
-  /* Adicione estilos CSS conforme necessário */
-  header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-  }
-  
-  h1 {
-    margin: 0;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  nav li {
-    display: inline;
-    margin-right: 15px;
-  }
-  
-  nav a {
-    color: #fff;
-    text-decoration: none;
-  }
-  </style>
-  
+  <v-app-bar
+      color="primary"
+    >
+    <v-app-bar-nav-icon button></v-app-bar-nav-icon>
+
+    <v-col align="center">
+      <v-row>
+        <v-app-bar-title justify="center">PROJETO DAE</v-app-bar-title>
+      </v-row>
+      <v-row justify="space-around">
+        <nuxt-link to="/">Home</nuxt-link>
+        |
+        <nuxt-link to="/endconsumers">Clientes</nuxt-link>
+        |
+        <nuxt-link to="/manufacturers">Fabricantes</nuxt-link>
+        |
+        <nuxt-link to="/logisticsoperator">Operadores Logistica</nuxt-link>
+        |
+        <nuxt-link to="/products">Produtos</nuxt-link>
+        |
+        <nuxt-link to="/orders">Encomendas</nuxt-link>
+        |
+        <nuxt-link to="/packages">Embalagens</nuxt-link>
+        |
+        <nuxt-link to="/sensors">Sensores</nuxt-link>
+        <div>
+          <v-btn
+            color="primary"
+            @click="logout"
+          >
+            Logout
+          </v-btn>
+          |
+          <nuxt-link to="/auth/login">Login</nuxt-link>
+          |
+          <v-btn><v-icon>cart-outlined</v-icon></v-btn>
+        </div>
+      </v-row>
+    </v-col>
+    </v-app-bar>
+</template>
+
+<script setup>
+  import { useAuthStore } from '@/store/auth-store';
+
+  const authStore = useAuthStore();
+  const { logout } = authStore;
+
+</script>
+
+<style scoped>  
+</style>
+

@@ -1,13 +1,13 @@
 
 ### CRUD endonsumers
 ### GET all endconsumers
-GET http://localhost:8080/backend/api/endconsumers
+GET http://localhost:8080/backend/api/endConsumers
 
 ### GET endconsumer by id
-GET http://localhost:8080/backend/api/endconsumers/endConsumer2
+GET http://localhost:8080/backend/api/endConsumers/endConsumer2
 
 ### POST endconsumer
-POST http://localhost:8080/backend/api/endconsumers
+POST http://localhost:8080/backend/api/endConsumers
 Content-Type: application/json
 
   {
@@ -19,7 +19,7 @@ Content-Type: application/json
     }
 
 ### PUT endconsumer
-PUT http://localhost:8080/backend/api/endconsumers/endConsumer3
+PUT http://localhost:8080/backend/api/endConsumers/endConsumer3
 Content-Type: application/json
 
 {
@@ -66,6 +66,15 @@ Content-Type: application/json
 
 ### DELETE manufacturer
 DELETE http://localhost:8080/backend/api/manufacturers/manufacturer3
+
+### CRUD logisticsOperators
+### GET all logisticsOperators
+GET http://localhost:8080/backend/api/logisticsOperators
+
+### GET logisticsOperator by id
+GET http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1
+
+
 
 ### Get all products
 GET http://localhost:8080/backend/api/products

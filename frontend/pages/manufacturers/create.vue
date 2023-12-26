@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Header titulo="Dashboard do consumidor final" /> 
         <h1>Create a manufacturer</h1>
         <form @submit.prevent="create">
         <div>Username:
@@ -36,8 +35,7 @@ const manufacturerForm = reactive({
     username: null,
     password: null,
     email: null,
-    name: null,
-    courseCode: null
+    name: null
 })
 const formFeedback = reactive({
     username: '',

@@ -1,31 +1,40 @@
 <template>
-    <h1>Login Form</h1>
-    <div>Username:
-        <input v-model="loginFormData.username">
-    </div>
-    <div>Password:
-        <input v-model="loginFormData.password">
-    </div>
-    <button @click="login">LOGIN</button>
-    <div v-if="token">
-        <div>Token: {{ token }}</div>
-    </div>
-    <div v-if="messages.length > 0">
-        <h2>Messages</h2>
-        <div v-for="message in messages">
-            <pre>{{ message }}</pre>
-        </div>
-    </div>
+    <v-col align="center">
+        <v-col cols="6">
+            <h1>Login</h1>
+            <div>
+                <v-text-field v-model="loginFormData.username" label="Username"/>
+            </div>
+            <div>
+                <v-text-field v-model="loginFormData.password" label="Password"/>
+            </div>
+            <v-btn block rounded="xl" size="x-large" @click="login">LOGIN</v-btn>
+            <div v-if="token">
+                <div>Token: {{ token }}</div>
+            </div>
+            <div v-if="messages.length > 0">
+                <h2>Messages</h2>
+                <div v-for="message in messages">
+                    <pre>{{ message }}</pre>
+                </div>
+            </div>
+        </v-col>
+    </v-col>
 </template>
 <script setup>
+import { useAuthStore } from '@/store/auth-store';
+
 const config = useRuntimeConfig()
 const api = config.public.API_URL
+
 const loginFormData = ref({
     username: "",
     password: ""
 })
-const token = ref(null)
-const user = ref(null)
+
+const authStore = useAuthStore();
+const { token, user } = authStore;
+
 const messages = ref([])
 async function login() {
     const { data, error } = await useFetch(`${api}/auth/login`, {
@@ -40,7 +49,9 @@ async function login() {
         messages.value.push({ tokenError: error.value.message })
         return
     }
-    token.value = data.value
+
+    token = data.value
+
     const { data: userData, error: userError } = await useFetch(`${api}/auth/user`, {
         method: 'get',
         headers: {
@@ -52,6 +63,7 @@ async function login() {
         messages.value.push({ userDataError: userError.value.message })
         return
     }
-    user.value = userData.value
+
+    user = userData.value
 }
 </script>

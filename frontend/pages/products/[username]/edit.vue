@@ -14,6 +14,14 @@
             <div>E-mail:
                 <input v-model="manufacturerForm.email" type="text" placeholder="email">
             </div>
+            <div>Course:
+                <select v-model="manufacturerForm.courseCode">
+                    <option value="">Select a course</option>
+                    <option v-for="course in courses" :value="course.code">
+                        {{ course.name }}
+                    </option>
+                </select>
+            </div>
             <button type="reset">RESET</button>
             <button type="submit">update</button>
             <nuxt-link class="link" to="/manufacturers">Return</nuxt-link>

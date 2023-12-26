@@ -1,7 +1,7 @@
 <template>
     <div>
-      <Header titulo="Dashboard de Fabricantes" />  
       <h1>manufacturers Details</h1>
+        
       
     </div>
   </template>
