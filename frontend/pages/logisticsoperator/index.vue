@@ -1,7 +1,7 @@
 <template>
     <div>
         add logisticsOperator
-        <nuxt-link class="link" :to="`/logisticsOperators/create`">add logisticsOperator</nuxt-link>
+        <nuxt-link class="link" :to="`/logisticsoperator/create`">add logisticsOperator</nuxt-link>
 
 
         <table>
@@ -18,10 +18,10 @@
                     <td>{{ logisticsOperator.name }}</td>
                     <td>{{ logisticsOperator.email }}</td>
                     <td>
-                        <nuxt-link class="link" :to="`/logisticsOperators/${logisticsOperator.username}/details`">Details</nuxt-link>
+                        <nuxt-link class="link" :to="`/logisticsoperator/${logisticsOperator.username}/details`">Details</nuxt-link>
                     </td>
                     <td>
-                        <nuxt-link class="link" :to="`/logisticsOperators/${logisticsOperator.username}/edit`">Edit</nuxt-link>
+                        <nuxt-link class="link" :to="`/logisticsoperator/${logisticsOperator.username}/edit`">Edit</nuxt-link>
                     </td>
                 </tr>
             </tbody>

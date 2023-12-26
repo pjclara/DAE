@@ -1,6 +1,7 @@
 <template>
     <div>
       <h1>manufacturers Details</h1>
+        
       
     </div>
   </template>

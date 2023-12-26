@@ -35,8 +35,7 @@ const logisticsOperatorForm = reactive({
     username: null,
     password: null,
     email: null,
-    name: null,
-    courseCode: null
+    name: null
 })
 const formFeedback = reactive({
     username: '',
@@ -134,7 +133,7 @@ async function create() {
         body: JSON.stringify(logisticsOperatorForm)
     }
     const { error } = await useFetch(`${api}/logisticsOperators`, requestOptions)
-    if (!error.value) navigateTo('/logisticsOperators')
+    if (!error.value) navigateTo('/logisticsOperator')
     message.value = error.value
 }
 </script>

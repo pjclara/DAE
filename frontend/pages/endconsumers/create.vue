@@ -35,8 +35,7 @@ const endConsumerForm = reactive({
     username: null,
     password: null,
     email: null,
-    name: null,
-    courseCode: null
+    name: null
 })
 const formFeedback = reactive({
     username: '',
