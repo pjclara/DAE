@@ -42,6 +42,15 @@ public class Product extends Versionable{
         this.image = null;
     }
 
+    public Product(Long id, String name, int stock, String image, Manufacturer manufacturer) {
+        this.id = id;
+        this.name = name;
+        this.stock = stock;
+        this.manufacturer = manufacturer;
+        this.productPackage = null;
+        this.image = image;
+    }
+
     public Long getId() {
         return id;
     }

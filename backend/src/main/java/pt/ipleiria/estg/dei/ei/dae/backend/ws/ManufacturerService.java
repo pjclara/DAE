@@ -127,5 +127,6 @@ public class ManufacturerService {
                 product.getManufacturer().getUsername()
         );
     }
-    // get all orders from manufacturer
+    // get all products from manufacturer
+
 }

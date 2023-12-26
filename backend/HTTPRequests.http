@@ -38,7 +38,7 @@ DELETE http://localhost:8080/backend/api/endconsumers/endConsumer3
 GET http://localhost:8080/backend/api/manufacturers
 
 ### GET manufacturer by id
-GET http://localhost:8080/backend/api/manufacturers/manufacturer2
+GET http://localhost:8080/backend/api/manufacturers/manufacturer2/products
 
 ### POST manufacturer
 POST http://localhost:8080/backend/api/manufacturers

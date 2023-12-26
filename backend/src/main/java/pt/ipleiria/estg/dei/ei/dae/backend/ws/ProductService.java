@@ -55,6 +55,7 @@ public class ProductService {
                 productDTO.getId(),
                 productDTO.getName(),
                 productDTO.getStock(),
+                productDTO.getImage(),
                 productDTO.getManufacturerUsername()
         );
         Product product = productBean.find(productDTO.getId());

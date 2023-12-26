@@ -11,9 +11,6 @@
                         <v-text-field v-model="productForm.stock" label="Stock"/>
                     </div>
                     <div>
-                        <v-text-field v-model="productForm.manufacturerUsername" label="Nome do Fabricante"/>
-                    </div>
-                    <div>
                         <v-text-field v-model="productForm.packageId" label="ID da embalagem do Produto"/>
                     </div>
                     <div>
@@ -29,15 +26,17 @@
 
 <script setup>
 
+const message = ref('')
+const config = useRuntimeConfig()
+const api = config.public.API_URL
+const route = useRoute()
 const productForm = reactive({
     name: null,
     stock: null,
-    manufacturerUsername: null,
+    manufacturerUsername: route.params.username,
     packageId: null,
     image: null
 })
-const config = useRuntimeConfig()
-const api = config.public.API_URL
 
 async function create() {
     const requestOptions = {
@@ -46,7 +45,7 @@ async function create() {
         body: JSON.stringify(productForm)
     }
     const { error } = await useFetch(`${api}/products`, requestOptions)
-    if (!error.value) navigateTo('/products')
+    if (!error.value) navigateTo('/manufacturers/' + route.params.username + '/products')
 
 }
 </script>

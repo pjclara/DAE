@@ -6,6 +6,8 @@ public class ProductDTO {
     private long id;
     private String name;
     private int stock;
+
+    private String image;
     private int orderId;
     private String manufacturerUsername;
     private long packageId;
@@ -66,5 +68,9 @@ public class ProductDTO {
 
     public void setPackageId(long packageId) {
         this.packageId = packageId;
+    }
+
+    public String getImage() {
+        return image;
     }
 }
