@@ -90,6 +90,19 @@ public class ManufacturerService {
                 .build();
     }
 
+    // get product by id
+    @GET
+    @Path("{username}/products/{id}")
+    public Response getProductDetails(@PathParam("username") String username, @PathParam("id") Long id) throws MyEntityNotFoundException {
+        Product product = manufacturerBean.getProductDetails(username, id);
+        if (product != null) {
+            return Response.ok(productToDo(product)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_PRODUCT")
+                .build();
+    }
+
     // AUXILIARY FUNCTIONS
 
     private ManufacturerDTO toDo(Manufacturer manufacturer) {
@@ -124,8 +137,11 @@ public class ManufacturerService {
                 product.getId(),
                 product.getName(),
                 product.getStock(),
-                product.getManufacturer().getUsername()
+                product.getImage(),
+                product.getManufacturer().getUsername(),
+                product.getProductPackage() == null ? null:product.getProductPackage().getId()
         );
     }
-    // get all orders from manufacturer
+    // get all products from manufacturer
+
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
@@ -23,21 +24,25 @@ public class ProductBean {
         return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
-    public void create(Long id, String name, int stock, String manufacturerUsername)
+    public long create(String name, int stock, String image,  String manufacturerUsername, long packageId)
             throws MyConstraintViolationException, MyEntityNotFoundException {
         // if manufacturer exists
         Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
 
         if (manufacturer == null) throw new MyEntityNotFoundException("Manufacturer with username " + null + " not found in database");
 
+        Package productPackage = entityManager.find(Package.class, packageId);
+
         try {
-            Product product = new Product(id, name, stock, manufacturer);
+            Product product = new Product(name, stock, image, productPackage, manufacturer);
             entityManager.persist(product);
             manufacturer.addProduct(product);
+            return product.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
     }
+
 
     public Product find(Long id) throws MyEntityNotFoundException {
         return entityManager.find(Product.class, id);
@@ -50,7 +55,7 @@ public class ProductBean {
         }
     }
 
-    public void update(Long id, String name, int stock, String manufacturerUsername)
+    public void update(Long id, String name, int stock, String manufacturerUsername, long packageId)
     throws MyEntityNotFoundException{
 
         if (!exists(id)) {throw new MyEntityNotFoundException("Product with id " + id + " not found in database"); }
@@ -58,6 +63,11 @@ public class ProductBean {
         Product product = entityManager.find(Product.class, id);
         entityManager.lock(product, LockModeType.OPTIMISTIC);
 
+        Package productPackage = entityManager.find(Package.class, packageId);
+
+        if (productPackage == null) throw new MyEntityNotFoundException("Package with id " + packageId + " not found in database");
+
+        product.setProductPackage(productPackage);
         product.setName(name);
         product.setStock(stock);
 

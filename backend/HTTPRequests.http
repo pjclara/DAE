@@ -64,6 +64,9 @@ Content-Type: application/json
   "role": "manufacturer"
 }
 
+### get all products from manufacturer
+GET http://localhost:8080/backend/api/manufacturers/manufacturer1/products
+
 ### DELETE manufacturer
 DELETE http://localhost:8080/backend/api/manufacturers/manufacturer3
 
@@ -75,37 +78,39 @@ GET http://localhost:8080/backend/api/logisticsOperators
 GET http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1
 
 
-
+## products
 ### Get all products
 GET http://localhost:8080/backend/api/products
 
 ### Get product by id
-GET http://localhost:8080/backend/api/products/1
+GET http://localhost:8080/backend/api/products/2
 
 ### Post product
 POST http://localhost:8080/backend/api/products
 Content-Type: application/json
 
 {
-  "id"  : 11,
   "name": "product3",
   "stock": 10,
-  "manufacturerUsername": "manufacturer1"
+  "manufacturerUsername": "manufacturer1",
+  "image": "imagem",
+  "packageId": 1
 }
 
 ### Put product
-PUT http://localhost:8080/backend/api/products/1
+PUT http://localhost:8080/backend/api/products/3
 Content-Type: application/json
 
 {
-  "id"  : 1,
-  "name": "product_teste",
+  "id"  : 3,
+  "name": "product_3",
   "stock": 1,
+  "image": "imagem3",
   "manufacturerUsername": "manufacturer1"
 }
 
 ### Delete product
-DELETE http://localhost:8080/backend/api/products/11
+DELETE http://localhost:8080/backend/api/products/3
 
 
 ### CRUD package

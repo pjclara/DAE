@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import javax.sound.midi.Sequence;
 import java.util.List;
 
 @Entity
@@ -10,7 +11,10 @@ import java.util.List;
 public class Product extends Versionable{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
+    @Column(name="id")
     private Long id;
+
     @NotNull
     private String name;
     private String image;
@@ -25,21 +29,12 @@ public class Product extends Versionable{
     public Product() {
     }
 
-    public Product(Long id, String name, int stock, Manufacturer manufacturer) {
-        this.id = id;
-        this.name = name;
-        this.stock = stock;
-        this.manufacturer = manufacturer;
-        this.productPackage = null;
-        this.image = null;
-    }
-    public Product(Long id, String name, int stock, Manufacturer manufacturer, Package productPackage) {
-        this.id = id;
+    public Product(String name, int stock, String image, Package productPackage, Manufacturer manufacturer) {
         this.name = name;
         this.stock = stock;
         this.manufacturer = manufacturer;
         this.productPackage = productPackage;
-        this.image = null;
+        this.image = image;
     }
 
     public Long getId() {
