@@ -13,15 +13,7 @@
             </div>
             <div>E-mail:
                 <input v-model="endConsumerForm.email" type="text" placeholder="email">
-            </div>
-            <div>Course:
-                <select v-model="endConsumerForm.courseCode">
-                    <option value="">Select a course</option>
-                    <option v-for="course in courses" :value="course.code">
-                        {{ course.name }}
-                    </option>
-                </select>
-            </div>
+            </div>           
             <button type="reset">RESET</button>
             <button type="submit">update</button>
             <nuxt-link class="link" to="/endConsumers">Return</nuxt-link>

@@ -10,7 +10,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.entities.LogisticsOperator;
 
 import java.util.List;
 
-@Path("/logisticsoperators")
+@Path("/logisticsOperators")
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
 public class LogisticsOperatorService {
@@ -39,7 +39,7 @@ public class LogisticsOperatorService {
     }
     @GET
     @Path("{username}")
-    public Response getLogisticsOperatorDetails(String username) {
+    public Response getLogisticsOperatorDetails(@PathParam("username") String username) {
         LogisticsOperator logisticsOperator = logisticsOperatorBean.find(username);
         if (logisticsOperator != null) {
             return Response.ok(toDTO(logisticsOperator)).entity(toDTO(logisticsOperator)).build();
