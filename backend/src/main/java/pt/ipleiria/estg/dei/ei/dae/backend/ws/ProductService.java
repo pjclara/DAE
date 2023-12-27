@@ -51,14 +51,13 @@ public class ProductService {
     @POST
     @Path("/")
     public Response createNewProduct(ProductDTO productDTO) throws MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
-        productBean.create(
-                productDTO.getId(),
+        long id  = productBean.create(
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getImage(),
                 productDTO.getManufacturerUsername()
         );
-        Product product = productBean.find(productDTO.getId());
+        Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

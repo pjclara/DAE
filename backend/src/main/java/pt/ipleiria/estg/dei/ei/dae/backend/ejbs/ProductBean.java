@@ -23,7 +23,7 @@ public class ProductBean {
         return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
-    public void create(Long id, String name, int stock, String image,  String manufacturerUsername)
+    public long create(String name, int stock, String image,  String manufacturerUsername)
             throws MyConstraintViolationException, MyEntityNotFoundException {
         // if manufacturer exists
         Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
@@ -31,9 +31,10 @@ public class ProductBean {
         if (manufacturer == null) throw new MyEntityNotFoundException("Manufacturer with username " + null + " not found in database");
 
         try {
-            Product product = new Product(id, name, stock, image, manufacturer);
+            Product product = new Product(name, stock, image, manufacturer);
             entityManager.persist(product);
             manufacturer.addProduct(product);
+            return product.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }

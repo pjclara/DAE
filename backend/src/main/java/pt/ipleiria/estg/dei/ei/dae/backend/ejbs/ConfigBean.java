@@ -55,8 +55,8 @@ public class ConfigBean {
         }
 
         try {
-            productBean.create(1L, "product1", 10, null, "manufacturer1");
-            productBean.create(2L, "product2", 2, null, "manufacturer2");
+            productBean.create("product1", 10, null, "manufacturer1");
+            productBean.create( "product2", 2, null, "manufacturer2");
         }catch (Exception e){
             logger.warning(e.getMessage());
         }

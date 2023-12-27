@@ -87,7 +87,6 @@ POST http://localhost:8080/backend/api/products
 Content-Type: application/json
 
 {
-  "id"  : 11,
   "name": "product3",
   "stock": 10,
   "manufacturerUsername": "manufacturer1"
@@ -99,7 +98,7 @@ Content-Type: application/json
 
 {
   "id"  : 1,
-  "name": "product_teste",
+  "name": "product_teste_again",
   "stock": 1,
   "manufacturerUsername": "manufacturer1"
 }
