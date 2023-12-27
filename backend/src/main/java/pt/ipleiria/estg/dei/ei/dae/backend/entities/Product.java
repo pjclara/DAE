@@ -29,28 +29,11 @@ public class Product extends Versionable{
     public Product() {
     }
 
-    public Product(String name, int stock, Manufacturer manufacturer) {
-        this.name = name;
-        this.stock = stock;
-        this.manufacturer = manufacturer;
-        this.productPackage = null;
-        this.image = null;
-    }
-    public Product(String name, int stock, Manufacturer manufacturer, Package productPackage) {
-        this.id = id;
+    public Product(String name, int stock, String image, Package productPackage, Manufacturer manufacturer) {
         this.name = name;
         this.stock = stock;
         this.manufacturer = manufacturer;
         this.productPackage = productPackage;
-        this.image = null;
-    }
-
-    public Product(String name, int stock, String image, Manufacturer manufacturer) {
-        this.id = id;
-        this.name = name;
-        this.stock = stock;
-        this.manufacturer = manufacturer;
-        this.productPackage = null;
         this.image = image;
     }
 

@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Hasher;
 
@@ -55,5 +56,19 @@ public class ManufacturerBean {
         System.out.println("Manufacturer products: "+manufacturer.getProducts());
 
         return manufacturer;
+    }
+
+    public Product getProductDetails(String username, Long id) {
+        Manufacturer manufacturer = entityManager.find(Manufacturer.class, username);
+
+        if(manufacturer == null) throw new IllegalArgumentException("Manufacturer with username " + username + " not found in database");
+
+        Product product = entityManager.find(Product.class, id);
+
+        if(product == null) throw new IllegalArgumentException("Product with id " + id + " not found in database");
+
+        // check if product belongs to manufacturer
+        if(!manufacturer.getProducts().contains(product)) throw new IllegalArgumentException("Product with id " + id + " does not belong to manufacturer with username " + username);
+        return product;
     }
 }

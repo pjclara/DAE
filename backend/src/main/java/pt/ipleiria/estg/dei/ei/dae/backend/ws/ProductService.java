@@ -55,13 +55,14 @@ public class ProductService {
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getImage(),
-                productDTO.getManufacturerUsername()
+                productDTO.getManufacturerUsername(),
+                productDTO.getPackageId()
         );
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDo(product)).build();
+        return Response.status(Response.Status.CREATED).entity(toDTO(product)).build();
     }
     // update product
     @PUT
@@ -72,14 +73,26 @@ public class ProductService {
                 productDTO.getId(),
                 productDTO.getName(),
                 productDTO.getStock(),
-                productDTO.getManufacturerUsername()
+                productDTO.getManufacturerUsername(),
+                productDTO.getPackageId()
         );
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDo(product)).build();
+        return Response.status(Response.Status.CREATED).entity(toDTO(product)).build();
     }
+    private ProductDTO toDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getStock(),
+                product.getImage(),
+                product.getManufacturer().getUsername(),
+                product.getProductPackage() == null ? null:product.getProductPackage().getId()
+        );
+    }
+
     // delete product
     @DELETE
     @Path("{id}")
@@ -91,23 +104,6 @@ public class ProductService {
         return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
     }
 
-    private ProductDTO toDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getStock(),
-                product.getManufacturer().getUsername()
-        );
-    }
-
-    private ProductDTO toDo(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getStock(),
-                product.getManufacturer().getUsername()
-        );
-    }
 
 
 }

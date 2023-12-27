@@ -1,12 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import java.io.Serializable;
-
 public class ProductDTO {
     private long id;
     private String name;
     private int stock;
-
     private String image;
     private int orderId;
     private String manufacturerUsername;
@@ -15,13 +12,14 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(long id, String name, int stock, String manufacturerUsername) {
+    public ProductDTO(long id, String name, int stock, String image, String username, Long packageId) {
         this.id = id;
         this.name = name;
         this.stock = stock;
-        this.manufacturerUsername = manufacturerUsername;
+        this.image = image;
+        this.manufacturerUsername = username;
+        this.packageId = packageId;
     }
-
     public long getId() {
         return id;
     }
@@ -73,4 +71,6 @@ public class ProductDTO {
     public String getImage() {
         return image;
     }
+
+
 }

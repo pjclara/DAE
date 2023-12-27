@@ -28,6 +28,7 @@ const route = useRoute()
 const username = route.params.username
 const { data: manufacturer, error: manufacturerErr } = await
 useFetch(`${api}/manufacturers/${username}`)
+
 const manufacturerForm = reactive(manufacturer)
 async function update() {
     console.log(manufacturerForm)

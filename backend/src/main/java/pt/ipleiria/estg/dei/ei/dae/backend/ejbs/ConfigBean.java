@@ -54,9 +54,16 @@ public class ConfigBean {
             logger.warning(e.getMessage());
         }
 
+        try{
+            packageBean.create( 1L, PackagingType.SECONDARY, "Plastico");
+            packageBean.create( 2L, PackagingType.PRIMARY, "Vidro");
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
+        }
+
         try {
-            productBean.create("product1", 10, null, "manufacturer1");
-            productBean.create( "product2", 2, null, "manufacturer2");
+            productBean.create("Produto1", 10, "imagem1", "manufacturer1", 1L);
+            productBean.create("Produto2", 20, "imagem2", "manufacturer2", 2L);
         }catch (Exception e){
             logger.warning(e.getMessage());
         }
@@ -76,11 +83,6 @@ public class ConfigBean {
 
         }
 
-        try{
-            packageBean.create( 111L, PackagingType.SECONDARY, "Plastico");
-            packageBean.create( 222L, PackagingType.PRIMARY, "Vidro");
-        } catch (Exception e) {
-            logger.severe(e.getMessage());
-        }
+
     }
 }
