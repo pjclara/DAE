@@ -1,49 +1,55 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
-public class Package extends Versionable{
+@NamedQuery(name = "getAllPackages", query = "SELECT p FROM Package p ORDER BY p.packagingType")
+public class Package extends Versionable {
+
     @Id
     private Long id;
     @NotNull
-    private String packagingType;  // [1º,2º,3º(Produto) ou encomenda]
+    private PackagingType packagingType;  // [1º,2º,3º(Produto) ou encomenda / transporte]
     @NotNull
     private String packagingMaterial;
-    @OneToMany
-    private List<Sensor> sensorData;
+
     @OneToOne(mappedBy = "productPackage")
     private Product product;
 
-    public Package(Long id, String packagingType, String packagingMaterial, List<Sensor> sensorData, Product product) {
+    @OneToMany
+    private List<Sensor> sensors;
+
+    public Package() {
+        this.sensors =  new ArrayList<>();
+    }
+
+
+    public Package(Long id, PackagingType packagingType, String packagingMaterial) {
         this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-        this.sensorData = sensorData;
+        this.sensors =  new ArrayList<>();
         this.product = product;
     }
 
-    public Package() {
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getId() {
-        return id;
-    }
 
-    public String getPackagingType() {
+    public PackagingType getPackagingType() {
         return packagingType;
     }
 
-    public void setPackagingType(String packagingType) {
+    public void setPackagingType(PackagingType packagingType) {
         this.packagingType = packagingType;
     }
 
@@ -55,19 +61,31 @@ public class Package extends Versionable{
         this.packagingMaterial = packagingMaterial;
     }
 
-    public List<Sensor> getSensorData() {
-        return sensorData;
+    public List<Sensor> getSensors() {
+        return sensors;
     }
 
-    public void setSensorData(List<Sensor> sensorData) {
-        this.sensorData = sensorData;
+    public void addSensor(Sensor sensor) {
+        if (sensor == null || sensors.contains(sensor)) {
+            return;
+        }
+        sensors.add(sensor);
     }
 
+    public void removeSensor(Sensor sensor) {
+        if (sensor == null || sensors.contains(sensor)) {
+            return;
+        }
+        sensors.remove(sensor);
+    }
     public Product getProduct() {
         return product;
     }
 
     public void setProduct(Product product) {
         this.product = product;
+        if (product != null) {
+            product.setProductPackage(this);
+        }
     }
 }

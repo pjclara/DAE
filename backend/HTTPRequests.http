@@ -97,3 +97,31 @@ Content-Type: application/json
 
 ### Delete product
 DELETE http://localhost:8080/backend/api/products/11
+
+
+### CRUD package
+### GET all packages
+GET http://localhost:8080/backend/api/packages
+
+### Post package
+POST http://localhost:8080/backend/api/packages
+Content-Type: application/json
+
+{
+  "id"  : 123,
+  "packagingType": "SECONDARY",
+  "packagingMaterial": "test_material"
+}
+
+### Put package
+PUT http://localhost:8080/backend/api/packages/111
+Content-Type: application/json
+
+{
+  "id": 111,
+  "packagingType": "THIRD",
+  "packagingMaterial": "Plastico"
+}
+
+### Delete package
+DELETE http://localhost:8080/backend/api/packages/123
