@@ -11,8 +11,13 @@ import jakarta.ws.rs.core.SecurityContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.AuthDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.UserBean;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.TokenIssuer;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 @Path("/auth")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
@@ -27,7 +32,11 @@ public class AuthService {
     public Response authenticate(@Valid AuthDTO auth) {
         if (userBean.canLogin(auth.getUsername(), auth.getPassword())) {
             String token = issuer.issue(auth.getUsername());
-            return Response.ok(token).build();
+            String role = userBean.findOrFail(auth.getUsername()).getRole();
+            String username = userBean.findOrFail(auth.getUsername()).getUsername();
+            String name = userBean.findOrFail(auth.getUsername()).getName();
+            String[] data = {token, role, username, name};
+            return Response.ok(data).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
