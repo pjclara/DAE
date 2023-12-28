@@ -11,6 +11,14 @@
           
         </v-toolbar>
       </template>
+      <template v-slot:item.image="{ item }">
+        <v-img
+          :width="33"
+          aspect-ratio="16/9"
+          cover
+          :src="item.image"
+        ></v-img>
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon size="small" class="me-2" @click="editItem(item)">
           mdi-pencil

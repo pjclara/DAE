@@ -47,17 +47,35 @@ async function login() {
         messages.value.push({ error: error.value.message })
     }
     if (data.value) {
-        token.value = data.value[0]
-        userRole.value = data.value[1]
-        username.value = data.value[2]
-        user.value = data.value[3]
-        navigateTo('/')
+        console.log('token :', data.value)
+        token.value = data.value;
+        await getUser();
+        //navigateTo('/')
     }
 }
 function reset() {
     token.value = null
     messages.value = []
 }
+
+async function getUser() {
+    const { data, error } = await useFetch(`${api}/auth/user`, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token.value
+        }
+    })
+    if (error.value) {
+        messages.value.push({ error: error.value.message })
+    }
+    if (data.value) {
+        messages.value.push({ payload: data.value })
+        user.value = data.value;
+    }
+}
+
+
 async function sendRequest() {
     const { data, error } = await useFetch(`${api}/${apiFormData.path}`, {
         method: 'get',

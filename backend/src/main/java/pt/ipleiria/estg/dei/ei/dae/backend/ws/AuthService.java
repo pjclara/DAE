@@ -32,11 +32,7 @@ public class AuthService {
     public Response authenticate(@Valid AuthDTO auth) {
         if (userBean.canLogin(auth.getUsername(), auth.getPassword())) {
             String token = issuer.issue(auth.getUsername());
-            String role = userBean.findOrFail(auth.getUsername()).getRole();
-            String username = userBean.findOrFail(auth.getUsername()).getUsername();
-            String name = userBean.findOrFail(auth.getUsername()).getName();
-            String[] data = {token, role, username, name};
-            return Response.ok(data).build();
+            return Response.ok(token).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
