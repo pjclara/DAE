@@ -8,7 +8,7 @@
   >
     <v-list color="transparent">
       <v-list-item prepend-icon="mdi-account-box" title="Fabricante"></v-list-item>
-      <v-list-item><nuxt-link to="/products/manufacturersProducts">Produtos</nuxt-link></v-list-item> <!-- Rota precisa de ID (mover para pasta [id] quando a rota tiver feita) -->
+      <v-list-item><nuxt-link to="/manufacturers/manufacturer1/products">Produtos</nuxt-link></v-list-item> <!-- Rota precisa de ID (mover para pasta [id] quando a rota tiver feita) -->
       <v-list-item><nuxt-link to="/packages">Embalagens</nuxt-link></v-list-item>
 
       <v-list-item prepend-icon="mdi-account-box" title="O. Logistica"></v-list-item>
@@ -47,7 +47,7 @@
   const authStore = useAuthStore();
   const { user, logout } = authStore;
 
-  const sidebar = ref(false)
+  const sidebar = ref(true)
 
 </script>
 
