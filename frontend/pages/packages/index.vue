@@ -1,21 +1,16 @@
 <template>
-    <v-card
-    flat
-    title="Packages"
-  >
-        <div class="w-100">
-            <v-data-table 
-                :headers="headers"
-                :items="getPackages()" 
-                :items-per-page="5" 
-                class="elevation-1"
-            >
-                <template v-slot:item.action="{ item }">
-                    <v-btn>OPEN</v-btn>
-                </template>
-            </v-data-table>
-        </div>
-    </v-card>
+    <div class="w-100">
+        <v-data-table :headers="headers" :items="getPackages()" :items-per-page="5" class="elevation-1">
+            <template v-slot:top>
+                <v-toolbar flat>
+                    <v-toolbar-title>Embalagens disponiveis</v-toolbar-title>
+                </v-toolbar>
+            </template>
+            <template v-slot:item.action="{ item }">
+                <v-btn>OPEN</v-btn>
+            </template>
+        </v-data-table>
+    </div>
 </template>
 
 <script setup>
@@ -31,7 +26,6 @@ const getPackages = () => {
         return {
             type: package_.packagingType || '-',
             material: package_.packagingMaterial || '-',
-            sensors: (package_.sensors.lenght === 0) ? package_.sensors : '-',
         }
     })
     return items;
@@ -40,24 +34,18 @@ console.log("All Packages: ", getPackages());
 
 const headers = [
     {
-      title: 'Type',
-      align: 'center',
-      value: 'type',
+        title: 'Type',
+        align: 'center',
+        value: 'type',
     },
     {
-      title: 'Material',
-      align: 'center',
-      value: 'material',
-    },
-    {
-      title: 'Sensors',
-      align: 'center',
-      value: 'sensors',
+        title: 'Material',
+        align: 'center',
+        value: 'material',
     },
 ]
 
 </script>
 
-<style>
-</style>
+<style></style>
 

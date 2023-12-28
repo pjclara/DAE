@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class Package extends Versionable {
     @OneToOne(mappedBy = "productPackage")
     private Product product;
 
-    @OneToMany
+    //@OneToMany
+    @OneToMany(mappedBy = "packagging", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Sensor> sensors;
 
     public Package() {
@@ -70,6 +72,7 @@ public class Package extends Versionable {
             return;
         }
         sensors.add(sensor);
+        sensor.setPackaging(this); // Link the sensor to the package
     }
 
     public void removeSensor(Sensor sensor) {
@@ -77,6 +80,8 @@ public class Package extends Versionable {
             return;
         }
         sensors.remove(sensor);
+        sensor.setPackaging(null); // Unlink the sensor from the package
+
     }
     public Product getProduct() {
         return product;

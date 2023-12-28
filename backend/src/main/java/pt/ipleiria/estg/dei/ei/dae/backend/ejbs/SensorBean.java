@@ -54,7 +54,7 @@ public class SensorBean {
             sensor.setMax(max);
             sensor.setMin(min);
             sensor.setTimestamp(timestamp);
-            sensor.setPackagging(packagging);
+            sensor.setPackaging(packagging);
             entityManager.merge(sensor);
         } catch (ConstraintViolationException e) {
         throw new MyConstraintViolationException(e);

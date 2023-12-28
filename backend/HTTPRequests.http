@@ -117,14 +117,29 @@ DELETE http://localhost:8080/backend/api/products/3
 ### GET all packages
 GET http://localhost:8080/backend/api/packages
 
+### GET all packages by id
+GET http://localhost:8080/backend/api/packages/2
+
+### GET all package sensors
+GET http://localhost:8080/backend/api/packages/2/sensors
+
 ### Post package
 POST http://localhost:8080/backend/api/packages
 Content-Type: application/json
 
 {
-  "id"  : 123,
+  "id"  : 3,
   "packagingType": "SECONDARY",
   "packagingMaterial": "test_material"
+}
+
+### Post sensor to package
+POST http://localhost:8080/backend/api/packages/2/sensor/2
+Content-Type: application/json
+
+{
+  "id"  : 2,
+  "sensorId": 2
 }
 
 ### Put package

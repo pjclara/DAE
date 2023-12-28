@@ -1,9 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PackageDTO {
     private Long id;
@@ -52,5 +53,18 @@ public class PackageDTO {
 
     public void setSensors(List<SensorDTO> sensorData) {
         this.sensors = sensorData;
+    }
+
+
+    public static PackageDTO from(Package package_) {
+        return new PackageDTO(
+                package_.getId(),
+                package_.getPackagingType(),
+                package_.getPackagingMaterial()
+        );
+    }
+
+    public static List<PackageDTO> from(List<Package> packages) {
+        return packages.stream().map(PackageDTO::from).collect(Collectors.toList());
     }
 }

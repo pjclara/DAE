@@ -83,6 +83,12 @@ public class ConfigBean {
 
         }
 
-
+        // ADD SENSORS TO A PACKAGE
+        try{
+            packageBean.addSensorToPackage( 2L, 1L);
+            packageBean.addSensorToPackage( 2L, 2L);
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
+        }
     }
 }

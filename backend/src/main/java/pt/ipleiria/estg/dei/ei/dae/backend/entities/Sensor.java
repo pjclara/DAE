@@ -25,7 +25,13 @@ public class Sensor extends Versionable {
     @NotNull
     private long timestamp;
 
-    @OneToOne
+    @ManyToOne
+    /*@JoinTable(
+            name = "sensors_packages",
+            joinColumns = @JoinColumn(name = "sensor_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id", referencedColumnName = "id")
+    )*/
+    @JoinColumn(name = "package_id")
     private Package packagging;
 
     //@ManyToOne
@@ -112,7 +118,7 @@ public class Sensor extends Versionable {
         return packagging;
     }
 
-    public void setPackagging(Package packagging) {
+    public void setPackaging(Package packagging) {
         this.packagging = packagging;
     }
 
