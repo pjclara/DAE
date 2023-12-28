@@ -31,6 +31,9 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "~/store/auth-store.js"
+const authStore = useAuthStore()
+const { token, user } = storeToRefs(authStore)
 
 const headers = [
     { text: 'Name', value: 'name' },
@@ -57,7 +60,11 @@ useFetch(`${api}/packages`)
 async function create() {
     const requestOptions = {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token.value 
+        },
         body: JSON.stringify(productForm)
     }
     const { error } = await useFetch(`${api}/products`, requestOptions)

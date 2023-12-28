@@ -33,9 +33,20 @@ Content-Type: application/json
 ### DELETE endconsumer
 DELETE http://localhost:8080/backend/api/endconsumers/endConsumer3
 
+### request JWT token
+POST http://localhost:8080/backend/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+    {
+    "username": "manufacturer2",
+    "password": "manufacturer2"
+    }
 ### CRUD manufacturers
 ### GET all manufacturers
 GET http://localhost:8080/backend/api/manufacturers
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYW51ZmFjdHVyZXIyIiwiaWF0IjoxNzAzNzY3MzM2LCJleHAiOjE3MDM3NzA5MzZ9.IeKWFtg58n9gxvRkMvHe4uK-okvzFDclVump9zTvLK0rMfO6vjao5C1-Bve2LZfF
 
 ### GET manufacturer by id
 GET http://localhost:8080/backend/api/manufacturers/manufacturer2
@@ -154,3 +165,14 @@ Content-Type: application/json
 
 ### Delete package
 DELETE http://localhost:8080/backend/api/packages/123
+
+### authentication
+### login
+POST http://localhost:8080/backend/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "manufacturer1",
+  "password": "manufacturer1"
+}
+

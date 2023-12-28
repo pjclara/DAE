@@ -3,15 +3,12 @@
         <v-col cols="6">
             <h1>Login</h1>
             <div>
-                <v-text-field v-model="loginFormData.username" label="Username"/>
+                <v-text-field v-model="loginFormData.username" label="Username" placeholder="manufacturer1"/>
             </div>
             <div>
-                <v-text-field v-model="loginFormData.password" label="Password"/>
+                <v-text-field type="password" v-model="loginFormData.password" label="Password" placeholder="manufacturer1"/>
             </div>
             <v-btn block rounded="xl" size="x-large" @click="login">LOGIN</v-btn>
-            <div v-if="token">
-                <div>Token: {{ token }}</div>
-            </div>
             <div v-if="messages.length > 0">
                 <h2>Messages</h2>
                 <div v-for="message in messages">
@@ -22,48 +19,58 @@
     </v-col>
 </template>
 <script setup>
-import { useAuthStore } from '@/store/auth-store';
+import {useAuthStore} from "~/store/auth-store.js"
+const authStore = useAuthStore()
+const {token, user, username, userRole} = storeToRefs(authStore)
 
 const config = useRuntimeConfig()
 const api = config.public.API_URL
-
-const loginFormData = ref({
-    username: "",
-    password: ""
+const loginFormData = reactive({
+    username: null,
+    password: null
 })
-
-const authStore = useAuthStore();
-const { token, user } = authStore;
+const apiFormData = reactive({
+    path: "manufacturers"
+})
 
 const messages = ref([])
 async function login() {
     const { data, error } = await useFetch(`${api}/auth/login`, {
-        method: 'post',
+        method: "post",
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         },
-        body: loginFormData.value
+        body: JSON.stringify(loginFormData)
     })
     if (error.value) {
-        messages.value.push({ tokenError: error.value.message })
-        return
+        messages.value.push({ error: error.value.message })
     }
-
-    token = data.value
-
-    const { data: userData, error: userError } = await useFetch(`${api}/auth/user`, {
+    if (data.value) {
+        token.value = data.value[0]
+        userRole.value = data.value[1]
+        username.value = data.value[2]
+        user.value = data.value[3]
+        navigateTo('/')
+    }
+}
+function reset() {
+    token.value = null
+    messages.value = []
+}
+async function sendRequest() {
+    const { data, error } = await useFetch(`${api}/${apiFormData.path}`, {
         method: 'get',
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token.value
         }
     })
-    if (userError.value) {
-        messages.value.push({ userDataError: userError.value.message })
-        return
+    if (error.value) {
+        messages.value.push({ error: error.value.message })
     }
-
-    user = userData.value
+    if (data.value) {
+        messages.value.push({ payload: data.value })
+    }
 }
 </script>
