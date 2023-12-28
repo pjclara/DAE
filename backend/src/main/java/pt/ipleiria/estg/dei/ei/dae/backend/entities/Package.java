@@ -76,12 +76,11 @@ public class Package extends Versionable {
     }
 
     public void removeSensor(Sensor sensor) {
-        if (sensor == null || sensors.contains(sensor)) {
+        if (sensor == null || !sensors.contains(sensor)) {
             return;
         }
         sensors.remove(sensor);
         sensor.setPackaging(null); // Unlink the sensor from the package
-
     }
     public Product getProduct() {
         return product;

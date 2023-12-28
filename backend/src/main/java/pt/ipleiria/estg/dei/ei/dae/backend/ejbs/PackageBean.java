@@ -72,11 +72,11 @@ public class PackageBean {
 
     public void removeSensorFromPackage(Long packageId, Long sensorId) throws MyEntityNotFoundException {
         Package package_ = findOrFail(packageId);
-        var sensorToAdd = sensorBean.find(sensorId);
-        if (sensorToAdd == null) {
+        var sensorToRemove = sensorBean.find(sensorId);
+        if (sensorToRemove == null) {
             throw new MyEntityNotFoundException("Sensor with id '" + sensorId + "' not found");
         }
-        package_.removeSensor(sensorToAdd);
+        package_.removeSensor(sensorToRemove);
         entityManager.merge(package_);
     }
 

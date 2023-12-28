@@ -144,14 +144,8 @@ Content-Type: application/json
   "packagingMaterial": "test_material"
 }
 
-### Post sensor to package
-POST http://localhost:8080/backend/api/packages/2/sensor/2
-Content-Type: application/json
-
-{
-  "id"  : 2,
-  "sensorId": 2
-}
+### Delete sensor from package
+DELETE http://localhost:8080/backend/api/packages/2/sensor/2
 
 ### Put package
 PUT http://localhost:8080/backend/api/packages/111
