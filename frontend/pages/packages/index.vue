@@ -1,52 +1,63 @@
 <template>
-    <div>
-        add manufacturer
-        <nuxt-link class="link" :to="`/manufacturers/create`">add manufacturer</nuxt-link>
-
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Details</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="manufacturer in manufacturers" :key="manufacturer.id">
-                    <td>{{ manufacturer.name }}</td>
-                    <td>{{ manufacturer.email }}</td>
-                    <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/details`">Details</nuxt-link>
-                    </td>
-                    <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/edit`">Edit</nuxt-link>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
+    <v-card
+    flat
+    title="Packages"
+  >
+        <div class="w-100">
+            <v-data-table 
+                :headers="headers"
+                :items="getPackages()" 
+                :items-per-page="5" 
+                class="elevation-1"
+            >
+                <template v-slot:item.action="{ item }">
+                    <v-btn>OPEN</v-btn>
+                </template>
+            </v-data-table>
+        </div>
+    </v-card>
 </template>
 
 <script setup>
 const config = useRuntimeConfig()
 const api = config.public.API_URL
-const { data: manufacturers, error, refresh } = await useFetch(`${api}/manufacturers`)
+
+const { data: packages, error, refresh } = await useFetch(`${api}/packages`)
+
+console.log("packages: ", packages.value);
+
+const getPackages = () => {
+    const items = (packages.value || []).map(package_ => {
+        return {
+            type: package_.packagingType || '-',
+            material: package_.packagingMaterial || '-',
+            sensors: (package_.sensors.lenght === 0) ? package_.sensors : '-',
+        }
+    })
+    return items;
+}
+console.log("All Packages: ", getPackages());
+
+const headers = [
+    {
+      title: 'Type',
+      align: 'center',
+      value: 'type',
+    },
+    {
+      title: 'Material',
+      align: 'center',
+      value: 'material',
+    },
+    {
+      title: 'Sensors',
+      align: 'center',
+      value: 'sensors',
+    },
+]
+
 </script>
 
 <style>
-table {
-    border-collapse: collapse;
-    width: 50%;
-    margin: 10px;
-}
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}   
-
 </style>
 
