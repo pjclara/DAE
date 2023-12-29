@@ -2,13 +2,18 @@ package pt.ipleiria.estg.dei.ei.dae.backend.ws;
 
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,17 +21,39 @@ import java.util.stream.Collectors;
 @Path("/orders")
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
+//@Authenticated
 public class OrderService {
 
     @EJB
     private OrderBean orderBean;
+
+    @Context
+    private SecurityContext securityContext;
 
     @GET
     @Path("/")
     public List<OrderDTO> getAllOrders() {
         return toDTOs(orderBean.all());
     }
+    /*
+    @GET
+    @Path("/")
+    public List<OrderDTO> getAllOrdersByUser() { // get only the corresponding orders
+        String endConsumerUsername = securityContext.getUserPrincipal().getName();
+        return toDTOs(orderBean.getOrdersByEndConsumer(endConsumerUsername));
+    } */
 
+    @GET
+    @Path("{id}")
+    public Response get(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
+        Orderr order = orderBean.findOrFail(orderId);
+        if (order != null) {
+            return Response.ok(toDTO(order)).entity(toDTO(order)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_ORDER")
+                .build();
+    }
 
     @POST
     @Path("/")
@@ -36,7 +63,8 @@ public class OrderService {
                 orderDTO.getId(),
                 orderDTO.getStatus(),
                 orderDTO.getLogisticsOperatorName(),
-                orderDTO.getEndConsumerName()
+                orderDTO.getEndConsumerName(),
+                orderDTO.getProductIds()
         );
 
         Orderr order = orderBean.findOrFail(orderDTO.getId());
@@ -44,18 +72,6 @@ public class OrderService {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.status(Response.Status.CREATED).entity(toDo(order)).build();
-    }
-
-    @GET
-    @Path("{id}")
-    public Response getEndConsumerDetails(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Orderr order = orderBean.findOrFail(orderId);
-        if (order != null) {
-            return Response.ok(toDTO(order)).entity(toDTO(order)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_ORDER")
-                .build();
     }
 
     @PUT

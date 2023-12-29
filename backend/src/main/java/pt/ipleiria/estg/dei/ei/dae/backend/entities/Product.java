@@ -24,6 +24,7 @@ public class Product extends Versionable{
     @ManyToOne
     private Manufacturer manufacturer;
     @OneToOne
+    @JoinColumn(name = "package_id")
     private Package productPackage;
 
     public Product() {

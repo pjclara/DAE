@@ -6,6 +6,7 @@ import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Startup
@@ -82,7 +83,8 @@ public class ConfigBean {
         }
         
         try {
-            orderBean.create(1L, "status1", "endConsumer1", "logisticsOperator1");
+            List<Long> productsIds = List.of(1L, 2L);
+            orderBean.create(1L, "status1", "endConsumer1", "logisticsOperator1", productsIds);
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());

@@ -24,7 +24,13 @@ public class OrderBean {
         return entityManager.createNamedQuery("getAllOrders", Orderr.class).getResultList();
     }
 
-    public void create(Long id, String status, String endConsumerUsername, String logisticOptUsername) {
+    public List<Orderr> getOrdersByEndConsumer(String customerName) {
+        return entityManager.createNamedQuery("getOrdersByEndConsumer", Orderr.class)
+                .setParameter("endConsumerUsername", customerName)
+                .getResultList();
+    }
+
+    public void create(Long id, String status, String endConsumerUsername, String logisticOptUsername, List<Long> productIds) {
         // check logisticOpt exists
         LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptUsername);
         if (logisticOpt == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticOptUsername + " not found");
@@ -35,8 +41,24 @@ public class OrderBean {
         // check if order already exists
         //Orderr order = entityManager.find(Orderr.class, id);
         //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
-
         Orderr order = new Orderr(id, status, endConsumer, logisticOpt);
+
+        // ver melhor se é para fazer assim ------------------------------ !!!!
+        for (int i = 0; i < productIds.size(); i++) {
+            Long productId = productIds.get(i);
+            // falta codigo para saber a quantidade do produto --------------- !!!!
+
+            Product product = entityManager.find(Product.class, productId);
+            if (product == null) {
+                throw new IllegalArgumentException("Product with id " + productId + " not found");
+            }
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProduct(product);
+            //orderItem.setQuantity(quantity); // --------- quando estiver resolvido a quantidade ----- !!!
+            order.addOrderItem(orderItem);
+        }
+
         entityManager.persist(order);
         System.out.println("add order to endConsumer");
         endConsumer.addOrder(order);
@@ -78,14 +100,16 @@ public class OrderBean {
         }
     }
 
-    public Orderr find(Long id) throws MyEntityNotFoundException {
-        return null;
+    public Orderr find(Long orderId) throws MyEntityNotFoundException {
+        return entityManager.find(Orderr.class, orderId);
     }
 
-    public Orderr findOrFail(Long id) throws MyEntityNotFoundException {
-
-        //Hibernate.initialize(order);
-        return null;
+    public Orderr findOrFail(Long orderId) throws MyEntityNotFoundException {
+        var order = find(orderId);
+        if (order == null) {
+            throw new MyEntityNotFoundException("Order with id '" + orderId + "' not found");
+        }
+        return order;
     }
 
 }

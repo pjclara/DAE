@@ -2,14 +2,12 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
-//@NamedQuery(name = "getAllPackages", query = "SELECT p FROM Package p ORDER BY p.packagingType")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllPackages",

@@ -1,5 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrderDTO {
 
     private Long id;
@@ -7,12 +12,17 @@ public class OrderDTO {
     private String endConsumerName;
     private String logisticsOperatorName;
 
-    public OrderDTO(){}
+    private List<Long> productsIds;
+
+    public OrderDTO(){
+        this.productsIds = new ArrayList<>();
+    }
     public OrderDTO(Long id, String status, String endConsumerName, String logisticsOperatorName) {
         this.id = id;
         this.status = status;
         this.endConsumerName = endConsumerName;
         this.logisticsOperatorName = logisticsOperatorName;
+        this.productsIds = new ArrayList<>();
     }
 
     public Long getId() {
@@ -45,5 +55,13 @@ public class OrderDTO {
 
     public void setLogisticsOperatorName(String logisticsOperatorName) {
         this.logisticsOperatorName = logisticsOperatorName;
+    }
+
+    public List<Long> getProductIds() {
+        return productsIds;
+    }
+
+    public void getProductIds(List<Long> orderItems) {
+        this.productsIds = orderItems;
     }
 }
