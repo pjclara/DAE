@@ -7,8 +7,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
@@ -53,6 +55,14 @@ public class OrderService {
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_ORDER")
                 .build();
+    }
+
+    @GET
+    @Path("{id}/items")
+    public List<OrderItemDTO> getProductsByOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
+        Orderr order = orderBean.findOrFail(orderId);
+        List<OrderItem> orderItems = order.getOrderItems();
+        return orderItems.stream().map(OrderItemDTO::from).collect(Collectors.toList());
     }
 
     @POST

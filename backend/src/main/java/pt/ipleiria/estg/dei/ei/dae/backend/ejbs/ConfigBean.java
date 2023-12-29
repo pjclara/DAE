@@ -68,8 +68,9 @@ public class ConfigBean {
             logger.severe(e.getMessage());
         }
 
+        Long productId1 = null;
         try {
-            productBean.create("Produto1", 10, "https://www.madeinmarket.eu/cdn/shop/products/original_bottle_single.png?v=1668450078", "manufacturer1", 1L);
+            productId1 = productBean.create("Produto1", 10, "https://www.madeinmarket.eu/cdn/shop/products/original_bottle_single.png?v=1668450078", "manufacturer1", 1L);
             productBean.create("Produto2", 20, "https://contents.mediadecathlon.com/p2200778/k$f44d57c690a98ab7d64b47d2cae1ce98/sq/mochila-de-caminhada-16l-nh-escape-500.jpg?format=auto&f=800x0", "manufacturer2", 2L);
         }catch (Exception e){
             logger.warning(e.getMessage());
@@ -83,7 +84,8 @@ public class ConfigBean {
         }
         
         try {
-            List<Long> productsIds = List.of(1L, 2L);
+
+            List<Long> productsIds = List.of(productId1, 2L);
             orderBean.create(1L, "status1", "endConsumer1", "logisticsOperator1", productsIds);
             System.out.println("final orderBean");
         }catch (Exception e){

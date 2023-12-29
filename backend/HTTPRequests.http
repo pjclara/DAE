@@ -131,6 +131,8 @@ GET http://localhost:8080/backend/api/orders
 ### Get order by id
 GET http://localhost:8080/backend/api/orders/1
 
+### Get items of a order
+GET http://localhost:8080/backend/api/orders/1/items
 
 ### CRUD package
 ### GET all packages

@@ -36,6 +36,7 @@ public class ProductBean {
         try {
             Product product = new Product(name, stock, image, productPackage, manufacturer);
             entityManager.persist(product);
+
             manufacturer.addProduct(product);
             return product.getId().intValue();
         } catch (ConstraintViolationException e) {

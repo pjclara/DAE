@@ -31,7 +31,7 @@ public class Orderr {
     @ManyToOne
     private LogisticsOperator logisticsOperators;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems;
 
     public Orderr() {
