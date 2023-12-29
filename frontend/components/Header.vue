@@ -17,12 +17,11 @@
       <v-list-item prepend-icon="mdi-account-box" title="Cliente"></v-list-item>
       <v-list-item><nuxt-link to="/orders">Encomendas</nuxt-link></v-list-item>
       <v-list-item><nuxt-link to="/products">Comprar Produtos</nuxt-link></v-list-item>
-
     </v-list>
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block @click="modalOpen = true" v-if="user?.role === 'EndConsumer'" class="mb-4">Carrinho</v-btn>
+        <v-btn block @click="cartStore.openDialog" v-if="user?.role === 'EndConsumer'" class="mb-4">Carrinho</v-btn>
         {{ user }}
         <v-btn block @click="sair()" v-if="user">Logout</v-btn>
         <v-btn block v-else><nuxt-link to="/auth/login">Login</nuxt-link></v-btn>
@@ -38,18 +37,19 @@
       </v-row>
     </v-col>
   </v-app-bar>
-  <cart-modal></cart-modal>
+  <cart-modal v-if="cartStore.modalOpen"></cart-modal>
 </template>
 
 <script setup>
 import { useAuthStore } from '@/store/auth-store';
 import CartModal from '@/components/CardModal.vue'
+import {useCartStore} from "@/store/cart-store"
 
+const cartStore = useCartStore()
 const authStore = useAuthStore();
 const { token, user, username, userRole, logout } = storeToRefs(authStore)
 
 const sidebar = ref(true)
-const modalOpen = ref(false)
 
 const sair = () => {
   authStore.logout()
