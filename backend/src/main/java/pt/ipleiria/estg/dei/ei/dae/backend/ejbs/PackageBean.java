@@ -4,15 +4,12 @@ import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.*;
 import jakarta.validation.ConstraintViolationException;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
-import java.util.Objects;
 
 @Stateless
 public class PackageBean {
@@ -29,7 +26,7 @@ public class PackageBean {
         try {
             var package_ = new Package(id, type, material);
             entityManager.persist(package_);
-            entityManager.flush(); // when using Hibernate, to force it to throw a ContraintViolationException, as in the JPA specification
+            entityManager.flush();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
@@ -37,6 +34,31 @@ public class PackageBean {
 
     public List<Package> all() {
         return entityManager.createNamedQuery("getAllPackages", Package.class).getResultList();
+    }
+
+    public static final List<PackagingType> LOGISTICS_TYPES = List.of(
+            PackagingType.SECONDARY,
+            PackagingType.THIRD,
+            PackagingType.TRANSPORT
+    );
+
+    public static final List<PackagingType> MANUFACTURER_TYPES = List.of(
+            PackagingType.PRIMARY,
+            PackagingType.SECONDARY
+    );
+
+    public List<Package> getAllPackagesByRole(String userRole) {
+
+        List<PackagingType> role = null;
+        if ("LogisticsOperator".equals(userRole)) {
+            role = LOGISTICS_TYPES;
+
+        } else if ("Manufacturer".equals(userRole)) {
+            role = MANUFACTURER_TYPES;
+        }
+        return entityManager.createNamedQuery("getAllRoleTypePackages", Package.class)
+                .setParameter("rolesTypes", role)
+                .getResultList();
     }
 
     public Package find(Long packageId) {

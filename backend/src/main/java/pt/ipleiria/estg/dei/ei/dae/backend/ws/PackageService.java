@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.ws;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -16,6 +17,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,26 +33,19 @@ public class PackageService {
     @EJB
     private SensorBean sensorBean;
 
+    @Context
+    private SecurityContext securityContext;
+
     @GET
     @Path("/")
     public List<PackageDTO> getAllProducts() {
-        List<Package> packages = packageBean.all();
+        // Get the user's role from the security context
+        String userRole = getUserRole();
+
+        // Getting the appropriate list of packages based on the role
+        List<Package> packages = packageBean.getAllPackagesByRole(userRole);
         return PackageDTO.from(packages);
     }
-
-
-    /*
-    @GET
-    @Path("{id}")
-    public Response get(@PathParam("id") Long packageId) {
-        Package package_ = packageBean.find(packageId);
-        if (package_ != null) {
-            return Response.ok(toDTO(package_)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_PRODUCT")
-                .build();
-    } */
 
     @GET
     @Path("{id}")
@@ -81,9 +76,8 @@ public class PackageService {
     @POST
     @Path("/")
     //@Authenticated
-    //@RolesAllowed({"...Something..."})
+    //@RolesAllowed({"Admin"})
     public Response createNewPackage(PackageDTO packageDTO) throws MyConstraintViolationException {
-
         packageBean.create(
                 packageDTO.getId(),
                 packageDTO.getPackagingType(),
@@ -93,24 +87,10 @@ public class PackageService {
         return Response.status(Response.Status.CREATED).entity(PackageDTO.from(newPackage)).build();
     }
 
-    /*
     @PUT
     @Path("{id}")
-    public Response updatePackage(@PathParam("id") Long id, PackageDTO packageDTO)
-            throws MyEntityNotFoundException {
-
-        packageBean.update(
-                packageDTO.getId(),
-                packageDTO.getPackagingType(),
-                packageDTO.getPackagingMaterial(),
-                packageDTO.getSensors()
-                //sensors_toDTOs(packageDTO.getSensors())
-        );
-        Package package_ = packageBean.find(id);
-        return Response.status(Response.Status.OK).entity(toDTO(package_)).build();
-    }*/
-    @PUT
-    @Path("{id}")
+    //@Authenticated
+    //@RolesAllowed({"Admin"})
     public Response updatePackage(@PathParam("id") Long id, PackageDTO packageDTO)
             throws MyEntityNotFoundException {
         packageBean.update(
@@ -124,56 +104,48 @@ public class PackageService {
 
     // Add and Remove a Sensor of a package
     @POST
+    @Authenticated
+    @RolesAllowed({"Manufacturer", "LogisticsOperator"})
     @Path("{id}/sensor/{sensorId}")
     public Response addSensorToPackage(@PathParam("id") Long id, @PathParam("sensorId") Long sensorId)
             throws MyEntityNotFoundException {
 
+        if (!securityContext.isUserInRole("Manufacturer") || !securityContext.isUserInRole("LogisticsOperator")){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         packageBean.addSensorToPackage(id, sensorId);
-        return Response.ok().build();
-    }
-    @DELETE
-    @Path("{id}/sensor/{sensorId}")
-    public Response deleteSensorOfPackage(@PathParam("id") Long id, @PathParam("sensorId") Long sensorId)
-            throws MyEntityNotFoundException {
-        packageBean.removeSensorFromPackage(id, sensorId);
         return Response.ok().build();
     }
 
     @DELETE
+    @Authenticated
+    @RolesAllowed({"Manufacturer", "LogisticsOperator"})
+    @Path("{id}/sensor/{sensorId}")
+    public Response deleteSensorOfPackage(@PathParam("id") Long id, @PathParam("sensorId") Long sensorId)
+            throws MyEntityNotFoundException {
+
+        if (!securityContext.isUserInRole("Manufacturer") || !securityContext.isUserInRole("LogisticsOperator")){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        packageBean.removeSensorFromPackage(id, sensorId);
+        return Response.ok().build();
+    }
+    // ------------
+
+    @DELETE
     @Path("{id}")
+    //@Authenticated
+    //@RolesAllowed({"Admin"})
     public Response delete(@PathParam("id") Long packagingId) throws MyEntityNotFoundException {
         packageBean.remove(packagingId);
         return Response.ok().build();
     }
-/*
-    private List<PackageDTO> toDTOs(List<Package> packages) {
-        return packages.stream().map(this::toDTO).collect(Collectors.toList());
-    }
 
-    private PackageDTO toDTO(Package package_) { // o nome esta como 'package_' pois dava conflito sem o '_'
-        return new PackageDTO(
-                package_.getId(),
-                package_.getPackagingType(),
-                package_.getPackagingMaterial(),
-                sensors_toDTOs(package_.getSensors())
-        );
+    // Helper method to get the user's role from the security context
+    private String getUserRole() {
+        return securityContext.isUserInRole("LogisticsOperator") ? "LogisticsOperator" :
+                securityContext.isUserInRole("Manufacturer") ? "Manufacturer" : "UnknownRole";
     }
-
-    private SensorDTO sensors_toDTO(Sensor sensor) {
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType(),
-                sensor.getValue(),
-                sensor.getUnit(),
-                sensor.getMax(),
-                sensor.getMin(),
-                sensor.getTimestamp()
-        );
-    }
-    private List<SensorDTO> sensors_toDTOs(List<Sensor> sensors) {
-        return sensors.stream().map(this::sensors_toDTO).collect(Collectors.toList());
-    }
-
- */
 }

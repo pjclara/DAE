@@ -55,8 +55,14 @@ public class ConfigBean {
         }
 
         try{
-            packageBean.create( 1L, PackagingType.SECONDARY, "Plastico");
+            packageBean.create( 1L, PackagingType.PRIMARY, "Plástico");
             packageBean.create( 2L, PackagingType.PRIMARY, "Vidro");
+            packageBean.create( 3L, PackagingType.PRIMARY, "Papel");
+            packageBean.create( 4L, PackagingType.SECONDARY, "Cartão");
+            packageBean.create( 5L, PackagingType.SECONDARY, "Plástico");
+            packageBean.create( 6L, PackagingType.THIRD, "Cartão");
+            packageBean.create( 7L, PackagingType.THIRD, "Plástico");
+            packageBean.create( 8L, PackagingType.TRANSPORT, "Palete");
         } catch (Exception e) {
             logger.severe(e.getMessage());
         }
@@ -85,8 +91,8 @@ public class ConfigBean {
 
         // ADD SENSORS TO A PACKAGE
         try{
-            packageBean.addSensorToPackage( 2L, 1L);
-            packageBean.addSensorToPackage( 2L, 2L);
+            packageBean.addSensorToPackage( 4L, 1L);
+            packageBean.addSensorToPackage( 4L, 2L);
         } catch (Exception e) {
             logger.severe(e.getMessage());
         }

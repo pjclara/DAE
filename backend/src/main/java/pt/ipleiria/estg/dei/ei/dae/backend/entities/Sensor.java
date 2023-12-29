@@ -26,16 +26,13 @@ public class Sensor extends Versionable {
     private long timestamp;
 
     @ManyToOne
-    /*@JoinTable(
-            name = "sensors_packages",
+    @JoinTable(
+            name = "sensors_package",
             joinColumns = @JoinColumn(name = "sensor_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "package_id", referencedColumnName = "id")
-    )*/
-    @JoinColumn(name = "package_id")
+    )
+   // @JoinColumn(name = "package_id")
     private Package packagging;
-
-    //@ManyToOne
-    //private Product productSensor;
 
     public Sensor() {
     }

@@ -9,7 +9,18 @@ import java.util.List;
 
 
 @Entity
-@NamedQuery(name = "getAllPackages", query = "SELECT p FROM Package p ORDER BY p.packagingType")
+//@NamedQuery(name = "getAllPackages", query = "SELECT p FROM Package p ORDER BY p.packagingType")
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllPackages",
+                query = "SELECT p FROM Package p ORDER BY p.packagingType"
+        ),
+
+        @NamedQuery(
+                name = "getAllRoleTypePackages",
+                query = "SELECT p FROM Package p WHERE p.packagingType IN :rolesTypes ORDER BY p.packagingType"
+        ),
+})
 public class Package extends Versionable {
 
     @Id
