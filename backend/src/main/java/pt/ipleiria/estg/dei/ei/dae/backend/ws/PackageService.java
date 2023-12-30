@@ -13,8 +13,8 @@ import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.PackageBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.SensorBean;
+import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
@@ -33,12 +33,16 @@ public class PackageService {
     @EJB
     private SensorBean sensorBean;
 
+    @EJB
+    private UserBean userBean;
+
     @Context
     private SecurityContext securityContext;
 
     @GET
+    @Authenticated
     @Path("/")
-    public List<PackageDTO> getAllProducts() {
+    public List<PackageDTO> getAllPackages() {
         // Get the user's role from the security context
         String userRole = getUserRole();
 
@@ -145,7 +149,9 @@ public class PackageService {
 
     // Helper method to get the user's role from the security context
     private String getUserRole() {
-        return securityContext.isUserInRole("LogisticsOperator") ? "LogisticsOperator" :
-                securityContext.isUserInRole("Manufacturer") ? "Manufacturer" : "UnknownRole";
+        var username = securityContext.getUserPrincipal().getName();
+        String role = userBean.findOrFail(username).getRole();
+        return role;
     }
+
 }

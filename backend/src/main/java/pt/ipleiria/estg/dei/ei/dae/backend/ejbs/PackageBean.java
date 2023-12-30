@@ -9,6 +9,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -48,17 +49,22 @@ public class PackageBean {
     );
 
     public List<Package> getAllPackagesByRole(String userRole) {
+        System.out.println("--------- User Role: " + userRole);
 
-        List<PackagingType> role = null;
-        if ("LogisticsOperator".equals(userRole)) {
-            role = LOGISTICS_TYPES;
+        if ("logisticsOperator".equals(userRole)) {
+            return entityManager.createNamedQuery("getAllRoleTypePackages", Package.class)
+                    .setParameter("rolesTypes", LOGISTICS_TYPES)
+                    .getResultList();
 
-        } else if ("Manufacturer".equals(userRole)) {
-            role = MANUFACTURER_TYPES;
         }
-        return entityManager.createNamedQuery("getAllRoleTypePackages", Package.class)
-                .setParameter("rolesTypes", role)
-                .getResultList();
+        if ("manufacturer".equals(userRole)) {
+            return entityManager.createNamedQuery("getAllRoleTypePackages", Package.class)
+                    .setParameter("rolesTypes", MANUFACTURER_TYPES)
+                    .getResultList();
+        } else {
+            return entityManager.createNamedQuery("getAllPackages", Package.class).getResultList();
+        }
+
     }
 
     public Package find(Long packageId) {
