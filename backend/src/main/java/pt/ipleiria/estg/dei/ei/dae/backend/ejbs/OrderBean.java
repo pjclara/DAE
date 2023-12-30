@@ -61,7 +61,7 @@ public class OrderBean {
             throw new MyConstraintViolationException(e);
         }
 
-
+/*
         for (Long productId : productIds) {
             System.out.println("Adding Product: " + productId);
 
