@@ -69,11 +69,10 @@ public class OrderService {
     @Path("/")
     public Response createNewOrder(OrderDTO orderDTO)
             throws MyEntityNotFoundException, MyConstraintViolationException {
-        orderBean.create(
-                orderDTO.getId(),
+        long id = orderBean.create(
                 orderDTO.getStatus(),
-                orderDTO.getLogisticsOperatorName(),
                 orderDTO.getEndConsumerName(),
+                orderDTO.getLogisticsOperatorName(),
                 orderDTO.getProductIds()
         );
 

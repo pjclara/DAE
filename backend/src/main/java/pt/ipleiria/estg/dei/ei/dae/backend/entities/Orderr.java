@@ -21,7 +21,10 @@ import java.util.List;
         ),
 })
 public class Orderr {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
+    @Column(name="id")
     private Long id;
     @NotNull
     private String status;
@@ -38,8 +41,7 @@ public class Orderr {
         this.orderItems = new ArrayList<>();
     }
 
-    public Orderr(Long id, String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
-        this.id = id;
+    public Orderr(String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
         this.status = status;
         this.endConsumer = endConsumer;
         this.logisticsOperators = logisticsOperators;

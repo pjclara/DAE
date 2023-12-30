@@ -11,7 +11,6 @@ public class OrderDTO {
     private String status;
     private String endConsumerName;
     private String logisticsOperatorName;
-
     private List<Long> productsIds;
 
     public OrderDTO(){

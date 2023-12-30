@@ -6,7 +6,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
+import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
+import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
@@ -34,10 +36,14 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public void create(Long id, String status, String endConsumerUsername, String logisticOptUsername, List<Long> productIds) throws MyEntityNotFoundException {
+    public long create(String status, String endConsumerUsername, String logisticOptUsername, List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
         // check logisticOpt exists
-        LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptUsername);
-        if (logisticOpt == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticOptUsername + " not found");
+        //LogisticsOperator logisticOpt = null;
+        //if(logisticOptUsername != null) {
+           LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptUsername);
+            if (logisticOpt == null)
+                throw new IllegalArgumentException("Logistics Operator with username " + logisticOptUsername + " not found");
+        //}
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
         if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
@@ -45,9 +51,17 @@ public class OrderBean {
         // check if order already exists
         //Orderr order = entityManager.find(Orderr.class, id);
         //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
+        try {
+            Orderr order = new Orderr(status, endConsumer, logisticOpt);
+            entityManager.persist(order);
+            System.out.println("add order to endConsumer");
+            endConsumer.addOrder(order);
+            return order.getId().intValue();
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(e);
+        }
 
-        Orderr order = new Orderr(id, status, endConsumer, logisticOpt);
-
+/*
         for (Long productId : productIds) {
             System.out.println("Adding Product: " + productId);
 
@@ -69,12 +83,12 @@ public class OrderBean {
 
                 order.addOrderItem(orderItem);
             }
-            /*
+
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(product);
             orderItem.setQuantity(1); // --------- validate this
             order.addOrderItem(orderItem);
-             */
+
 
         }
 
@@ -83,6 +97,8 @@ public class OrderBean {
         endConsumer.addOrder(order);
         System.out.println("add order to logisticOpt");
         //logisticOpt.addOrder(order);
+        */
+
     }
 
     public void update(Long id, String status, String endConsumerName, String logisticOptName)

@@ -1,9 +1,14 @@
 import {defineStore} from "pinia";
 
+
 export const useCartStore = defineStore("cartStore", () => {
+    const config = useRuntimeConfig()
+    const api = config.public.API_URL
+
     const modalOpen = ref(false)
     const cartItems = ref([])
     const orderData = ref({})
+
 
     const openDialog = () => {
         modalOpen.value = true;
@@ -20,10 +25,14 @@ export const useCartStore = defineStore("cartStore", () => {
     }
 
     const createOrderCart = (customer) => {
-        data.value = {
+        console.log("customer: ", customer)
+
+        orderData.value = {
             status: 'Pending',
             endConsumer: customer,
+            products: cartItems.value
         }
+        console.log("orderData.value: ", orderData.value)
         createOrderAPI();
     }
 
@@ -34,7 +43,7 @@ export const useCartStore = defineStore("cartStore", () => {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify(data.value)
+            body: JSON.stringify(orderData.value)
         })
         if (error.value) {
             console.log('error.value :', error.value)
@@ -45,5 +54,5 @@ export const useCartStore = defineStore("cartStore", () => {
         }
     }
 
-    return { add, openDialog, closeDialog, modalOpen, cartItems }
+    return { createOrderCart, add, openDialog, closeDialog, modalOpen, cartItems }
 })

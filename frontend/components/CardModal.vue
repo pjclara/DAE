@@ -62,6 +62,7 @@ const {user} = storeToRefs(authStore)
 const cartStore = useCartStore()
 
 const createOrder = () => {
-    cartStore.createOrderCart(user.username);
+    console.log("user.username: ", user.value.username)
+    cartStore.createOrderCart(user.value.username);
 }
 </script>

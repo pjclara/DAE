@@ -11,11 +11,13 @@
                         <v-text-field v-model="productForm.stock" label="Stock" required/>
                     </div>
                     <div>
-                        <v-select
+                        <!-- <v-select
                         v-model="productForm.packageId" :items="packagesList" 
                         item-title="packagingMaterial"
                         item-value="id" 
-                        label="Package"/>
+                        label="Package"/> -->
+                        <v-text-field v-model="productForm.packageId" label="PackageId" required/>
+
                     </div>
                     <div>
                         <v-text-field v-model="productForm.image" label="URL Imagem de Produto"/>
