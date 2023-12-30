@@ -26,13 +26,16 @@ export const useCartStore = defineStore("cartStore", () => {
 
     const createOrderCart = (customer) => {
         console.log("customer: ", customer)
+        const itemsIds = cartItems.value.map(item => item.id)
 
         orderData.value = {
             status: 'Pending',
-            endConsumer: customer,
-            products: cartItems.value
+            endConsumerName: customer,
+            logisticsOperatorName: 'logisticsOperator1',
+            productIds: itemsIds
         }
         console.log("orderData.value: ", orderData.value)
+        console.log("JSON.stringify(orderData.value): ", JSON.stringify(orderData.value))
         createOrderAPI();
     }
 

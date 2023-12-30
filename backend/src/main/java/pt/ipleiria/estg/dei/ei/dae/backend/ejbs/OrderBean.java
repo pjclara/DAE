@@ -38,12 +38,12 @@ public class OrderBean {
 
     public long create(String status, String endConsumerUsername, String logisticOptUsername, List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
         // check logisticOpt exists
-        //LogisticsOperator logisticOpt = null;
-        //if(logisticOptUsername != null) {
-           LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptUsername);
+        LogisticsOperator logisticOpt = null;
+        if(logisticOptUsername != null) {
+           logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptUsername);
             if (logisticOpt == null)
                 throw new IllegalArgumentException("Logistics Operator with username " + logisticOptUsername + " not found");
-        //}
+        }
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
         if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
@@ -61,7 +61,7 @@ public class OrderBean {
             throw new MyConstraintViolationException(e);
         }
 
-/*
+
         for (Long productId : productIds) {
             System.out.println("Adding Product: " + productId);
 

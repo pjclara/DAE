@@ -76,7 +76,7 @@ public class OrderService {
                 orderDTO.getProductIds()
         );
 
-        Orderr order = orderBean.findOrFail(orderDTO.getId());
+        Orderr order = orderBean.findOrFail(id);
         if (order == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
