@@ -49,7 +49,7 @@ const route = useRoute()
 const id = route.params.id
 const username = route.params.username
 const { data: packagesList, packageError: productsErr } = await
-    useFetch(`${api}/packages`)
+useFetch(`${api}/packages/packagingType/PRIMARY`)
 
 const { data: product, error: productErr } = await useFetch(`${api}/manufacturers/${username}/products/${id}`, {
     method: 'get',

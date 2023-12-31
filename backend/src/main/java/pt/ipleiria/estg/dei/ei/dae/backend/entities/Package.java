@@ -18,6 +18,9 @@ import java.util.List;
                 name = "getAllRoleTypePackages",
                 query = "SELECT p FROM Package p WHERE p.packagingType IN :rolesTypes ORDER BY p.packagingType"
         ),
+        @NamedQuery(
+                name = "getPackageByType",
+                query = "SELECT p FROM Package p WHERE p.packagingType = :packagingType")
 })
 public class Package extends Versionable {
 

@@ -11,13 +11,8 @@
                         <v-text-field v-model="productForm.stock" label="Stock" required/>
                     </div>
                     <div>
-                        <!-- <v-select
-                        v-model="productForm.packageId" :items="packagesList" 
-                        item-title="packagingMaterial"
-                        item-value="id" 
-                        label="Package"/> -->
-                        <v-text-field v-model="productForm.packageId" label="PackageId" required/>
-
+                            <v-select v-model="productForm.packageId" :items="packagesList" item-title="packagingMaterial"
+                                item-value="id" label="Package" />
                     </div>
                     <div>
                         <v-text-field v-model="productForm.image" label="URL Imagem de Produto"/>
@@ -27,7 +22,6 @@
                 </form>
             </v-col>
         </v-col>
-        {{ packagesList }}
         
     </div>
 </template>
@@ -56,7 +50,7 @@ const productForm = reactive({
     image: null
 })
 const { data: packagesList, packageError: productsErr } = await
-useFetch(`${api}/packages`)
+useFetch(`${api}/packages/packagingType/PRIMARY`)
 
 
 async function create() {

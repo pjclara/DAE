@@ -109,4 +109,9 @@ public class PackageBean {
         }
     }
 
+    public List<Package> getPackageByType(PackagingType type) {
+        return entityManager.createNamedQuery("getPackageByType", Package.class)
+                .setParameter("packagingType", type)
+                .getResultList();
+    }
 }
