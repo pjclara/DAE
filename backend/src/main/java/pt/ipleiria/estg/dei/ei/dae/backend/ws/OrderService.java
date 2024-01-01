@@ -72,7 +72,6 @@ public class OrderService {
         long id = orderBean.create(
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
-                orderDTO.getLogisticsOperatorName(),
                 orderDTO.getProductIds()
         );
 
@@ -116,8 +115,7 @@ public class OrderService {
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
-                order.getEndConsumer().getName(),
-                order.getLogisticsOperators().getName()
+                order.getEndConsumer().getName()
         );
     }
 
@@ -125,8 +123,7 @@ public class OrderService {
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
-                order.getEndConsumer().getName(),
-                order.getLogisticsOperators().getName()
+                order.getEndConsumer().getName()
         );
     }
 

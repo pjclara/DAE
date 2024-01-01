@@ -15,6 +15,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.PackageBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.SensorBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
@@ -44,11 +45,16 @@ public class PackageService {
     @Path("/")
     public List<PackageDTO> getAllPackages() {
         // Get the user's role from the security context
-        String userRole = getUserRole();
+        //String userRole = getUserRole();
 
         // Getting the appropriate list of packages based on the role
-        List<Package> packages = packageBean.getAllPackagesByRole(userRole);
-        return PackageDTO.from(packages);
+       // List<Package> packages = packageBean.getAllPackagesByRole(userRole);
+        //return PackageDTO.from(packages);
+        return toDTOs(packageBean.all());
+    }
+
+    private List<PackageDTO> toDTOs(List<Package> all) {
+        return all.stream().map(PackageDTO::from).collect(Collectors.toList());
     }
 
     @GET
@@ -154,4 +160,12 @@ public class PackageService {
         return role;
     }
 
+
+    // get package by type
+    @GET
+    @Path("/packagingType/{packagingType}")
+    public List<PackageDTO> getPackageByType(@PathParam("packagingType") PackagingType packagingTypeId) throws MyEntityNotFoundException {
+        List<Package> packages = packageBean.getPackageByType(packagingTypeId);
+        return PackageDTO.from(packages);
+    }
 }

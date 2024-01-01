@@ -2,8 +2,6 @@
     <div>
         add manufacturer
         <nuxt-link class="link" :to="`/manufacturers/create`">add manufacturer</nuxt-link>
-
-
         <table>
             <thead>
                 <tr>
