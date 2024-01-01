@@ -36,14 +36,9 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String status, String endConsumerUsername, String logisticOptUsername, List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
+    public long create(String status, String endConsumerUsername, List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
         // check logisticOpt exists
-        LogisticsOperator logisticOpt = null;
-        if(logisticOptUsername != null) {
-           logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptUsername);
-            if (logisticOpt == null)
-                throw new IllegalArgumentException("Logistics Operator with username " + logisticOptUsername + " not found");
-        }
+
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
         if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
@@ -52,7 +47,36 @@ public class OrderBean {
         //Orderr order = entityManager.find(Orderr.class, id);
         //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
         try {
-            Orderr order = new Orderr(status, endConsumer, logisticOpt);
+            Orderr order = new Orderr(status, endConsumer);
+
+            for (Long productId : productIds) {
+                System.out.println("Adding Product: " + productId);
+
+                Product product = productBean.find(productId);
+                if (product == null) {
+                    throw new IllegalArgumentException("Product with id " + productId + " not found");
+                }
+
+                // Check if same product already exists
+                OrderItem existingProduct = findExistingItem(order, product);
+                if (existingProduct != null) {
+                    // If exists, increment the quantity
+                    existingProduct.setQuantity(existingProduct.getQuantity() + 1);
+                } else {
+                    // If not exists, create a new OrderItem
+                    OrderItem orderItem = new OrderItem();
+                    orderItem.setProduct(product);
+                    orderItem.setQuantity(1); // initially the quantity is always 1
+
+                    order.addOrderItem(orderItem);
+                }
+
+                OrderItem orderItem = new OrderItem();
+                orderItem.setProduct(product);
+                orderItem.setQuantity(1); // --------- validate this
+                order.addOrderItem(orderItem);
+            }
+
             entityManager.persist(order);
             System.out.println("add order to endConsumer");
             endConsumer.addOrder(order);

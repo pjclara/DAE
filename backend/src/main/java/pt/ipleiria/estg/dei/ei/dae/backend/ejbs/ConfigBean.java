@@ -86,7 +86,7 @@ public class ConfigBean {
         try {
 
             List<Long> productsIds = List.of(productId1, 2L);
-            orderBean.create("status1", "endConsumer1", "logisticsOperator1", productsIds);
+            orderBean.create("status1", "endConsumer1",  productsIds);
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());

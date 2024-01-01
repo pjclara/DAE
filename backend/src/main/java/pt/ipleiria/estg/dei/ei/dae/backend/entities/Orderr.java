@@ -41,10 +41,9 @@ public class Orderr {
         this.orderItems = new ArrayList<>();
     }
 
-    public Orderr(String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
+    public Orderr(String status, EndConsumer endConsumer) {
         this.status = status;
         this.endConsumer = endConsumer;
-        this.logisticsOperators = logisticsOperators;
         this.orderItems = new ArrayList<>();
     }
 
