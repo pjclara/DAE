@@ -16,11 +16,22 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "~/store/auth-store.js"
+const authStore = useAuthStore()
 import Default from '/pages/layouts/default.vue'
 const config = useRuntimeConfig()
 const api = config.public.API_URL
 
-const { data: packages, error, refresh } = await useFetch(`${api}/packages`)
+const { data: packages, error, refresh } = await useFetch(`${api}/packages`, {
+    method: 'get',
+    headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + authStore.token
+    }
+})
+if (error.value) {
+    messages.value.push({ error: error.value.message })
+}
 
 console.log("packages: ", packages.value);
 
