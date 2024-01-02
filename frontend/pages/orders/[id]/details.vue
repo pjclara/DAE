@@ -1,17 +1,29 @@
 <template>
     <div>
       <v-col align="center">
-        <v-col cols="6">
+        <v-col cols="8">
           <v-card>
-            <v-card-title justify="center">
+            <v-card-title class="mb-4" justify="center">
               <h1>Detalhes da encomenda</h1>
             </v-card-title>
 
             <v-card-text>
-              <p>Estado: {{ order.status }}</p>
-              <p>Cliente: {{ order.endConsumerName }}</p>
-              <p>Operador Logistica: {{ order.logisticsOperatorName }}</p>
-              <p>Produtos da encomenda: {{ order.productIds }}</p>
+              <div class="text-left">
+                <h3>Estado: </h3>
+                <v-text-field v-model="order.status" disabled/>
+              </div>
+              <div class="text-left">
+                <h3>Cliente: </h3>
+                <v-text-field v-model="order.endConsumerName" disabled/>
+              </div>
+              <div class="text-left">
+                <h3>Operador Logistica: </h3>
+                <v-text-field v-model="order.logisticsOperatorName" disabled/>
+              </div>
+              <div class="text-left">
+                <h3>Produtos da encomenda: </h3>
+                <v-text-field v-model="order.productIds" disabled/>
+              </div>
             </v-card-text>
           </v-card>
         </v-col>
