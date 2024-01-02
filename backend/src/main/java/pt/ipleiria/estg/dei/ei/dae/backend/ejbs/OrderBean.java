@@ -36,18 +36,24 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String status, String endConsumerUsername, List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
+    public long create(String status, String endConsumerUsername, String logisticsOperatorName,  List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
         // check logisticOpt exists
 
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
         if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
 
+        LogisticsOperator logisticsOperator = null;
+        if(logisticsOperatorName != null){
+            logisticsOperator = entityManager.find(LogisticsOperator.class, logisticsOperatorName);
+            // if (logisticsOperator == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticsOperatorName + " not found");
+        }
+
         // check if order already exists
         //Orderr order = entityManager.find(Orderr.class, id);
         //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
         try {
-            Orderr order = new Orderr(status, endConsumer);
+            Orderr order = new Orderr(status, endConsumer, logisticsOperator);
 
             for (Long productId : productIds) {
                 System.out.println("Adding Product: " + productId);
@@ -128,7 +134,8 @@ public class OrderBean {
     public void update(Long id, String status, String endConsumerName, String logisticOptName)
             throws MyEntityNotFoundException {
 
-        Orderr order = findOrFail(id);
+        //Orderr order = findOrFail(id);
+        Orderr order = entityManager.find(Orderr.class, id);
 
         if (order == null){
             throw new EntityNotFoundException("Orderr with id '" + id + "' not found in database");
@@ -137,13 +144,7 @@ public class OrderBean {
 
         order.setStatus(status);
 
-        if (endConsumerName != null && !endConsumerName.equals(order.getEndConsumer().getUsername())) {
-            EndConsumer consumer = entityManager.find(EndConsumer.class, endConsumerName);
-            if (consumer == null) throw new IllegalArgumentException("End Consumer with username " + consumer + " not found");
-            order.setEndConsumer(consumer);
-        }
-
-        if (logisticOptName != null && !logisticOptName.equals(order.getLogisticsOperators().getUsername())) {
+        if (logisticOptName != null) {
             LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptName);
             if (logisticOpt == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticOptName + " not found");
             order.setLogisticsOperators(logisticOpt);

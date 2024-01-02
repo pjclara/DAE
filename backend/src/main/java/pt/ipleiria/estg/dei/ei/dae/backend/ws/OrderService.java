@@ -72,6 +72,7 @@ public class OrderService {
         long id = orderBean.create(
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
+                orderDTO.getLogisticsOperatorName(),
                 orderDTO.getProductIds()
         );
 
@@ -79,7 +80,7 @@ public class OrderService {
         if (order == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDo(order)).build();
+        return Response.status(Response.Status.CREATED).entity(toDTO(order)).build();
     }
 
     @PUT
@@ -87,10 +88,10 @@ public class OrderService {
     public Response updateOrder(@PathParam("id") Long id, OrderDTO orderDTO)
     throws MyEntityNotFoundException {
         orderBean.update(
-                orderDTO.getId(),
+                id,
                 orderDTO.getStatus(),
-                orderDTO.getLogisticsOperatorName(),
-                orderDTO.getEndConsumerName()
+                orderDTO.getEndConsumerName(),
+                orderDTO.getLogisticsOperatorName()
         );
         Orderr order = orderBean.findOrFail(id);
         if (order == null) {
@@ -112,13 +113,16 @@ public class OrderService {
     }
 
     private OrderDTO toDTO(Orderr order) {
+        String logisticsOperatorName = order.getLogisticsOperators() != null ? order.getLogisticsOperators().getName() : null;
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
-                order.getEndConsumer().getName()
+                order.getEndConsumer().getName(),
+                logisticsOperatorName
         );
     }
 
+    /*
     private OrderDTO toDo(Orderr order) {
         return new OrderDTO(
                 order.getId(),
@@ -126,5 +130,6 @@ public class OrderService {
                 order.getEndConsumer().getName()
         );
     }
+    */
 
 }

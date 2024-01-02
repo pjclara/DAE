@@ -20,7 +20,7 @@ import java.util.List;
                 query = "SELECT o FROM Orderr o WHERE o.endConsumer.username = :endConsumerUsername ORDER BY o.id"
         ),
 })
-public class Orderr {
+public class Orderr extends Versionable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
@@ -41,9 +41,10 @@ public class Orderr {
         this.orderItems = new ArrayList<>();
     }
 
-    public Orderr(String status, EndConsumer endConsumer) {
+    public Orderr(String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
         this.status = status;
         this.endConsumer = endConsumer;
+        this.logisticsOperators = logisticsOperators;
         this.orderItems = new ArrayList<>();
     }
 
