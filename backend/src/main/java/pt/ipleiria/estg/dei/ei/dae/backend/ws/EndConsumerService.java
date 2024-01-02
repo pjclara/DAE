@@ -119,8 +119,13 @@ public class EndConsumerService {
         return orders.stream().map(this::orderToDTOs).collect(java.util.stream.Collectors.toList());
     }
     private OrderDTO orderToDTOs(Orderr order) {
-        // TODO make orderToDTOs
-        return null;
+        String logisticsOperatorName = order.getLogisticsOperators() != null ? order.getLogisticsOperators().getName() : null;
+        return new OrderDTO(
+                order.getId(),
+                order.getStatus(),
+                order.getEndConsumer().getName(),
+                logisticsOperatorName
+        );
     }
     private EndConsumerDTO toDo(EndConsumer endConsumer) {
         return new EndConsumerDTO(
