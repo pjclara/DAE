@@ -21,6 +21,10 @@
                 <v-text-field v-model="order.logisticsOperatorName" disabled/>
               </div>
               <div class="text-left">
+                <h3>Embalagem: </h3>
+                <v-text-field v-model="order.packageId" disabled/>
+              </div>
+              <div class="text-left">
                 <h3>Produtos da encomenda: </h3>
                 <v-text-field v-model="order.productIds" disabled/>
               </div>

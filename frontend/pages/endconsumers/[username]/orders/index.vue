@@ -8,7 +8,7 @@
               class="elevation-1"
             >
                 <template v-slot:item.actions="{ item }">
-                    <v-btn size="small" class="mr-2" @click="detailsOrder(item)">Detalhes</v-btn>
+                    <v-btn icon size="small" class="mr-2" @click="detailsOrder(item)"><v-icon>mdi-eye-circle</v-icon></v-btn>
                 </template>   
             </v-data-table>
         </div>
@@ -28,10 +28,10 @@
     const order = ref({});
 
     const headers = ref([
-        { title: 'Status', value: 'status', align: 'center' },
-        { title: 'End Consumer', value: 'endConsumerName', align: 'center' },
-        { title: 'Logistic Operator', value: 'logisticsOperatorName', align: 'center' },
-        { title: 'Products', value: 'productsIds', align: 'center' },
+        { title: 'Estado', value: 'status', align: 'center' },
+        { title: 'Cliente', value: 'endConsumerName', align: 'center' },
+        { title: 'Embalagem', value: 'packageId', align: 'center' },
+        { title: 'Produtos', value: 'productsIds', align: 'center' },
         { title: '', value: 'actions', align: 'center' }
     ])
 

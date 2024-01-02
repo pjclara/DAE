@@ -1,26 +1,24 @@
 <template>
-    <default>
-        <div class="w-100">
-            <v-data-table :headers="headers" :items="getPackages()" :items-per-page="5" class="elevation-1">
-                <template v-slot:top>
-                    <v-toolbar flat>
-                        <v-toolbar-title>Embalagens disponiveis</v-toolbar-title>
-                    </v-toolbar>
-                </template>
-                <template v-slot:item.action="{ item }">
-                    <v-btn @click="edit(item)">OPEN</v-btn>
-                </template>
-            </v-data-table>
-        </div>
-    </default>
+    <div class="w-100">
+        <v-data-table :headers="headers" :items="getPackages()" :items-per-page="5" class="elevation-1">
+            <template v-slot:top>
+                <v-toolbar flat>
+                    <v-toolbar-title>Embalagens disponiveis</v-toolbar-title>
+                </v-toolbar>
+            </template>
+            <template v-slot:item.action="{ item }">
+                <v-btn @click="edit(item)">OPEN</v-btn>
+            </template>
+        </v-data-table>
+    </div>
 </template>
 
 <script setup>
 import { useAuthStore } from "~/store/auth-store.js"
 const authStore = useAuthStore()
-import Default from '/pages/layouts/default.vue'
 const config = useRuntimeConfig()
 const api = config.public.API_URL
+const messages = ref([])
 
 const { data: packages, error, refresh } = await useFetch(`${api}/packages`, {
     method: 'get',
