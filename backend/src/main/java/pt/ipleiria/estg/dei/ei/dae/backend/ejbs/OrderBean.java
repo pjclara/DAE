@@ -12,7 +12,6 @@ import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationExcep
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Stateless
 public class OrderBean {
@@ -42,7 +41,13 @@ public class OrderBean {
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
         if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
+        LogisticsOperator logisticsOperator = null;
+        if(logisticsOperatorName != null){
+            logisticsOperator = entityManager.find(LogisticsOperator.class, logisticsOperatorName);
+           // if (logisticsOperator == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticsOperatorName + " not found");
+        }
 
+<<<<<<< Updated upstream
         LogisticsOperator logisticsOperator = null;
         if(logisticsOperatorName != null){
             logisticsOperator = entityManager.find(LogisticsOperator.class, logisticsOperatorName);
@@ -52,6 +57,8 @@ public class OrderBean {
         // check if order already exists
         //Orderr order = entityManager.find(Orderr.class, id);
         //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
+=======
+>>>>>>> Stashed changes
         try {
             Orderr order = new Orderr(status, endConsumer, logisticsOperator);
 
@@ -62,25 +69,7 @@ public class OrderBean {
                 if (product == null) {
                     throw new IllegalArgumentException("Product with id " + productId + " not found");
                 }
-
-                // Check if same product already exists
-                OrderItem existingProduct = findExistingItem(order, product);
-                if (existingProduct != null) {
-                    // If exists, increment the quantity
-                    existingProduct.setQuantity(existingProduct.getQuantity() + 1);
-                } else {
-                    // If not exists, create a new OrderItem
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.setProduct(product);
-                    orderItem.setQuantity(1); // initially the quantity is always 1
-
-                    order.addOrderItem(orderItem);
-                }
-
-                OrderItem orderItem = new OrderItem();
-                orderItem.setProduct(product);
-                orderItem.setQuantity(1); // --------- validate this
-                order.addOrderItem(orderItem);
+                order.addProduct(product);
             }
 
             entityManager.persist(order);
@@ -134,12 +123,16 @@ public class OrderBean {
     public void update(Long id, String status, String endConsumerName, String logisticOptName)
             throws MyEntityNotFoundException {
 
+<<<<<<< Updated upstream
         //Orderr order = findOrFail(id);
+=======
+>>>>>>> Stashed changes
         Orderr order = entityManager.find(Orderr.class, id);
 
         if (order == null){
             throw new EntityNotFoundException("Orderr with id '" + id + "' not found in database");
         }
+
         entityManager.lock(order, LockModeType.OPTIMISTIC);
 
         order.setStatus(status);
@@ -153,10 +146,7 @@ public class OrderBean {
         entityManager.merge(order);
     }
 
-    public List<OrderItem> getProductsByOrder(Long orderId) throws MyEntityNotFoundException {
-        Orderr order = orderBean.findOrFail(orderId);
-        return order.getOrderItems();
-    }
+
 
     public void delete(Long id) throws MyEntityNotFoundException {
         var order = findOrFail(id);
@@ -176,7 +166,11 @@ public class OrderBean {
         }
         return order;
     }
-
+/*
+    public List<OrderItem> getProductsByOrder(Long orderId) throws MyEntityNotFoundException {
+        Orderr order = orderBean.findOrFail(orderId);
+        return order.getOrderItems();
+    }
     // Auxiliary: Find an existing product in the order to calculate the quantity
     private OrderItem findExistingItem(Orderr order, Product product) {
         for (OrderItem orderItem : order.getOrderItems()) {
@@ -186,5 +180,5 @@ public class OrderBean {
         }
         return null;
     }
-
+*/
 }

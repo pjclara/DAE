@@ -11,17 +11,23 @@ public class OrderDTO {
     private String status;
     private String endConsumerName;
     private String logisticsOperatorName;
-    private List<Long> productsIds;
 
     public OrderDTO(){
-        this.productsIds = new ArrayList<>();
+
     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     public OrderDTO(Long id, String status, String endConsumerName, String logisticsOperatorName) {
         this.id = id;
         this.status = status;
         this.endConsumerName = endConsumerName;
         this.logisticsOperatorName = logisticsOperatorName;
+<<<<<<< Updated upstream
         this.productsIds = new ArrayList<>();
+=======
+>>>>>>> Stashed changes
     }
 
     public Long getId() {
@@ -54,13 +60,5 @@ public class OrderDTO {
 
     public void setLogisticsOperatorName(String logisticsOperatorName) {
         this.logisticsOperatorName = logisticsOperatorName;
-    }
-
-    public List<Long> getProductIds() {
-        return productsIds;
-    }
-
-    public void getProductIds(List<Long> orderItems) {
-        this.productsIds = orderItems;
     }
 }

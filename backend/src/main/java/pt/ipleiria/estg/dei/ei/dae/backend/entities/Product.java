@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import javax.sound.midi.Sequence;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,7 +28,22 @@ public class Product extends Versionable{
     @JoinColumn(name = "package_id")
     private Package productPackage;
 
+    @ManyToMany
+    @JoinTable(
+            name = "products_orders",
+            joinColumns = @JoinColumn(
+                    name = "product_id",
+                    referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "orders_id",
+                    referencedColumnName = "id"
+            )
+    )
+    private List<Orderr> orders;
+
     public Product() {
+        this.orders = new ArrayList<>();
     }
 
     public Product(String name, int stock, String image, Package productPackage, Manufacturer manufacturer) {
@@ -36,6 +52,7 @@ public class Product extends Versionable{
         this.manufacturer = manufacturer;
         this.productPackage = productPackage;
         this.image = image;
+        this.orders = new ArrayList<>();
     }
 
     public Long getId() {
@@ -84,6 +101,14 @@ public class Product extends Versionable{
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<Orderr> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orderr> orders) {
+        this.orders = orders;
     }
 
 }

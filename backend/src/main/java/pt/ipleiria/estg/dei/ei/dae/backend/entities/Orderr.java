@@ -20,7 +20,11 @@ import java.util.List;
                 query = "SELECT o FROM Orderr o WHERE o.endConsumer.username = :endConsumerUsername ORDER BY o.id"
         ),
 })
+<<<<<<< Updated upstream
 public class Orderr extends Versionable {
+=======
+public class Orderr extends Versionable{
+>>>>>>> Stashed changes
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
@@ -34,18 +38,25 @@ public class Orderr extends Versionable {
     @ManyToOne
     private LogisticsOperator logisticsOperators;
 
+    @ManyToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Product> products;
+
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems;
 
     public Orderr() {
-        this.orderItems = new ArrayList<>();
+        this.products = new ArrayList<>();
     }
 
     public Orderr(String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
         this.status = status;
         this.endConsumer = endConsumer;
         this.logisticsOperators = logisticsOperators;
+<<<<<<< Updated upstream
         this.orderItems = new ArrayList<>();
+=======
+        this.products = new ArrayList<>();
+>>>>>>> Stashed changes
     }
 
     public void setId(Long id) {
@@ -80,6 +91,15 @@ public class Orderr extends Versionable {
         this.logisticsOperators = logisticsOperators;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.getOrders().add(this);
+    }
+/*
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
@@ -105,4 +125,5 @@ public class Orderr extends Versionable {
         orderItems.remove(orderItem);
         orderItem.setOrder(null);
     }
+ */
 }

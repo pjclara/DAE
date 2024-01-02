@@ -56,7 +56,7 @@ public class OrderService {
                 .entity("ERROR_FINDING_ORDER")
                 .build();
     }
-
+/*
     @GET
     @Path("{id}/items")
     public List<OrderItemDTO> getProductsByOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
@@ -64,7 +64,7 @@ public class OrderService {
         List<OrderItem> orderItems = order.getOrderItems();
         return orderItems.stream().map(OrderItemDTO::from).collect(Collectors.toList());
     }
-
+*/
     @POST
     @Path("/")
     public Response createNewOrder(OrderDTO orderDTO)
@@ -72,8 +72,12 @@ public class OrderService {
         long id = orderBean.create(
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
+<<<<<<< Updated upstream
                 orderDTO.getLogisticsOperatorName(),
                 orderDTO.getProductIds()
+=======
+                orderDTO.getLogisticsOperatorName()
+>>>>>>> Stashed changes
         );
 
         Orderr order = orderBean.findOrFail(id);
@@ -93,6 +97,7 @@ public class OrderService {
                 orderDTO.getEndConsumerName(),
                 orderDTO.getLogisticsOperatorName()
         );
+        System.out.println("update order id: " + id);
         Orderr order = orderBean.findOrFail(id);
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -121,15 +126,31 @@ public class OrderService {
                 logisticsOperatorName
         );
     }
+/*
+    private OrderDTO toDTO2(Orderr order) {
+        return new OrderDTO(
+                order.getId(),
+                order.getStatus(),
+                order.getEndConsumer().getName(),
+                "",
+                order.getProductIds()
+        );
+
+    }
 
     /*
     private OrderDTO toDo(Orderr order) {
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
-                order.getEndConsumer().getName()
+                order.getEndConsumer().getName(),
+                order.getLogisticsOperators().getName()
         );
     }
+<<<<<<< Updated upstream
     */
 
+=======
+*/
+>>>>>>> Stashed changes
 }

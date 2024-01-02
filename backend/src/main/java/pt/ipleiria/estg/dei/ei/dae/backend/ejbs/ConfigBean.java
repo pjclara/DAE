@@ -85,8 +85,13 @@ public class ConfigBean {
         
         try {
 
+<<<<<<< Updated upstream
             List<Long> productsIds = List.of(productId1, 2L);
             orderBean.create("status1", "endConsumer1", null, productsIds);
+=======
+            List<Long> productsIds = List.of(2L);
+            orderBean.create("status1", "endConsumer1", "", productsIds);
+>>>>>>> Stashed changes
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
