@@ -7,8 +7,9 @@
           class="elevation-1"
         >
             <template v-slot:item.actions="{ item }">
-                <v-btn class="mr-2" size="small" @click="sendOrder(item)">Enviar</v-btn>
-                <v-btn size="small" @click="cancelOrder(item)">Cancelar</v-btn>
+                <v-btn size="small" class="mr-2" @click="detailsOrder(item)">Detalhes</v-btn>
+                <v-btn v-if="item.status === 'Pending'" class="mr-2" size="small" @click="sendOrder(item)">Enviar</v-btn>
+                <v-btn v-if="item.status !== 'Canceled' && item.status !== 'Delivered'" size="small" @click="cancelOrder(item)">Cancelar</v-btn>
             </template>   
         </v-data-table>
     </div>
@@ -31,6 +32,10 @@
         { title: 'Products', value: 'productsIds', align: 'center' },
         { title: '', value: 'actions', align: 'center' }
     ])
+
+    const detailsOrder = (item) => {
+        navigateTo('/orders/' + item.id + '/details')
+    }
 
     const sendOrder = (item) => {
         console.log("item: ", item)

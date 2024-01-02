@@ -18,3 +18,11 @@ export default {
   },
 };
 </script>
+
+<style>
+a:-webkit-any-link {
+    color: inherit;
+    cursor: auto;
+    text-decoration: none;
+}
+</style>

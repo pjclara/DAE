@@ -3,20 +3,21 @@
 
     <v-list color="transparent" v-if="user?.role == 'Manufacturer'">
       <v-list-item prepend-icon="mdi-account-box" title="Fabricante"></v-list-item>
-      <v-list-item><nuxt-link to="/manufacturers/manufacturer1/products">Produtos</nuxt-link></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/manufacturers/manufacturer1/products">Produtos</nuxt-link></v-btn></v-list-item>
       <!-- Rota precisa de ID (mover para pasta [id] quando a rota tiver feita) -->
-      <v-list-item><nuxt-link to="/packages">Embalagens</nuxt-link></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/packages">Embalagens</nuxt-link></v-btn></v-list-item>
 
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'LogisticsOperator'">
       <v-list-item prepend-icon="mdi-account-box" title="O. Logistica"></v-list-item>
-      <v-list-item><nuxt-link to="/orders">Encomendas</nuxt-link></v-list-item>
-      <v-list-item><nuxt-link to="/packages">Embalagens</nuxt-link></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/orders">Encomendas</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/packages">Embalagens</nuxt-link></v-btn></v-list-item>
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'EndConsumer'">
       <v-list-item prepend-icon="mdi-account-box" title="Cliente"></v-list-item>
-      <v-list-item><nuxt-link to="/orders">Encomendas</nuxt-link></v-list-item>
-      <v-list-item><nuxt-link to="/products">Comprar Produtos</nuxt-link></v-list-item>
+      <!-- <v-list-item><nuxt-link to="/customerOrders">Encomendas</nuxt-link></v-list-item> -->
+      <v-list-item><v-btn @click="customerOrders">Encomendas</v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/products">Comprar Produtos</nuxt-link></v-btn></v-list-item>
     </v-list>
 
     <template v-slot:append>
@@ -28,7 +29,7 @@
       </div>
     </template>
   </v-navigation-drawer>
-  <v-app-bar color="primary">
+  <v-app-bar color="deep-purple">
     <v-app-bar-nav-icon button @click="sidebar = !sidebar"></v-app-bar-nav-icon>
 
     <v-col align="center">
@@ -47,9 +48,13 @@ import {useCartStore} from "@/store/cart-store"
 
 const cartStore = useCartStore()
 const authStore = useAuthStore();
-const { token, user, username, userRole, logout } = storeToRefs(authStore)
+const { user } = storeToRefs(authStore)
 
 const sidebar = ref(true)
+
+const customerOrders = () => {
+  navigateTo('/endconsumers/' + user.username + '/orders')
+}
 
 const sair = () => {
   authStore.logout()
