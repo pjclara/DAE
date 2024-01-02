@@ -52,7 +52,7 @@ const { user } = storeToRefs(authStore)
 const sidebar = ref(true)
 
 const customerOrders = () => {
-  navigateTo('/endconsumers/' + user.username + '/orders')
+  navigateTo('/endconsumers/' + user.value.username + '/orders')
 }
 
 const sair = () => {

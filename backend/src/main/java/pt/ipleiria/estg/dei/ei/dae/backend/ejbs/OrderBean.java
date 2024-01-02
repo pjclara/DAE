@@ -8,6 +8,7 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
@@ -36,24 +37,24 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String status, String endConsumerUsername, String logisticsOperatorName,  List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
+    public long create(String status, String endConsumerUsername,  List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
         // check logisticOpt exists
 
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
         if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
-
+/*
         LogisticsOperator logisticsOperator = null;
         if(logisticsOperatorName != null){
             logisticsOperator = entityManager.find(LogisticsOperator.class, logisticsOperatorName);
             // if (logisticsOperator == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticsOperatorName + " not found");
         }
-
+    */
         // check if order already exists
         //Orderr order = entityManager.find(Orderr.class, id);
         //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
         try {
-            Orderr order = new Orderr(status, endConsumer, logisticsOperator);
+            Orderr order = new Orderr(status, endConsumer);
 
             for (Long productId : productIds) {
                 System.out.println("Adding Product: " + productId);
@@ -131,7 +132,7 @@ public class OrderBean {
 
     }
 
-    public void update(Long id, String status, String endConsumerName, String logisticOptName)
+    public void update(Long id, String status, String endConsumerName, String logisticOptName, long packageId)
             throws MyEntityNotFoundException {
 
         //Orderr order = findOrFail(id);
@@ -148,6 +149,11 @@ public class OrderBean {
             LogisticsOperator logisticOpt = entityManager.find(LogisticsOperator.class, logisticOptName);
             if (logisticOpt == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticOptName + " not found");
             order.setLogisticsOperators(logisticOpt);
+        }
+        if (packageId != 0){
+            Package orderPackage = entityManager.find(Package.class, packageId);
+            if (orderPackage == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
+            order.setOrderPackage(orderPackage);
         }
 
         entityManager.merge(order);

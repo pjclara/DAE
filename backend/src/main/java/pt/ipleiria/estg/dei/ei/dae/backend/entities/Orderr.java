@@ -34,6 +34,10 @@ public class Orderr extends Versionable {
     @ManyToOne
     private LogisticsOperator logisticsOperators;
 
+    @OneToOne
+    @JoinColumn(name = "package_id")
+    private Package orderPackage;
+
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems;
 
@@ -41,10 +45,9 @@ public class Orderr extends Versionable {
         this.orderItems = new ArrayList<>();
     }
 
-    public Orderr(String status, EndConsumer endConsumer, LogisticsOperator logisticsOperators) {
+    public Orderr(String status, EndConsumer endConsumer) {
         this.status = status;
         this.endConsumer = endConsumer;
-        this.logisticsOperators = logisticsOperators;
         this.orderItems = new ArrayList<>();
     }
 
@@ -78,6 +81,14 @@ public class Orderr extends Versionable {
 
     public void setLogisticsOperators(LogisticsOperator logisticsOperators) {
         this.logisticsOperators = logisticsOperators;
+    }
+
+    public Package getOrderPackage() {
+        return orderPackage;
+    }
+
+    public void setOrderPackage(Package orderPackage) {
+        this.orderPackage = orderPackage;
     }
 
     public List<OrderItem> getOrderItems() {

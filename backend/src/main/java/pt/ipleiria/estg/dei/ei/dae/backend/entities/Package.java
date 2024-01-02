@@ -34,6 +34,9 @@ public class Package extends Versionable {
     @OneToOne(mappedBy = "productPackage")
     private Product product;
 
+    @OneToOne(mappedBy = "orderPackage")
+    private Orderr order;
+
     //@OneToMany
     @OneToMany(mappedBy = "packagging", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Sensor> sensors;
@@ -73,6 +76,17 @@ public class Package extends Versionable {
 
     public void setPackagingMaterial(String packagingMaterial) {
         this.packagingMaterial = packagingMaterial;
+    }
+
+    public Orderr getOrder() {
+        return order;
+    }
+
+    public void setOrder(Orderr order) {
+        this.order = order;
+        if (order != null) {
+            order.setOrderPackage(this);
+        }
     }
 
     public List<Sensor> getSensors() {

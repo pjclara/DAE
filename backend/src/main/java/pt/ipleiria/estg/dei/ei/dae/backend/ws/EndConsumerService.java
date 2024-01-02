@@ -120,11 +120,14 @@ public class EndConsumerService {
     }
     private OrderDTO orderToDTOs(Orderr order) {
         String logisticsOperatorName = order.getLogisticsOperators() != null ? order.getLogisticsOperators().getName() : null;
+        Long packageId = order.getOrderPackage() != null ? order.getOrderPackage().getId() : 0L;
+
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
                 order.getEndConsumer().getName(),
-                logisticsOperatorName
+                logisticsOperatorName,
+                packageId
         );
     }
     private EndConsumerDTO toDo(EndConsumer endConsumer) {

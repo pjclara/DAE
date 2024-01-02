@@ -72,7 +72,6 @@ public class OrderService {
         long id = orderBean.create(
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
-                orderDTO.getLogisticsOperatorName(),
                 orderDTO.getProductIds()
         );
 
@@ -91,7 +90,8 @@ public class OrderService {
                 id,
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
-                orderDTO.getLogisticsOperatorName()
+                orderDTO.getLogisticsOperatorName(),
+                orderDTO.getPackageId()
         );
         Orderr order = orderBean.findOrFail(id);
         if (order == null) {
@@ -114,11 +114,13 @@ public class OrderService {
 
     private OrderDTO toDTO(Orderr order) {
         String logisticsOperatorName = order.getLogisticsOperators() != null ? order.getLogisticsOperators().getName() : null;
+        Long packageId = order.getOrderPackage() != null ? order.getOrderPackage().getId() : 0L;
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
                 order.getEndConsumer().getName(),
-                logisticsOperatorName
+                logisticsOperatorName,
+                packageId
         );
     }
 

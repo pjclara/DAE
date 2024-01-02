@@ -12,15 +12,18 @@ public class OrderDTO {
     private String endConsumerName;
     private String logisticsOperatorName;
     private List<Long> productsIds;
+    private long packageId;
+
 
     public OrderDTO(){
         this.productsIds = new ArrayList<>();
     }
-    public OrderDTO(Long id, String status, String endConsumerName, String logisticsOperatorName) {
+    public OrderDTO(Long id, String status, String endConsumerName, String logisticsOperatorName, long packageId) {
         this.id = id;
         this.status = status;
         this.endConsumerName = endConsumerName;
         this.logisticsOperatorName = logisticsOperatorName;
+        this.packageId = packageId;
         this.productsIds = new ArrayList<>();
     }
 
@@ -54,6 +57,14 @@ public class OrderDTO {
 
     public void setLogisticsOperatorName(String logisticsOperatorName) {
         this.logisticsOperatorName = logisticsOperatorName;
+    }
+
+    public long getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(long packageId) {
+        this.packageId = packageId;
     }
 
     public List<Long> getProductIds() {
