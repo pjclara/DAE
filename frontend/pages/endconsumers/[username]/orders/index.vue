@@ -22,10 +22,6 @@
     import {useAuthStore} from "~/store/auth-store.js"
     const authStore = useAuthStore()
     const {user} = storeToRefs(authStore)
-    console.log("user: ", user)
-    console.log("user.username: ", user.username)
-    console.log("user..valueusername: ", user.value.username)
-    console.log("user.value: ", user.value)
     const config = useRuntimeConfig()
     const api = config.public.API_URL
     const { data: orders, error, refresh } = await useFetch(`${api}/endConsumers/${user.value.username}/orders`)

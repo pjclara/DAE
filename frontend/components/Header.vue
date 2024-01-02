@@ -4,7 +4,6 @@
     <v-list color="transparent" v-if="user?.role == 'Manufacturer'">
       <v-list-item prepend-icon="mdi-account-box" title="Fabricante"></v-list-item>
       <v-list-item><v-btn><nuxt-link to="/manufacturers/manufacturer1/products">Produtos</nuxt-link></v-btn></v-list-item>
-      <!-- Rota precisa de ID (mover para pasta [id] quando a rota tiver feita) -->
       <v-list-item><v-btn><nuxt-link to="/packages">Embalagens</nuxt-link></v-btn></v-list-item>
 
     </v-list>
