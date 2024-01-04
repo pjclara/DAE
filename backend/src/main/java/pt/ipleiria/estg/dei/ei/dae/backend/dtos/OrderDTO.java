@@ -11,12 +11,12 @@ public class OrderDTO {
     private String status;
     private String endConsumerName;
     private String logisticsOperatorName;
-    private List<Long> productsIds;
+    private List<ArrayList> OrderItems;
     private long packageId;
 
 
     public OrderDTO(){
-        this.productsIds = new ArrayList<>();
+        this.OrderItems = new ArrayList<>();
     }
     public OrderDTO(Long id, String status, String endConsumerName, String logisticsOperatorName, long packageId) {
         this.id = id;
@@ -24,7 +24,7 @@ public class OrderDTO {
         this.endConsumerName = endConsumerName;
         this.logisticsOperatorName = logisticsOperatorName;
         this.packageId = packageId;
-        this.productsIds = new ArrayList<>();
+        this.OrderItems = new ArrayList<>();
     }
 
     public Long getId() {
@@ -67,11 +67,11 @@ public class OrderDTO {
         this.packageId = packageId;
     }
 
-    public List<Long> getProductIds() {
-        return productsIds;
+    public List<ArrayList> getOrderItems() {
+        return OrderItems;
     }
 
-    public void getProductIds(List<Long> orderItems) {
-        this.productsIds = orderItems;
+    public void setOrderItems(List<ArrayList> orderItems) {
+        OrderItems = orderItems;
     }
 }

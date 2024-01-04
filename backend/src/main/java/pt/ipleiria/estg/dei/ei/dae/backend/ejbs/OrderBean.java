@@ -6,14 +6,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
-import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Stateless
 public class OrderBean {
@@ -28,7 +28,7 @@ public class OrderBean {
     private ProductBean productBean;
 
     public List<Orderr> all() {
-        return entityManager.createNamedQuery("getAllOrders", Orderr.class).getResultList();
+        return entityManager.createNamedQuery("getOrdersWithOrderItems", Orderr.class).getResultList();
     }
 
     public List<Orderr> getOrdersByEndConsumer(String customerName) {
@@ -37,99 +37,29 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String status, String endConsumerUsername,  List<Long> productIds) throws MyEntityNotFoundException, MyConstraintViolationException {
-        // check logisticOpt exists
+    public long create(String status, String endConsumerUsername,  List<ArrayList> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
 
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
         if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
-/*
-        LogisticsOperator logisticsOperator = null;
-        if(logisticsOperatorName != null){
-            logisticsOperator = entityManager.find(LogisticsOperator.class, logisticsOperatorName);
-            // if (logisticsOperator == null) throw new IllegalArgumentException("Logistics Operator with username " + logisticsOperatorName + " not found");
-        }
-    */
-        // check if order already exists
-        //Orderr order = entityManager.find(Orderr.class, id);
-        //if (order!= null){ throw new EntityNotFoundException("Orderr with id '" + id + "' already exists"); }
-        try {
-            Orderr order = new Orderr(status, endConsumer);
 
-            for (Long productId : productIds) {
-                System.out.println("Adding Product: " + productId);
-
-                Product product = productBean.find(productId);
-                if (product == null) {
-                    throw new IllegalArgumentException("Product with id " + productId + " not found");
-                }
-
-                // Check if same product already exists
-                OrderItem existingProduct = findExistingItem(order, product);
-                if (existingProduct != null) {
-                    // If exists, increment the quantity
-                    existingProduct.setQuantity(existingProduct.getQuantity() + 1);
-                } else {
-                    // If not exists, create a new OrderItem
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.setProduct(product);
-                    orderItem.setQuantity(1); // initially the quantity is always 1
-
-                    order.addOrderItem(orderItem);
-                }
-
-                OrderItem orderItem = new OrderItem();
-                orderItem.setProduct(product);
-                orderItem.setQuantity(1); // --------- validate this
-                order.addOrderItem(orderItem);
-            }
-
-            entityManager.persist(order);
-            System.out.println("add order to endConsumer");
-            endConsumer.addOrder(order);
-            return order.getId().intValue();
-        } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(e);
-        }
-
-/*
-        for (Long productId : productIds) {
-            System.out.println("Adding Product: " + productId);
-
-            Product product = productBean.find(productId);
-            if (product == null) {
-                throw new IllegalArgumentException("Product with id " + productId + " not found");
-            }
-
-            // Check if same product already exists
-            OrderItem existingProduct = findExistingItem(order, product);
-            if (existingProduct != null) {
-                // If exists, increment the quantity
-                existingProduct.setQuantity(existingProduct.getQuantity() + 1);
-            } else {
-                // If not exists, create a new OrderItem
-                OrderItem orderItem = new OrderItem();
-                orderItem.setProduct(product);
-                orderItem.setQuantity(1); // initially the quantity is always 1
-
-                order.addOrderItem(orderItem);
-            }
-
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
-            orderItem.setQuantity(1); // --------- validate this
-            order.addOrderItem(orderItem);
-
-
-        }
-
+        // create order
+        Orderr order = new Orderr(status, endConsumer);
         entityManager.persist(order);
-        System.out.println("add order to endConsumer");
-        endConsumer.addOrder(order);
-        System.out.println("add order to logisticOpt");
-        //logisticOpt.addOrder(order);
-        */
 
+        // add order items
+        for (ArrayList item : orderItems) {
+            // item.get(0) to a long
+            Long productId = Long.parseLong(item.get(0).toString());
+            Product product = entityManager.find(Product.class, productId);
+            if (product == null) throw new IllegalArgumentException("Product with id " + productId + " not found");
+            Integer quantity = (Integer) item.get(1);
+            OrderItem orderItem = new OrderItem(product, quantity, order);
+            entityManager.persist(orderItem);
+            order.addOrderItem(orderItem);
+        }
+
+        return order.getId();
     }
 
     public void update(Long id, String status, String endConsumerName, String logisticOptName, long packageId)

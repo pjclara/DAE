@@ -180,3 +180,9 @@ Content-Type: application/json
   "password": "manufacturer1"
 }
 
+### get all orders with order items
+GET http://localhost:8080/backend/api/orders
+
+### create a new order with order items
+
+

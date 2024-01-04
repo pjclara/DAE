@@ -6,6 +6,7 @@ import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -82,16 +83,22 @@ public class ConfigBean {
         }catch (Exception e){
             logger.warning(e.getMessage());
         }
-        
         try {
 
-            List<Long> productsIds = List.of(productId1, 2L);
-            orderBean.create("status1", "endConsumer1", productsIds);
+            // add order items with products and quantities
+            List<ArrayList> items = new ArrayList<>();
+            ArrayList item1 = new ArrayList();
+            item1.add(productId1);
+            item1.add(1);
+            items.add(item1);
+            System.out.println(items);
+            orderBean.create("status1", "endConsumer1", items);
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
 
         }
+
 
         // ADD SENSORS TO A PACKAGE
         try{

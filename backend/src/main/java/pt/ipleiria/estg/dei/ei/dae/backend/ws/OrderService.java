@@ -34,7 +34,7 @@ public class OrderService {
 
     @GET
     @Path("/")
-    public List<OrderDTO> getAllOrders() {
+    public List<OrderDTO> getOrdersWithOrderItems() {
         return toDTOs(orderBean.all());
     }
     /*
@@ -72,7 +72,7 @@ public class OrderService {
         long id = orderBean.create(
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
-                orderDTO.getProductIds()
+                orderDTO.getOrderItems()
         );
 
         Orderr order = orderBean.findOrFail(id);

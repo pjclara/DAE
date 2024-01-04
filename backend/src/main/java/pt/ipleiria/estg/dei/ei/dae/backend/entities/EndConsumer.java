@@ -14,6 +14,7 @@ import java.util.List;
 public class EndConsumer extends User{
     @OneToMany(mappedBy = "endConsumer")
     private List<Orderr> orders;
+
     public EndConsumer() {
         this.orders = new ArrayList<>();
     }

@@ -19,6 +19,11 @@ import java.util.List;
                 name = "getOrdersByEndConsumer",
                 query = "SELECT o FROM Orderr o WHERE o.endConsumer.username = :endConsumerUsername ORDER BY o.id"
         ),
+        // get orders with orderItems
+        @NamedQuery(
+                name = "getOrdersWithOrderItems",
+                query = "SELECT o FROM Orderr o JOIN FETCH OrderItem orderItem WHERE o.id = orderItem.order.id ORDER BY o.id"
+        )
 })
 public class Orderr extends Versionable {
 

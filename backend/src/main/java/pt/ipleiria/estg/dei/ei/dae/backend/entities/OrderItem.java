@@ -26,8 +26,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Long id, Product product, Integer quantity, Orderr order) {
-        this.id = id;
+    public OrderItem(Product product, Integer quantity, Orderr order) {
         this.product = product;
         this.quantity = quantity;
         this.order = order;
