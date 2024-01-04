@@ -20,7 +20,11 @@ public class EndConsumerBean {
     private final Hasher hasher = new Hasher();
 
     public void create(String username, String password, String name, String email, String role) throws MyConstraintViolationException {
-        var endConsumer = new EndConsumer(username, hasher.hash(password), name, email, role);
+        EndConsumer endConsumerFind = entityManager.find(EndConsumer.class, username);
+        if (endConsumerFind != null) {
+            throw new IllegalArgumentException("End consumer with username " + username + " already exists");
+        }
+        EndConsumer endConsumer = new EndConsumer(username, hasher.hash(password), name, email, role);
         entityManager.persist(endConsumer);
     }
 

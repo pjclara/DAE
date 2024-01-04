@@ -1,33 +1,26 @@
 <template>
-    <div>
-        <h1>Create a endConsumer</h1>
-        <form @submit.prevent="create">
-        <div>Username:
-            <input v-model.trim="endConsumerForm.username" type="text">
-            <span v-if="endConsumerForm.username !== null && !isUsernameValid" class="error">
-                ERROR: {{ formFeedback.username }}</span>
-        </div>
-        <div>Password:
-            <input v-model.trim="endConsumerForm.password" type="password">
-            <span v-if="endConsumerForm.username !== null && !isPasswordValid" class="error">
-                ERROR: {{ formFeedback.password }}</span>
-        </div>
-        <div>Name:
-            <input v-model.trim="endConsumerForm.name" type="text">
-            <span v-if="endConsumerForm.username !== null && !isNameValid" class="error">
-                ERROR: {{ formFeedback.name }}</span>
-        </div>
-        <div>E-mail:
-            <input v-model.trim="endConsumerForm.email" type="email">
-            <span v-if="endConsumerForm.username !== null && !isEmailValid" class="error">
-                ERROR: {{ formFeedback.email }}</span>
-        </div>       
-        <button type="reset">RESET</button>
-        <button type="submit" :disabled="!isFormValid">CREATE</button>
-        <nuxt-link to="/">Return</nuxt-link>
-    </form>
-    {{ message }} 
-    </div>
+    <v-col align="center">
+        <v-col cols="6">
+            <h1>Create a endConsumer</h1>
+
+            <v-form @submit.prevent="create">
+                <v-text-field v-model.trim="endConsumerForm.username" label="Username"
+                    :rules="isUsernameValid ? [] : [formFeedback.username]" :counter="15" required></v-text-field>
+
+                <v-text-field v-model.trim="endConsumerForm.password" label="Password" type="password"
+                    :rules="isPasswordValid ? [] : [formFeedback.password]" :counter="15" required></v-text-field>
+
+                <v-text-field v-model.trim="endConsumerForm.name" label="Name"
+                    :rules="isNameValid ? [] : [formFeedback.name]" :counter="30" required></v-text-field>
+
+                <v-text-field v-model.trim="endConsumerForm.email" label="E-mail" type="email"
+                    :rules="isEmailValid ? [] : [formFeedback.email]" required></v-text-field>
+
+                <v-btn block rounded="xl" size="x-large" class="mt-2" @click="create">Registar</v-btn>
+            </v-form>
+            {{ message }}
+        </v-col>
+    </v-col>
 </template>
 
 <script setup>
@@ -46,6 +39,7 @@ const formFeedback = reactive({
 const message = ref('')
 const config = useRuntimeConfig()
 const api = config.public.API_URL
+
 
 const isUsernameValid = computed(() => {
     if (!endConsumerForm.username) {
@@ -88,8 +82,8 @@ const isNameValid = computed(() => {
         formFeedback.name = 'name must be at least 3 characters'
         return false
     }
-    if (endConsumerForm.name.length > 15) {
-        formFeedback.name = 'name must be at most 15 characters'
+    if (endConsumerForm.name.length > 30) {
+        formFeedback.name = 'name must be at most 30 characters'
         return false
     }
     return true
@@ -100,15 +94,6 @@ const isEmailValid = computed(() => {
         formFeedback.email = 'email is required'
         return false
     }
-    if (endConsumerForm.email.length < 3) {
-        formFeedback.email = 'email must be at least 3 characters'
-        return false
-    }
-    if (endConsumerForm.email.length > 15) {
-        formFeedback.email = 'email must be at most 15 characters'
-        return false
-    }
-    // is a email format
     const emailRegex = /\S+@\S+\.\S+/
     if (!emailRegex.test(endConsumerForm.email)) {
         formFeedback.email = 'email must be a valid email'
@@ -117,13 +102,11 @@ const isEmailValid = computed(() => {
     return true
 })
 
-
-// Form validation rules
 const isFormValid = computed(() => {
     return isUsernameValid.value &&
         isPasswordValid.value &&
         isNameValid.value &&
-        isEmailValid.value 
+        isEmailValid.value
 })
 
 async function create() {
@@ -133,7 +116,9 @@ async function create() {
         body: JSON.stringify(endConsumerForm)
     }
     const { error } = await useFetch(`${api}/endConsumers`, requestOptions)
-    if (!error.value) navigateTo('/endConsumers')
+    if (!error.value) {
+        navigateTo('/auth/login')
+    }
     message.value = error.value
 }
 </script>
