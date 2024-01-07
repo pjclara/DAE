@@ -8,21 +8,26 @@
                 <h2>Sem produtos no carrinho</h2>
             </v-card-text>
             <v-card-text v-else>
-                <table class="table">
-                    <tr>
-                        <th>Produto</th>
-                        <th>Image</th>
-                        <th>Quantity</th>
-                    </tr>
-                    <tr v-for="item in cartStore.productsInCart()">
-                        <td>{{ item.name }}</td>
-                        <td><v-img :width="25" aspect-ratio="4/3" cover :src="item.image"></v-img></td>
-                        <td>{{ item.count }}</td>
-                        <td>
-                            <v-btn @click="cartStore.decrement(item.id)">-</v-btn>
-                            <v-btn @click="cartStore.increment(item.id)">+</v-btn>
-                        </td>
-                    </tr>
+                <table style="width: 100%; border: solid;">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Image</th>
+                            <th>Quantity</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        <tr v-for="item in cartStore.productsInCart()">
+                            <td>{{ item.name }}</td>
+                            <td><v-img :width="25" aspect-ratio="4/3" cover :src="item.image"></v-img></td>
+                            <td>{{ item.count }}</td>
+                            <td>
+                                <v-btn @click="cartStore.decrement(item.id)">-</v-btn>
+                                <v-btn @click="cartStore.increment(item.id)">+</v-btn>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </v-card-text>
             <v-card-actions class="d-flex justify-space-around">
