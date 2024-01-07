@@ -57,14 +57,14 @@ public class ConfigBean {
         }
 
         try{
-            packageBean.create( 1L, PackagingType.PRIMARY, "Plástico");
-            packageBean.create( 2L, PackagingType.PRIMARY, "Vidro");
-            packageBean.create( 3L, PackagingType.PRIMARY, "Papel");
-            packageBean.create( 4L, PackagingType.SECONDARY, "Cartão");
-            packageBean.create( 5L, PackagingType.SECONDARY, "Plástico");
-            packageBean.create( 6L, PackagingType.THIRD, "Cartão");
-            packageBean.create( 7L, PackagingType.THIRD, "Plástico");
-            packageBean.create( 8L, PackagingType.TRANSPORT, "Palete");
+            packageBean.create(  PackagingType.PRIMARY, "Plástico");
+            packageBean.create(  PackagingType.PRIMARY, "Vidro");
+            packageBean.create(  PackagingType.PRIMARY, "Papel");
+            packageBean.create(  PackagingType.SECONDARY, "Cartão");
+            packageBean.create(  PackagingType.SECONDARY, "Plástico");
+            packageBean.create(  PackagingType.THIRD, "Cartão");
+            packageBean.create(  PackagingType.THIRD, "Plástico");
+            packageBean.create(  PackagingType.TRANSPORT, "Palete");
         } catch (Exception e) {
             logger.severe(e.getMessage());
         }
@@ -77,9 +77,9 @@ public class ConfigBean {
             logger.warning(e.getMessage());
         }
         try {
-            sensorBean.create(1L, "Produto", "Temperatura", "20", "ºC", "10", "30", 123456789L);
-            sensorBean.create(2L, "Produto", "Humidade", "50", "%", "30", "70", 123456789L);
-            sensorBean.create(3L, "Produto", "Pressão", "1000", "Pa", "900", "1100", 123456789L);
+            sensorBean.create("Produto", "Temperatura", "20", "ºC", "10", "30", 123456789L);
+            sensorBean.create("Produto", "Humidade", "50", "%", "30", "70", 123456789L);
+            sensorBean.create("Produto", "Pressão", "1000", "Pa", "900", "1100", 123456789L);
         }catch (Exception e){
             logger.warning(e.getMessage());
         }

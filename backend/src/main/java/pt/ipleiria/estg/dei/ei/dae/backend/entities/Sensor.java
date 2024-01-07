@@ -9,6 +9,8 @@ import jakarta.validation.constraints.NotNull;
 @NamedQuery(name = "getAllSensors", query = "SELECT s FROM Sensor s ORDER BY s.id")
 public class Sensor extends Versionable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
+    @Column(name="id")
     private long id;
     @NotNull
     private String source;  // tipo de embalagem (Produto/Encomenda) é preciso?
@@ -37,8 +39,7 @@ public class Sensor extends Versionable {
     public Sensor() {
     }
 
-    public Sensor(long id, String source, String type, String value, String unit, String max, String min, long timestamp) {
-        this.id = id;
+    public Sensor(String source, String type, String value, String unit, String max, String min, long timestamp) {
         this.source = source;
         this.type = type;
         this.value = value;

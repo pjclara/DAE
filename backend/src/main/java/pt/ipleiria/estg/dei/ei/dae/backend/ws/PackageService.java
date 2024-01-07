@@ -88,12 +88,11 @@ public class PackageService {
     //@Authenticated
     //@RolesAllowed({"Admin"})
     public Response createNewPackage(PackageDTO packageDTO) throws MyConstraintViolationException {
-        packageBean.create(
-                packageDTO.getId(),
+        long id = packageBean.create(
                 packageDTO.getPackagingType(),
                 packageDTO.getPackagingMaterial()
         );
-        Package newPackage = packageBean.find(packageDTO.getId());
+        Package newPackage = packageBean.find(id);
         return Response.status(Response.Status.CREATED).entity(PackageDTO.from(newPackage)).build();
     }
 
@@ -115,7 +114,7 @@ public class PackageService {
     // Add and Remove a Sensor of a package
     @POST
     @Authenticated
-    @RolesAllowed({"Manufacturer", "LogisticsOperator"})
+    //@RolesAllowed({"Manufacturer", "LogisticsOperator"})
     @Path("{id}/sensor/{sensorId}")
     public Response addSensorToPackage(@PathParam("id") Long id, @PathParam("sensorId") Long sensorId)
             throws MyEntityNotFoundException {

@@ -1,52 +1,47 @@
 <template>
     <div>
-        add manufacturer
-        <nuxt-link class="link" :to="`/manufacturers/create`">add manufacturer</nuxt-link>
-
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Details</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="manufacturer in manufacturers" :key="manufacturer.id">
-                    <td>{{ manufacturer.name }}</td>
-                    <td>{{ manufacturer.email }}</td>
-                    <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/details`">Details</nuxt-link>
-                    </td>
-                    <td>
-                        <nuxt-link class="link" :to="`/manufacturers/${manufacturer.username}/edit`">Edit</nuxt-link>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <v-row justify="space-between" class="ma-3">
+            <h2>Sensores</h2>
+            <v-btn><nuxt-link to="/sensors/create">Criar sensor</nuxt-link></v-btn>
+        </v-row>
+        <div v-if="user.role === 'Manufacturer'">
+            <v-data-table
+              :headers="headers"
+              :items="manufacturerSensors"
+              :items-per-page="15"
+              class="elevation-1"
+            />
+        </div>
+        <div v-else>
+            <v-data-table
+              :headers="headers"
+              :items="logisticOperatorSensors"
+              :items-per-page="15"
+              class="elevation-1"
+            />
+        </div>
     </div>
-
 </template>
 
 <script setup>
-const config = useRuntimeConfig()
-const api = config.public.API_URL
-const { data: manufacturers, error, refresh } = await useFetch(`${api}/manufacturers`)
+    import {useAuthStore} from "~/store/auth-store.js"
+    const authStore = useAuthStore()
+    const {user} = storeToRefs(authStore)
+
+    const config = useRuntimeConfig()
+    const api = config.public.API_URL
+    const { data: sensors, error, refresh } = await useFetch(`${api}/sensors`)
+
+    const headers = ref([
+        { title: 'Fonte', value: 'source', align: 'center' },
+        { title: 'Tipo', value: 'type', align: 'center' },
+        { title: 'Valor', value: 'value', align: 'center' },
+        { title: 'Unidade', value: 'unit', align: 'center' },
+        { title: 'Máximo', value: 'max', align: 'center' },
+        { title: 'Mínimo', value: 'min', align: 'center' }
+    ])
+
+    const manufacturerSensors = sensors.value.filter(sensor => sensor.source === 'Produto')
+    const logisticOperatorSensors = sensors.value.filter(sensor => sensor.source === 'Encomenda')
+    
 </script>
-
-<style>
-table {
-    border-collapse: collapse;
-    width: 50%;
-    margin: 10px;
-}
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}   
-
-</style>
-

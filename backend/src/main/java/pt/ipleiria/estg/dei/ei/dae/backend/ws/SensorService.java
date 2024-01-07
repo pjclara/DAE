@@ -57,8 +57,7 @@ public class SensorService {
     @POST
     @Path("/")
     public Response createNewSensor(SensorDTO sensorDTO) throws MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
-        sensorBean.create(
-                sensorDTO.getId(),
+        long id = sensorBean.create(
                 sensorDTO.getSource(),
                 sensorDTO.getType(),
                 sensorDTO.getValue(),
@@ -67,7 +66,7 @@ public class SensorService {
                 sensorDTO.getMin(),
                 sensorDTO.getTimestamp()
         );
-        Sensor sensor = sensorBean.find(sensorDTO.getId());
+        Sensor sensor = sensorBean.find(id);
         if (sensor == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

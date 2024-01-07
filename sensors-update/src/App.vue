@@ -78,7 +78,6 @@ async function fetchSensor() {
   if(data){
     sensor.value = data
   }
-  console.log("JSON.stringify(sensor.value): ", JSON.stringify(sensor.value))
 }
 
 async function update() {

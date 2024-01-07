@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
@@ -21,13 +22,16 @@ public class PackageBean {
     @EJB
     private SensorBean sensorBean;
 
-     public void create(Long id, PackagingType type, String material)
-            throws EntityExistsException, EntityNotFoundException, MyConstraintViolationException {
+    @EJB
+    private PackageBean packageBean;
 
+     public long create(PackagingType type, String material)
+            throws EntityExistsException, EntityNotFoundException, MyConstraintViolationException {
         try {
-            var package_ = new Package(id, type, material);
+            Package package_ = new Package(type, material);
             entityManager.persist(package_);
-            entityManager.flush();
+            //entityManager.flush();
+            return package_.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
@@ -89,8 +93,12 @@ public class PackageBean {
     }
 
     public void addSensorToPackage(Long packageId, Long sensorId) throws MyEntityNotFoundException {
-        Package package_ = findOrFail(packageId);
-        var sensorToAdd = sensorBean.find(sensorId);
+        //Package package_ = findOrFail(packageId);
+        Package package_ = packageBean.find(packageId);
+        if (package_ == null) {
+            throw new MyEntityNotFoundException("Package with id '" + packageId + "' not found");
+        }
+        Sensor sensorToAdd = sensorBean.find(sensorId);
         if (sensorToAdd == null) {
             throw new MyEntityNotFoundException("Sensor with id '" + sensorId + "' not found");
         }

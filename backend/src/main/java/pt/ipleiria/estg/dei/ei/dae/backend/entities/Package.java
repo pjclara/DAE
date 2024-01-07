@@ -25,6 +25,8 @@ import java.util.List;
 public class Package extends Versionable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
+    @Column(name="id")
     private Long id;
     @NotNull
     private PackagingType packagingType;  // [1º,2º,3º(Produto) ou encomenda / transporte]
@@ -46,12 +48,10 @@ public class Package extends Versionable {
     }
 
 
-    public Package(Long id, PackagingType packagingType, String packagingMaterial) {
-        this.id = id;
+    public Package(PackagingType packagingType, String packagingMaterial) {
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
         this.sensors =  new ArrayList<>();
-        this.product = product;
     }
 
     public Long getId() {

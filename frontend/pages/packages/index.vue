@@ -1,15 +1,17 @@
 <template>
-    <div class="w-100">
-        <v-data-table :headers="headers" :items="getPackages()" :items-per-page="5" class="elevation-1">
-            <template v-slot:top>
-                <v-toolbar flat>
-                    <v-toolbar-title>Embalagens disponiveis</v-toolbar-title>
-                </v-toolbar>
-            </template>
-            <template v-slot:item.action="{ item }">
-                <v-btn @click="edit(item)">OPEN</v-btn>
-            </template>
-        </v-data-table>
+    <div>
+        <v-row justify="space-between" class="ma-3">
+            <h2>Embalagens</h2>
+            <v-btn><nuxt-link to="/packages/create">Criar embalagem</nuxt-link></v-btn>
+        </v-row>
+        <div class="w-100">
+            <v-data-table :headers="headers" :items="getPackages()" :items-per-page="5" class="elevation-1">
+    
+                <template v-slot:item.action="{ item }">
+                    <v-btn @click="edit(item)">OPEN</v-btn>
+                </template>
+            </v-data-table>
+        </div>
     </div>
 </template>
 

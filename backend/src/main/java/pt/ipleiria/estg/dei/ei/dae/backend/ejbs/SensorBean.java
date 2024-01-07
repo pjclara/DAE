@@ -18,10 +18,15 @@ public class SensorBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void create(long id, String source, String type, String value, String unit, String max, String min, Long timestamp) {
+    public long create(String source, String type, String value, String unit, String max, String min, Long timestamp) throws MyConstraintViolationException {
+        try {
+            Sensor sensor = new Sensor(source, type, value, unit, max, min, timestamp);
+            entityManager.persist(sensor);
 
-        var sensor = new Sensor(id, source, type, value, unit, max, min, timestamp);
-        entityManager.persist(sensor);
+            return sensor.getId().intValue();
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(e);
+        }
     }
 
     public Sensor find(long id) {
