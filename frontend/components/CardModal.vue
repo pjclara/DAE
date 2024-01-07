@@ -19,11 +19,8 @@
                         <td><v-img :width="25" aspect-ratio="4/3" cover :src="item.image"></v-img></td>
                         <td>{{ item.count }}</td>
                         <td>
-
-                            <v-btn @click="remove(item)">-</v-btn>
-                            <v-btn @click="add(item.id)">+</v-btn>
-                            
-
+                            <v-btn @click="cartStore.decrement(item.id)">-</v-btn>
+                            <v-btn @click="cartStore.increment(item.id)">+</v-btn>
                         </td>
                     </tr>
                 </table>
@@ -48,25 +45,7 @@ const { user } = storeToRefs(authStore)
 
 const cartStore = useCartStore()
 
-const cartItems = ref(cartStore.cartItems)
-
-
-const add = (id) => {
-    // change count of product in cart
-   cartItems.value.forEach((item) => {
-    console.log("item.id: ", id)
-        if (item.id === id) {
-            item.count++
-            console.log("item.count: ", item.count)
-        }
-    })
-}
-
-const remove = (item) => {
-    if (item.count > 1) {
-        item.count--
-    }
-}
+const cartItems = ref(cartStore.productsInCart())
 
 onMounted(() => {
     // count products in cart

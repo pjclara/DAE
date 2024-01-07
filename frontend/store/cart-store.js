@@ -24,19 +24,19 @@ export const useCartStore = defineStore("cartStore", () => {
   };
 
   const createOrderCart = (customer) => {
-
     /// get id of cartItems
     let ids = cartItems.value.map((item) => item.id);
 
     let idCounts = ids.reduce((acc, id) => {
-        acc[id] = (acc[id] || 0) + 1;
-        return acc;
-      }, {});
+      acc[id] = (acc[id] || 0) + 1;
+      return acc;
+    }, {});
 
-      // Converting the object back to an array of unique IDs and their counts
-      let itemsIds = Object.keys(idCounts).map(id => (
-        [parseInt(id), idCounts[id]])
-      );
+    // Converting the object back to an array of unique IDs and their counts
+    let itemsIds = Object.keys(idCounts).map((id) => [
+      parseInt(id),
+      idCounts[id],
+    ]);
 
     orderData.value = {
       status: "Pending",
@@ -77,16 +77,34 @@ export const useCartStore = defineStore("cartStore", () => {
       acc[id] = (acc[id] || 0) + 1;
       return acc;
     }, {});
-    return Object.keys(idCounts).map(id => (
+    return Object.keys(idCounts).map((id) =>
       //"id: " + id + " count: " + idCounts[id] + " name: " + cartItems.value.find(item => item.id == id).name
       // array of objects
-      {
+      ({
         id: id,
         count: idCounts[id],
-        name: cartItems.value.find(item => item.id == id).name,
-        image: cartItems.value.find(item => item.id == id).image,
-      }
-    ));
+        name: cartItems.value.find((item) => item.id == id).name,
+        image: cartItems.value.find((item) => item.id == id).image,
+      })
+    );
+  };
+
+  // increment the count of the item with id
+  const increment = (id) => {
+    let item = cartItems.value.find((item) => item.id == id);
+    console.log("item: ", item);
+    if (productsInCart().find((item) => item.id == id).count < item.stock) {
+      cartItems.value.push(item);
+    }
+  };
+
+  // decrement the count of the item with id
+  const decrement = (id) => {
+    let item = cartItems.value.find((item) => item.id == id);
+    if (productsInCart().find((item) => item.id == id).count > 1) {
+      // remove the item from the cart
+      cartItems.value.splice(cartItems.value.indexOf(item), 1);
+    }
   };
 
   return {
@@ -97,5 +115,7 @@ export const useCartStore = defineStore("cartStore", () => {
     modalOpen,
     cartItems,
     productsInCart,
+    increment,
+    decrement,
   };
 });
