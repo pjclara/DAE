@@ -47,14 +47,16 @@ async function login() {
         messages.value.push({ error: error.value.message })
     }
     if (data.value) {
-        console.log('token :', data.value)
         token.value = data.value;
+        // save token to local storage
+        localStorage.setItem('token', token.value)
         await getUser();
-        //navigateTo('/')
     }
 }
 function reset() {
     token.value = null
+    // remove token from local storage
+    localStorage.removeItem('token')
     messages.value = []
 }
 
@@ -72,6 +74,7 @@ async function getUser() {
     if (data.value) {
         messages.value.push({ payload: data.value })
         user.value = data.value;
+        localStorage.setItem('user', JSON.stringify(user.value))
     }
 }
 

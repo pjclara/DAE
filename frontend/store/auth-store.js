@@ -12,5 +12,10 @@ export const useAuthStore = defineStore("authStore", () => {
         username.value = null
         user.value = null
     }
+
+    function getUser() {
+        return user.value
+    }
+    
     return { token, user, userRole, username, logout }
 })

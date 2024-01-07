@@ -9,6 +9,15 @@ function logout() {
     router.push('/')
 }
 onMounted(() => {
+    // check if token exists in local storage
+    const tokenLocal = localStorage.getItem('token')
+    const userLocal = localStorage.getItem('user')
+    if (userLocal) {
+        user.value = JSON.parse(userLocal)
+    }
+    if (tokenLocal) {
+        token.value = tokenLocal
+    }
     if (!token.value) {
         navigateTo('/auth/login')
     }

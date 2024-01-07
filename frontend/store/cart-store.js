@@ -70,6 +70,25 @@ export const useCartStore = defineStore("cartStore", () => {
     }
   }
 
+  const productsInCart = () => {
+    let ids = cartItems.value.map((item) => item.id);
+    // count the number of each id
+    let idCounts = ids.reduce((acc, id) => {
+      acc[id] = (acc[id] || 0) + 1;
+      return acc;
+    }, {});
+    return Object.keys(idCounts).map(id => (
+      //"id: " + id + " count: " + idCounts[id] + " name: " + cartItems.value.find(item => item.id == id).name
+      // array of objects
+      {
+        id: id,
+        count: idCounts[id],
+        name: cartItems.value.find(item => item.id == id).name,
+        image: cartItems.value.find(item => item.id == id).image,
+      }
+    ));
+  };
+
   return {
     createOrderCart,
     add,
@@ -77,5 +96,6 @@ export const useCartStore = defineStore("cartStore", () => {
     closeDialog,
     modalOpen,
     cartItems,
+    productsInCart,
   };
 });
