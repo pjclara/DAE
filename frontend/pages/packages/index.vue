@@ -45,7 +45,7 @@ const manufacturersPackages = packages.value.filter(productPackage => productPac
 const logisticsOperatorsPackages = packages.value.filter(productPackage => productPackage.packagingType === 'TRANSPORT')
 
 
-// console.log("packages: ", packages.value);
+//console.log("packages: ", packages.value);
 
 // const getPackages = () => {
 //     const items = (packages.value || []).map(package_ => {
@@ -65,18 +65,18 @@ const headers = [
     {
         title: 'Tipo',
         align: 'center',
-        value: 'type',
+        value: 'packagingType',
     },
     {
         title: 'Material de embalamento',
         align: 'center',
-        value: 'material',
+        value: 'packagingMaterial',
     },
     {
         title: '',
         align: 'center',
         value: 'action',
-    },
+    }
 ]
 
 </script>
