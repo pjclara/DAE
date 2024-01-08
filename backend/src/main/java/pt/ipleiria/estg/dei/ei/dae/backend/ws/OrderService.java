@@ -85,7 +85,7 @@ public class OrderService {
                 orderItem.getId(),
                 orderItem.getProduct().getName(),
                 orderItem.getProduct().getImage(),
-                orderItem.getProduct().getPackage().getPackagingMaterial(),
+                orderItem.getProduct().getProductPackage().getPackagingMaterial(),
                 orderItem.getQuantity()
         );
     }
