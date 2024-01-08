@@ -10,16 +10,22 @@ public class OrderItemDTO {
 
     private Long id;
 
-    private Product product;
+    private String productName;
+
+    private String productImage;
+
+    private String productPackageMaterial;
 
     private Integer quantity;
 
     public OrderItemDTO() {
     }
 
-    public OrderItemDTO(Long id, Product product, Integer quantity) {
+    public OrderItemDTO(Long id, String productName , String productImage, String productPackageMaterial,Integer quantity) {
         this.id = id;
-        this.product = product;
+        this.productName = productName;
+        this.productImage = productImage;
+        this.productPackageMaterial = productPackageMaterial;
         this.quantity = quantity;
     }
 
@@ -31,12 +37,12 @@ public class OrderItemDTO {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public String getProduct() {
+        return productName;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProduct(String productName) {
+        this.productName = productName;
     }
 
     public Integer getQuantity() {
@@ -47,16 +53,21 @@ public class OrderItemDTO {
         this.quantity = quantity;
     }
 
-
-    public static OrderItemDTO from(OrderItem orderItem) {
-        return new OrderItemDTO(
-                orderItem.getId(),
-                orderItem.getProduct(),
-                orderItem.getQuantity()
-        );
+    public String getProductImage() {
+        return productImage;
     }
 
-    public static List<OrderItemDTO> from(List<OrderItem> orderItem) {
-        return orderItem.stream().map(OrderItemDTO::from).collect(Collectors.toList());
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
+
+    public String getProductPackageMaterial() {
+        return productPackageMaterial;
+    }
+
+    public void setProductPackageMaterial(String productPackageMaterial) {
+        this.productPackageMaterial = productPackageMaterial;
+    }
+
+
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
@@ -37,7 +38,7 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String status, String endConsumerUsername,  List<ArrayList> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
+    public long create(String status, String endConsumerUsername,  List<OrderItem> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
 
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
@@ -48,12 +49,12 @@ public class OrderBean {
         entityManager.persist(order);
 
         // add order items
-        for (ArrayList item : orderItems) {
+        for (OrderItem item : orderItems) {
             // item.get(0) to a long
-            Long productId = Long.parseLong(item.get(0).toString());
+            Long productId = (Long) item.getId();
             Product product = entityManager.find(Product.class, productId);
             if (product == null) throw new IllegalArgumentException("Product with id " + productId + " not found");
-            Integer quantity = (Integer) item.get(1);
+            Integer quantity = (Integer) item.getQuantity();
             OrderItem orderItem = new OrderItem(product, quantity, order);
             entityManager.persist(orderItem);
             order.addOrderItem(orderItem);
@@ -123,4 +124,15 @@ public class OrderBean {
         return null;
     }
 
+    public Orderr getOrderProducts(Long orderId) {
+        Orderr order = entityManager.find(Orderr.class, orderId);
+        if (order == null) throw new IllegalArgumentException("Order with id " + orderId + " not found");
+
+        Hibernate.initialize(order.getOrderItems());
+
+        if (order.getOrderItems().isEmpty()) throw new IllegalArgumentException("Order with id " + orderId + " has no products");
+
+        return order;
+
+    }
 }

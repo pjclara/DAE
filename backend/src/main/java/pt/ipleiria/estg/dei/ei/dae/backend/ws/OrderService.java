@@ -13,6 +13,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
@@ -37,32 +38,56 @@ public class OrderService {
     public List<OrderDTO> getOrdersWithOrderItems() {
         return toDTOs(orderBean.all());
     }
-    /*
-    @GET
-    @Path("/")
-    public List<OrderDTO> getAllOrdersByUser() { // get only the corresponding orders
-        String endConsumerUsername = securityContext.getUserPrincipal().getName();
-        return toDTOs(orderBean.getOrdersByEndConsumer(endConsumerUsername));
-    } */
 
     @GET
     @Path("{id}")
     public Response get(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Orderr order = orderBean.findOrFail(orderId);
-        if (order != null) {
-            return Response.ok(toDTO(order)).entity(toDTO(order)).build();
+        Orderr orderr = orderBean.findOrFail(orderId);
+        if (orderr != null) {
+            var order = orderDto(orderr);
+            return Response.ok(order).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_ORDER")
                 .build();
     }
 
+    private OrderDTO orderDto(Orderr orderr) {
+        return new OrderDTO(
+                orderr.getId(),
+                orderr.getStatus(),
+                orderr.getEndConsumer().getName(),
+                orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
+                orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
+                orderr.getOrderItems()
+        );
+    }
+
     @GET
     @Path("{id}/items")
-    public List<OrderItemDTO> getProductsByOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Orderr order = orderBean.findOrFail(orderId);
-        List<OrderItem> orderItems = order.getOrderItems();
-        return orderItems.stream().map(OrderItemDTO::from).collect(Collectors.toList());
+    public Response getProductsByOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
+        Orderr orderr = orderBean.findOrFail(orderId);
+        if(orderr != null) {
+            var orderItems = ordersItemDTO(orderr.getOrderItems());
+            return Response.ok(orderItems).build();
+        }
+    return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_ORDER")
+                .build();
+    }
+
+    private List<OrderItemDTO> ordersItemDTO(List<OrderItem> orderItems) {
+        return orderItems.stream().map(this::orderItemDTO).collect(Collectors.toList());
+    }
+
+    private OrderItemDTO orderItemDTO(OrderItem orderItem) {
+        return new OrderItemDTO(
+                orderItem.getId(),
+                orderItem.getProduct().getName(),
+                orderItem.getProduct().getImage(),
+                orderItem.getProduct().getPackage().getPackagingMaterial(),
+                orderItem.getQuantity()
+        );
     }
 
     @POST
@@ -120,18 +145,10 @@ public class OrderService {
                 order.getStatus(),
                 order.getEndConsumer().getName(),
                 logisticsOperatorName,
-                packageId
+                packageId,
+                order.getOrderItems()
         );
     }
 
-    /*
-    private OrderDTO toDo(Orderr order) {
-        return new OrderDTO(
-                order.getId(),
-                order.getStatus(),
-                order.getEndConsumer().getName()
-        );
-    }
-    */
 
 }

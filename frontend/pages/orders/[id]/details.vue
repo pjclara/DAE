@@ -43,13 +43,9 @@
     const api = config.public.API_URL
     const route = useRoute()
     const id = route.params.id
-    const { data: order, error: orderErr } = await useFetch(`${api}/orders/${id}`, {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + token.value
-      }
-    })
+    const { data: order, error: orderErr } = await useFetch(`${api}/orders/${id}`)
+
+ 
   </script>
   
   <style scoped>

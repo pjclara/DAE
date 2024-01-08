@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
 
 import java.util.ArrayList;
@@ -85,14 +87,8 @@ public class ConfigBean {
         }
         try {
 
-            // add order items with products and quantities
-            List<ArrayList> items = new ArrayList<>();
-            ArrayList item1 = new ArrayList();
-            item1.add(productId1);
-            item1.add(1);
-            items.add(item1);
-            System.out.println(items);
-            orderBean.create("status1", "endConsumer1", items);
+            long orderr = orderBean.create("pending", "endConsumer1", new ArrayList<>());
+
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
