@@ -85,36 +85,18 @@
   const { data: item, error: packageErr } = await useFetch(`${api}/packages/${id}`)
   console.log("Package Error: ", packageErr)
 
-  const sensorArray = ref([])
-  const currentSensors = ref([])
-
   // get the sensors of package
-  const fetchDataAndUpdate = async () => {
-  // Fetch all sensors
-    const { data: allSensors, error: sensorErr } = await useFetch(`${api}/sensors`)
-    const { data: preSelectedSensors, error: selSensorErr } = await useFetch(`${api}/packages/${id}/sensors`)
-    
-    sensorArray.value = allSensors.value
-    currentSensors.value = preSelectedSensors.value
-  };
+  const { data: allSensors, error: sensorErr } = await useFetch(`${api}/sensors`)
+  const { data: preSelectedSensors, error: selSensorErr } = await useFetch(`${api}/packages/${id}/sensors`)
 
-  console.log(currentSensors.value)
-
-  onMounted(() => {
-    fetchDataAndUpdate()
-  })
-
-  // const { data: allSensors, error: sensorErr } = await useFetch(`${api}/sensors`)
-  // const { data: preSelectedSensors, error: selSensorErr } = await useFetch(`${api}/packages/${id}/sensors`)
-
-  // const sensorArray = allSensors.value
-  // const currentSensors = preSelectedSensors.value
+  const sensorArray = allSensors.value
+  const currentSensors = preSelectedSensors.value
 
   const openSensorModal = () => { dialog.value = true; };
 
-  const closeSensorModal = () => { dialog.value = false; };
+const closeSensorModal = () => { dialog.value = false; };
 
-const selectedSensorToAdd = ref(currentSensors.value.map(sensor => sensor.id) || []); // Pre-select based on ids of current sensors
+const selectedSensorToAdd = ref(preSelectedSensors.value.map(sensor => sensor.id) || []); // Pre-select based on ids of current sensors
 const formattedAvailableSensors = computed(() =>
   sensorArray.map(sensor => ({
     title: `${sensor.id} - ${sensor.type}`,
@@ -137,7 +119,8 @@ const addedSensors = computed(() =>
 
 const updateListOfSensors = async () => {
   console.log('Removed: ', removedSensors.value)
-  console.log('Added: ', addedSensors.value)  
+  console.log('Added: ', addedSensors.value)
+  
 
   if (selectedSensorToAdd.value.length > 0) {
     console.log(selectedSensorToAdd.value)
@@ -179,8 +162,6 @@ const updateListOfSensors = async () => {
       })
     }
 
-    closeSensorModal()
-    fetchDataAndUpdate()
   }
 
   // Clear the selected sensors after processing
