@@ -16,9 +16,16 @@
                                 item-value="id" label="Package" />
                         </div>
                         <div>
-                            <v-text-field v-model="productForm.image" label="URL Imagem de Produto" />
+                            <v-file-input @change ="createImage" label="Imagen" />
                         </div>
-                        <v-btn block rounded="xl" size="x-large" @click="update">Update</v-btn>
+                        <div>
+                            <div>
+                                <v-btn block rounded="xl" size="x-large" @click="update">Update</v-btn>
+                            </div>
+                            <div>
+                                <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
+                            </div>
+                        </div>                        
                         <div v-if="message?.length > 0">
                             <h2>Messages</h2>
                             <div v-for="msg in message">
@@ -32,7 +39,6 @@
         <div v-else>
             <h1>Product not found</h1>
         </div>
-        <nuxt-link class="link" :to="`/manufacturers/${username}/products/`">Return</nuxt-link>
     </div>
 </template>
 
@@ -50,6 +56,18 @@ const id = route.params.id
 const username = route.params.username
 const { data: packagesList, packageError: productsErr } = await
 useFetch(`${api}/packages/packagingType/PRIMARY`)
+
+const base64 = ref('')
+
+function createImage(e) {
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => {
+        base64.value = reader.result
+        productForm.value.image = base64.value
+    }
+}
 
 const { data: product, error: productErr } = await useFetch(`${api}/manufacturers/${username}/products/${id}`, {
     method: 'get',
@@ -78,6 +96,10 @@ async function update() {
         message.value = error.value
         console.log(message.value)
     }
+}
+
+function cancel() {
+    navigateTo('/manufacturers/' + route.params.username + '/products/')
 }
 </script>
 
