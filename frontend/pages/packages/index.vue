@@ -8,15 +8,16 @@
             <v-data-table :headers="headers" :items="logisticsOperatorsPackages" :items-per-page="15" class="elevation-1">
     
                 <template v-slot:item.action="{ item }">
-                    <v-btn @click="edit(item)">OPEN</v-btn>
+                    <v-btn class="w-25 me-2" @click="open(item)">OPEN</v-btn>
+                    <v-btn class="w-25" @click="edit(item)">EDIT</v-btn>
                 </template>
             </v-data-table>
         </div>
         <div class="w-100" v-else>
-            <v-data-table :headers="headers" :items="manufacturersPackages" :items-per-page="15" class="elevation-1">
-    
-                <template v-slot:item.action="{ item }">
-                    <v-btn @click="edit(item)">OPEN</v-btn>
+            <v-data-table :headers="headers" :items="manufacturersPackages" :items-per-page="15" class="elevation-1">    
+                <template v-slot:item.action="{ item }" class="d-flex">
+                    <v-btn class="w-25 me-2" @click="open(item)">OPEN</v-btn>
+                    <v-btn class="w-25" @click="edit(item)">EDIT</v-btn>
                 </template>
             </v-data-table>
         </div>
@@ -59,6 +60,10 @@ const logisticsOperatorsPackages = packages.value.filter(productPackage => produ
 // }
 const edit = (item) => {
     navigateTo(`/packages/${item.id}/edit`)
+}
+
+const open = (item) => {
+    navigateTo(`/packages/${item.id}/details`)
 }
 
 const headers = [

@@ -142,7 +142,7 @@ GET http://localhost:8080/backend/api/packages
 GET http://localhost:8080/backend/api/packages/2
 
 ### GET all package sensors
-GET http://localhost:8080/backend/api/packages/2/sensors
+GET http://localhost:8080/backend/api/packages/4/sensors
 
 ### Post package
 POST http://localhost:8080/backend/api/packages

@@ -113,7 +113,7 @@ public class PackageService {
 
     // Add and Remove a Sensor of a package
     @POST
-    @Authenticated
+    //@Authenticated
     //@RolesAllowed({"Manufacturer", "LogisticsOperator"})
     @Path("{id}/sensor/{sensorId}")
     public Response addSensorToPackage(@PathParam("id") Long id, @PathParam("sensorId") Long sensorId)
@@ -128,8 +128,8 @@ public class PackageService {
     }
 
     @DELETE
-    @Authenticated
-    @RolesAllowed({"Manufacturer", "LogisticsOperator"})
+    //@Authenticated
+    //@RolesAllowed({"Manufacturer", "LogisticsOperator"})
     @Path("{id}/sensor/{sensorId}")
     public Response deleteSensorOfPackage(@PathParam("id") Long id, @PathParam("sensorId") Long sensorId)
             throws MyEntityNotFoundException {
