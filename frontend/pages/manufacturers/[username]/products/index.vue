@@ -6,18 +6,17 @@
           <v-toolbar-title>My Products</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          Add a new product
-          <v-icon class="grey--text" @click="addNewItem">mdi-plus</v-icon>
-          
+          <v-btn @click="addNewItem" color="blue">
+            Add a new product
+            <v-icon class="grey--text">mdi-plus</v-icon>
+          </v-btn>
+
+
+
         </v-toolbar>
       </template>
       <template v-slot:item.image="{ item }">
-        <v-img
-          :width="33"
-          aspect-ratio="16/9"
-          cover
-          :src="item.image"
-        ></v-img>
+        <v-img :width="33" aspect-ratio="16/9" cover :src="item.image"></v-img>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon size="small" class="me-2" @click="editItem(item)">
