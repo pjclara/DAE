@@ -60,8 +60,7 @@ public class OrderService {
                 orderr.getEndConsumer().getName(),
                 orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
                 orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
-                ordersItemDTO(orderr.getOrderItems())
-        );
+                ordersItemDTO(orderr.getOrderItems())        );
     }
 
     @GET

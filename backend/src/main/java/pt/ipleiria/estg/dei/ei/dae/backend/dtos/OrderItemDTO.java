@@ -20,11 +20,8 @@ public class OrderItemDTO {
 
     private Integer quantity;
 
-
-
     public OrderItemDTO() {
     }
-
     public OrderItemDTO(Long id, String productName , String productImage, String productPackageMaterial,Integer quantity) {
         this.id = id;
         this.productName = productName;
@@ -37,9 +34,11 @@ public class OrderItemDTO {
         this.productName = productName;
         this.productImage = productImage;
         this.productPackageMaterial = productPackageMaterial;
-        this.quantity = quantity;
         this.productId = productId;
+        this.quantity = quantity;
     }
+
+
 
     public Long getId() {
         return id;

@@ -25,6 +25,7 @@ export const useCartStore = defineStore("cartStore", () => {
   const add = (product) => {
     cartItems.value.push(product);
     totalItens.value = cartItems.value.length;
+    alert("Product added to cart");
   };
 
   const createOrderCart = (customer) => {

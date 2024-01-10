@@ -12,14 +12,23 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(long id, String name, int stock, String image, String username, Long packageId) {
+    public ProductDTO(long id, String name, int stock, String image,Long packageId) {
+        this.id = id;
+        this.name = name;
+        this.stock = stock;
+        this.image = image;
+        this.packageId = packageId;
+    }
+
+    public ProductDTO(Long id, String name, int stock, String image, String username, Long aLong) {
         this.id = id;
         this.name = name;
         this.stock = stock;
         this.image = image;
         this.manufacturerUsername = username;
-        this.packageId = packageId;
+        this.packageId = aLong;
     }
+
     public long getId() {
         return id;
     }

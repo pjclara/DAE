@@ -16,11 +16,11 @@ public class PackageDTO {
         this.sensors = new ArrayList<>();
     }
 
-    public PackageDTO(Long id, PackagingType packagingType, String packagingMaterial) {
+    public PackageDTO(Long id, PackagingType packagingType, String packagingMaterial, List<SensorDTO> sensors) {
         this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-        this.sensors = new ArrayList<>();
+        this.sensors = sensors;
     }
 
     public long getId() {
@@ -60,7 +60,8 @@ public class PackageDTO {
         return new PackageDTO(
                 package_.getId(),
                 package_.getPackagingType(),
-                package_.getPackagingMaterial()
+                package_.getPackagingMaterial(),
+                SensorDTO.from(package_.getSensors())
         );
     }
 

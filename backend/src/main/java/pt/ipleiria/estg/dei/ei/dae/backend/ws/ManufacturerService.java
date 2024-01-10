@@ -86,8 +86,7 @@ public class ManufacturerService {
     public Response getAllProductsFromManufacturer(@PathParam("username") String username) {
         Manufacturer manufacturer = manufacturerBean.getAllProductsFromManufacturer(username);
         if (manufacturer != null) {
-            var dtos = productsToDo(manufacturer.getProducts());
-            return Response.ok(dtos).build();
+           // return Response.ok(dtos).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_MANUFACTURER")
@@ -142,7 +141,6 @@ public class ManufacturerService {
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
                 product.getProductPackage() == null ? null:product.getProductPackage().getId()
         );
     }
