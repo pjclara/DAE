@@ -8,6 +8,8 @@ export const useCartStore = defineStore("cartStore", () => {
   const cartItems = ref([]);
   const orderData = ref({});
 
+  const totalItens = ref(0);
+
   const openDialog = () => {
     modalOpen.value = true;
     console.log("open");
@@ -20,10 +22,15 @@ export const useCartStore = defineStore("cartStore", () => {
 
   const add = (product) => {
     cartItems.value.push(product);
-    console.log("cart: ", cartItems.value);
+    totalItens.value = cartItems.value.length;
   };
 
   const createOrderCart = (customer) => {
+    // confirm the order has items
+    if (cartItems.value.length == 0) {
+      alert("Please add some items to your cart before checking out.");
+      return;
+    }
     /// get id of cartItems
     let ids = cartItems.value.map((item) => item.id);
 
@@ -34,8 +41,10 @@ export const useCartStore = defineStore("cartStore", () => {
 
     // Converting the object back to an array of unique IDs and their counts
     let itemsIds = Object.keys(idCounts).map((id) => [
-      parseInt(id),
-      idCounts[id],
+      // get aarray of id and count with label
+      {'product_id' : parseInt(id)},
+      {'quantity' : idCounts[id]}
+      
     ]);
 
     orderData.value = {
@@ -44,11 +53,6 @@ export const useCartStore = defineStore("cartStore", () => {
       orderItems: itemsIds,
     };
 
-    console.log("orderData.value: ", orderData.value);
-    console.log(
-      "JSON.stringify(orderData.value): ",
-      JSON.stringify(orderData.value)
-    );
     createOrderAPI();
   };
 
@@ -68,9 +72,11 @@ export const useCartStore = defineStore("cartStore", () => {
       console.log("data :", data.value);
       //navigateTo('/')
     }
+    console.log("orderData :", orderData.value.orderItems);
   }
 
   const productsInCart = () => {
+
     let ids = cartItems.value.map((item) => item.id);
     // count the number of each id
     let idCounts = ids.reduce((acc, id) => {
@@ -78,8 +84,6 @@ export const useCartStore = defineStore("cartStore", () => {
       return acc;
     }, {});
     return Object.keys(idCounts).map((id) =>
-      //"id: " + id + " count: " + idCounts[id] + " name: " + cartItems.value.find(item => item.id == id).name
-      // array of objects
       ({
         id: id,
         count: idCounts[id],
@@ -92,18 +96,19 @@ export const useCartStore = defineStore("cartStore", () => {
   // increment the count of the item with id
   const increment = (id) => {
     let item = cartItems.value.find((item) => item.id == id);
-    console.log("item: ", item);
     if (productsInCart().find((item) => item.id == id).count < item.stock) {
       cartItems.value.push(item);
+      totalItens.value = cartItems.value.length;
     }
   };
 
   // decrement the count of the item with id
   const decrement = (id) => {
     let item = cartItems.value.find((item) => item.id == id);
-    if (productsInCart().find((item) => item.id == id).count > 1) {
+    if (productsInCart().find((item) => item.id == id).count > 0) {
       // remove the item from the cart
       cartItems.value.splice(cartItems.value.indexOf(item), 1);
+      totalItens.value = cartItems.value.length;
     }
   };
 
@@ -117,5 +122,6 @@ export const useCartStore = defineStore("cartStore", () => {
     productsInCart,
     increment,
     decrement,
+    totalItens,
   };
 });

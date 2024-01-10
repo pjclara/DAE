@@ -18,7 +18,8 @@ public class OrderDTO {
     public OrderDTO(){
         this.OrderItems = new ArrayList<>();
     }
-    public OrderDTO(Long id, String status, String endConsumerName, String logisticsOperatorName, long packageId, List<OrderItem> orderItems) {
+    public OrderDTO(Long id, String status, String endConsumerName, String logisticsOperatorName, long packageId,
+                    List<OrderItem> orderItems) {
         this.id = id;
         this.status = status;
         this.endConsumerName = endConsumerName;

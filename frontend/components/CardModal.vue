@@ -52,13 +52,8 @@ const cartStore = useCartStore()
 
 const cartItems = ref(cartStore.productsInCart())
 
-onMounted(() => {
-    // count products in cart
-    console.log("cartItems: ", cartStore.productsInCart())
-})
 
 const createOrder = () => {
-    console.log("user.username: ", user.value.username)
     cartStore.createOrderCart(user.value.username);
 }
 </script>

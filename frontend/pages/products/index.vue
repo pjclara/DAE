@@ -3,7 +3,7 @@
         <v-col align="center">
             <v-row class="ma-2" justify="space-between">
                 <h1> Listagem de Produtos </h1>
-                <v-btn @click="cartStore.openDialog" class="mb-4">Carrinho</v-btn>
+                <v-btn @click="cartStore.openDialog" class="mb-4">Carrinho {{ totalItens }}</v-btn>
             </v-row>
 
             <v-container class="grid">
@@ -46,6 +46,10 @@ const api = config.public.API_URL
 const { data: products, error, refresh } = await useFetch(`${api}/products`)
 
 const modalOpen = ref(cartStore.cartModal);
+
+const totalItens = computed(() => {
+    return cartStore.totalItens;
+})
 
 const addToCart = (product) => {
     cartStore.add(product);
