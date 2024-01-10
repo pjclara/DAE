@@ -20,6 +20,8 @@ public class OrderItemDTO {
 
     private Integer quantity;
 
+    private ProductDTO product;
+
 
 
     public OrderItemDTO() {
