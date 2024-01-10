@@ -6,10 +6,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ManufacturerDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.ManufacturerBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
 
@@ -141,7 +145,33 @@ public class ManufacturerService {
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getProductPackage() == null ? null:product.getProductPackage().getId()
+                packageToDo(product.getProductPackage())
+        );
+    }
+
+    private PackageDTO packageToDo(Package productPackage) {
+        return new PackageDTO(
+                productPackage.getId(),
+                productPackage.getPackagingType(),
+                productPackage.getPackagingMaterial(),
+                sensorsToDo(productPackage.getSensors())
+        );
+    }
+
+    private List<SensorDTO> sensorsToDo(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorToDo).collect(java.util.stream.Collectors.toList());
+    }
+
+    private SensorDTO sensorToDo(Sensor sensor) {
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType(),
+                sensor.getValue(),
+                sensor.getUnit(),
+                sensor.getMax(),
+                sensor.getMin(),
+                sensor.getTimestamp()
         );
     }
     // get all products from manufacturer

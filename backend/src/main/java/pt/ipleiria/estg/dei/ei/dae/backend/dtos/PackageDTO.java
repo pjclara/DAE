@@ -55,7 +55,6 @@ public class PackageDTO {
         this.sensors = sensorData;
     }
 
-
     public static PackageDTO from(Package package_) {
         return new PackageDTO(
                 package_.getId(),

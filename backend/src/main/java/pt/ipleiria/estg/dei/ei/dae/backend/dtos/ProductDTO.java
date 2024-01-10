@@ -9,15 +9,17 @@ public class ProductDTO {
     private String manufacturerUsername;
     private long packageId;
 
+    private PackageDTO packageDTO;
+
     public ProductDTO() {
     }
 
-    public ProductDTO(long id, String name, int stock, String image,Long packageId) {
+    public ProductDTO(long id, String name, int stock, String image, PackageDTO packageDTO) {
         this.id = id;
         this.name = name;
         this.stock = stock;
         this.image = image;
-        this.packageId = packageId;
+        this.packageDTO = packageDTO;
     }
 
     public ProductDTO(Long id, String name, int stock, String image, String username, Long aLong) {
