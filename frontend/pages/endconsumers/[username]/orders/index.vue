@@ -42,8 +42,6 @@ if (error.value) {
 
 const headers = ref([
     { title: 'Estado', value: 'status', align: 'center' },
-    { title: 'Cliente', value: 'endConsumerName', align: 'center' },
-    { title: 'Embalagem', value: 'packageId', align: 'center' },
     { title: 'Produtos', value: 'productsIds', align: 'center' },
     { title: '', value: 'actions', align: 'center' }
 ])

@@ -17,6 +17,10 @@ public class Product extends Versionable{
 
     @NotNull
     private String name;
+
+    @NotNull
+    // for save a base64 image
+    @Column(length=10485760)
     private String image;
     @NotNull
     private int stock;

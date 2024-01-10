@@ -1,48 +1,51 @@
 <template>
-    <div>
-        <div v-if="productForm">
-            <v-col align="center">
-                <v-col cols="6">
-                    <h1>Editar Producto</h1>
-                    <form @submit.prevent="update">
-                        <div>
-                            <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
-                        </div>
-                        <div>
-                            <v-text-field v-model="productForm.stock" label="Stock" />
-                        </div>
-                        <div>
-                            <v-select v-model="productForm.packageId" :items="packagesList" item-title="packagingMaterial"
-                                item-value="id" label="Package" />
-                        </div>
-                        <div>
-                            <v-file-input @change ="createImage" label="Imagen" />
-                        </div>
-                        <div>
+    <default>
+        <div>
+            <div v-if="productForm">
+                <v-col align="center">
+                    <v-col cols="6">
+                        <h1>Editar Producto</h1>
+                        <form @submit.prevent="update">
                             <div>
-                                <v-btn block rounded="xl" size="x-large" @click="update">Update</v-btn>
+                                <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
                             </div>
                             <div>
-                                <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
+                                <v-text-field v-model="productForm.stock" label="Stock" />
                             </div>
-                        </div>                        
-                        <div v-if="message?.length > 0">
-                            <h2>Messages</h2>
-                            <div v-for="msg in message">
-                                <pre>{{ msg }}</pre>
+                            <div>
+                                <v-select v-model="productForm.packageId" :items="packagesList"
+                                    item-title="packagingMaterial" item-value="id" label="Package" />
                             </div>
-                        </div>
-                    </form>
+                            <div>
+                                <v-file-input @change="createImage" label="Imagen" />
+                            </div>
+                            <div>
+                                <div>
+                                    <v-btn block rounded="xl" size="x-large" @click="update">Update</v-btn>
+                                </div>
+                                <div>
+                                    <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
+                                </div>
+                            </div>
+                            <div v-if="message?.length > 0">
+                                <h2>Messages</h2>
+                                <div v-for="msg in message">
+                                    <pre>{{ msg }}</pre>
+                                </div>
+                            </div>
+                        </form>
+                    </v-col>
                 </v-col>
-            </v-col>
+            </div>
+            <div v-else>
+                <h1>Product not found</h1>
+            </div>
         </div>
-        <div v-else>
-            <h1>Product not found</h1>
-        </div>
-    </div>
+    </default>
 </template>
 
 <script setup>
+import Default from '/pages/layouts/default.vue'
 import { useAuthStore } from "~/store/auth-store.js"
 import { onMounted, ref } from "vue";
 const message = ref('')
@@ -55,7 +58,7 @@ const route = useRoute()
 const id = route.params.id
 const username = route.params.username
 const { data: packagesList, packageError: productsErr } = await
-useFetch(`${api}/packages/packagingType/PRIMARY`)
+    useFetch(`${api}/packages/packagingType/PRIMARY`)
 
 const base64 = ref('')
 
@@ -89,7 +92,7 @@ async function update() {
         body: JSON.stringify(productForm.value)
     }
     const { error } = await useFetch(`${api}/products/` + id, requestOptions)
-    console.log(productForm)
+    console.log(base64.value)
     if (!error.value)
         navigateTo('/manufacturers/' + route.params.username + '/products/')
     else {

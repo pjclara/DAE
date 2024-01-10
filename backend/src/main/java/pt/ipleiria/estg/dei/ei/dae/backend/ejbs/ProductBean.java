@@ -56,7 +56,7 @@ public class ProductBean {
         }
     }
 
-    public void update(Long id, String name, int stock, String manufacturerUsername, long packageId)
+    public void update(Long id, String name, int stock, String manufacturerUsername, long packageId, String image)
     throws MyEntityNotFoundException{
 
         if (!exists(id)) {throw new MyEntityNotFoundException("Product with id " + id + " not found in database"); }
@@ -71,6 +71,7 @@ public class ProductBean {
         product.setProductPackage(productPackage);
         product.setName(name);
         product.setStock(stock);
+        product.setImage(image);
 
         if (manufacturerUsername != null && !manufacturerUsername.equals(product.getManufacturer().getUsername())) {
             Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
