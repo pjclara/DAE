@@ -6,8 +6,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.EndConsumerDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.EndConsumerBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityExistsException;
@@ -127,9 +129,25 @@ public class EndConsumerService {
                 order.getStatus(),
                 order.getEndConsumer().getName(),
                 logisticsOperatorName,
-                packageId
+                packageId,
+                orderItemsToDTOs(order.getOrderItems())
         );
     }
+
+    private List<OrderItemDTO> orderItemsToDTOs(List<OrderItem> orderItems) {
+        return orderItems.stream().map(this::orderItemToDTOs).collect(java.util.stream.Collectors.toList());
+    }
+
+    private OrderItemDTO orderItemToDTOs(OrderItem orderItem) {
+        return new OrderItemDTO(
+                orderItem.getId(),
+                orderItem.getProduct().getName(),
+                orderItem.getProduct().getImage(),
+                orderItem.getProduct().getProductPackage().getPackagingMaterial(),
+                orderItem.getQuantity()
+        );
+    }
+
     private EndConsumerDTO toDo(EndConsumer endConsumer) {
         return new EndConsumerDTO(
                 endConsumer.getUsername(),
