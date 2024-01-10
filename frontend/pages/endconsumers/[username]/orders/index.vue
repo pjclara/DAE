@@ -47,7 +47,7 @@ const headers = ref([
 ])
 
 const detailsOrder = (item) => {
-    navigateTo(`/endconsumers/${username}/orders/${item.id}/details`)
+    navigateTo('/endConsumers/' + username + '/orders/' + item.id + '/details')
 }
 
 </script>
