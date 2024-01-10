@@ -52,7 +52,11 @@ export const useCartStore = defineStore("cartStore", () => {
       orderItems: itemsIds,
     };
 
-    createOrderAPI(customer);
+    let boolean = confirm("Are you sure you want to place this order?") 
+    if (boolean)
+      createOrderAPI(customer);
+    else
+      closeDialog();
   };
 
   async function createOrderAPI(customer) {
@@ -74,6 +78,11 @@ export const useCartStore = defineStore("cartStore", () => {
     console.log("data :", data);
     if (data) {
       console.log("data :", data);
+      alert("Order created");
+      cartItems.value = [];
+      totalItens.value = 0;
+      closeDialog();
+      router.push(`endConsumers/${customer}/orders`);
     }
 
   }
