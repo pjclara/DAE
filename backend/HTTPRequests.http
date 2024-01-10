@@ -183,6 +183,24 @@ Content-Type: application/json
 ### get all orders with order items
 GET http://localhost:8080/backend/api/endConsumers/endConsumer2/orders
 
+### post order with order items by endconsumer
+POST http://localhost:8080/backend/api/endConsumers/endConsumer2/orders
+Content-Type: application/json
+
+{
+  "status": "WAITING_PAYMENT",
+  "orderItems": [
+    {
+      "productId": 1,
+      "quantity": 1
+    },
+    {
+      "productId": 2,
+      "quantity": 1
+    }
+  ]
+}
+
 ### create a new order with order items
 
 

@@ -4,6 +4,8 @@ export const useCartStore = defineStore("cartStore", () => {
   const config = useRuntimeConfig();
   const api = config.public.API_URL;
 
+  const router = useRouter();
+
   const modalOpen = ref(false);
   const cartItems = ref([]);
   const orderData = ref({});
@@ -40,54 +42,55 @@ export const useCartStore = defineStore("cartStore", () => {
     }, {});
 
     // Converting the object back to an array of unique IDs and their counts
-    let itemsIds = Object.keys(idCounts).map((id) => [
-      parseInt(id),
-      idCounts[id],
-    ]);
+    let itemsIds = Object.keys(idCounts).map((id) => ({
+      productId: id,
+      quantity: idCounts[id],
+    }));
 
     orderData.value = {
       status: "Pending",
-      endConsumerName: customer,
       orderItems: itemsIds,
     };
 
-    createOrderAPI();
+    createOrderAPI(customer);
   };
 
-  async function createOrderAPI() {
-    const { data, error } = await useFetch(`${api}/orders`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+  async function createOrderAPI(customer) {
+    if (!customer) {
+      console.log("username :", customer);
+      return;
+    }
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData.value),
-    });
+    };
+    console.log("requestOptions :", requestOptions.body);
+    const { data, error } = await useFetch(`${api}/endConsumers/${customer}/orders`, requestOptions);
     if (error.value) {
-      console.log("error.value :", error.value);
+      console.log("error :", error.value);
+      return;
     }
-    if (data.value) {
-      console.log("data :", data.value);
-      //navigateTo('/')
+    console.log("data :", data);
+    if (data) {
+      console.log("data :", data);
     }
+
   }
 
   const productsInCart = () => {
-
     let ids = cartItems.value.map((item) => item.id);
     // count the number of each id
     let idCounts = ids.reduce((acc, id) => {
       acc[id] = (acc[id] || 0) + 1;
       return acc;
     }, {});
-    return Object.keys(idCounts).map((id) =>
-      ({
-        id: id,
-        count: idCounts[id],
-        name: cartItems.value.find((item) => item.id == id).name,
-        image: cartItems.value.find((item) => item.id == id).image,
-      })
-    );
+    return Object.keys(idCounts).map((id) => ({
+      id: id,
+      count: idCounts[id],
+      name: cartItems.value.find((item) => item.id == id).name,
+      image: cartItems.value.find((item) => item.id == id).image,
+    }));
   };
 
   // increment the count of the item with id

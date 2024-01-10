@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.dtos.EndConsumerDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.EndConsumerBean;
+import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
@@ -24,6 +25,9 @@ public class EndConsumerService {
 
     @EJB
     private EndConsumerBean endConsumerBean;
+
+    @EJB
+    private OrderBean orderBean;
 
     // get all end consumers
     @GET
@@ -79,6 +83,23 @@ public class EndConsumerService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.status(Response.Status.OK).entity(toDTO(endConsumer)).build();
+    }
+    // consumer create a new order
+    @POST
+    @Path("{username}/orders")
+    public Response createNewOrder(@PathParam("username") String username, OrderDTO orderDTO)
+            throws MyEntityNotFoundException, MyConstraintViolationException {
+
+        long orderId = orderBean.create(
+                username,
+                orderDTO.getStatus(),
+                orderDTO.getOrderItems()
+        );
+        Orderr order = orderBean.findOrFail(orderId);
+        if (order == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(orderToDTOs(order)).build();
     }
     // delete end consumer
     @DELETE

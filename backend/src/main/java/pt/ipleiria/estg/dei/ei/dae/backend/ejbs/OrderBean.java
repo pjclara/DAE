@@ -39,7 +39,7 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String status, String endConsumerUsername,  List<OrderItemDTO> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
+    public long create(String endConsumerUsername,  String status, List<OrderItemDTO> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
 
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);

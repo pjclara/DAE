@@ -5,7 +5,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Hasher;
@@ -71,4 +75,6 @@ public class EndConsumerBean {
         if (endConsumer.getOrders().isEmpty()) throw new IllegalArgumentException("End consumer with username " + username + " has no orders");
         return endConsumer;
     }
+
+
 }
