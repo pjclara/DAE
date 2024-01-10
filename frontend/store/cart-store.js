@@ -41,10 +41,8 @@ export const useCartStore = defineStore("cartStore", () => {
 
     // Converting the object back to an array of unique IDs and their counts
     let itemsIds = Object.keys(idCounts).map((id) => [
-      // get aarray of id and count with label
-      {'product_id' : parseInt(id)},
-      {'quantity' : idCounts[id]}
-      
+      parseInt(id),
+      idCounts[id],
     ]);
 
     orderData.value = {
@@ -72,7 +70,6 @@ export const useCartStore = defineStore("cartStore", () => {
       console.log("data :", data.value);
       //navigateTo('/')
     }
-    console.log("orderData :", orderData.value.orderItems);
   }
 
   const productsInCart = () => {

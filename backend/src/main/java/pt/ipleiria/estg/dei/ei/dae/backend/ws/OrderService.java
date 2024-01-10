@@ -59,7 +59,7 @@ public class OrderService {
                 orderr.getEndConsumer().getName(),
                 orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
                 orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
-                orderr.getOrderItems()
+                ordersItemDTO(orderr.getOrderItems())
         );
     }
 
@@ -94,6 +94,7 @@ public class OrderService {
     @Path("/")
     public Response createNewOrder(OrderDTO orderDTO)
             throws MyEntityNotFoundException, MyConstraintViolationException {
+        System.out.println("OrderDTO: " + orderDTO);
         long id = orderBean.create(
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
@@ -146,7 +147,7 @@ public class OrderService {
                 order.getEndConsumer().getName(),
                 logisticsOperatorName,
                 packageId,
-                order.getOrderItems()
+                ordersItemDTO(order.getOrderItems())
         );
     }
 

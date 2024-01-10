@@ -10,6 +10,8 @@ public class OrderItemDTO {
 
     private Long id;
 
+    private Long productId;
+
     private String productName;
 
     private String productImage;
@@ -17,6 +19,8 @@ public class OrderItemDTO {
     private String productPackageMaterial;
 
     private Integer quantity;
+
+
 
     public OrderItemDTO() {
     }
@@ -67,6 +71,14 @@ public class OrderItemDTO {
 
     public void setProductPackageMaterial(String productPackageMaterial) {
         this.productPackageMaterial = productPackageMaterial;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
 

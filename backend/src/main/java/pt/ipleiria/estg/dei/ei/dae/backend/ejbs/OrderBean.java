@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
@@ -38,7 +39,7 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String status, String endConsumerUsername,  List<OrderItem> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
+    public long create(String status, String endConsumerUsername,  List<OrderItemDTO> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
 
         // check endCostumer
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
@@ -49,15 +50,15 @@ public class OrderBean {
         entityManager.persist(order);
 
         // add order items
-        for (OrderItem item : orderItems) {
+        for (OrderItemDTO item : orderItems) {
             // item.get(0) to a long
-            Long productId = (Long) item.getId();
-            Product product = entityManager.find(Product.class, productId);
-            if (product == null) throw new IllegalArgumentException("Product with id " + productId + " not found");
-            Integer quantity = (Integer) item.getQuantity();
-            OrderItem orderItem = new OrderItem(product, quantity, order);
+            Product product = productBean.find(item.getProductId());
+            if (product == null) throw new IllegalArgumentException("Product with id " + item.getProductId() + " not found");
+
+            OrderItem orderItem = new OrderItem(product, item.getQuantity(), order);
+            orderItem.setOrderr(order);
             entityManager.persist(orderItem);
-            order.addOrderItem(orderItem);
+
         }
 
         return order.getId();

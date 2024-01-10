@@ -63,4 +63,8 @@ public class OrderItem {
     public void setOrder(Orderr order) {
         this.order = order;
     }
+
+    public void setOrderr(Orderr order) {
+        this.order = order;
+    }
 }

@@ -87,8 +87,6 @@ public class ConfigBean {
         }
         try {
 
-            long orderr = orderBean.create("pending", "endConsumer1", new ArrayList<>());
-
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
