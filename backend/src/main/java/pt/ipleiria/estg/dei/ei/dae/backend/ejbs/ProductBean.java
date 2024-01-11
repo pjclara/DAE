@@ -98,6 +98,8 @@ public class ProductBean {
 
         Hibernate.initialize(product.getProductPackage());
 
+        Hibernate.initialize(product.getManufacturer());
+
         return product;
     }
 }

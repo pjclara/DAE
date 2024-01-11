@@ -70,6 +70,9 @@ public class OrderBean {
                 Product product = entityManager.find(Product.class, productId);
                 if (product == null) throw new IllegalArgumentException("Product with id " + productId + " not found");
 
+                product.setStock(product.getStock() - quantity);
+                entityManager.merge(product);
+
                 OrderItem orderItem1 = new OrderItem(product, quantity, order);
                 orderItem1.setOrderr(order);
                 entityManager.persist(orderItem1);
@@ -154,6 +157,10 @@ public class OrderBean {
 
         if (order.getOrderItems().isEmpty()) throw new IllegalArgumentException("Order with id " + orderId + " has no products");
 
+        order.getOrderItems().forEach(orderItem -> {
+            Hibernate.initialize(orderItem.getProduct());
+            Hibernate.initialize(orderItem.getProduct().getProductPackage());
+        });
         return order;
 
     }

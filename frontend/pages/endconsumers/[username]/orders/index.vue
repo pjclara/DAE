@@ -33,8 +33,8 @@ const api = config.public.API_URL
 const router = useRouter()
 const route = useRoute()
 const username = route.params.username
+
 const { data: orders, error, refresh } = await useFetch(`${api}/endConsumers/${username}/orders`)
-const order = ref({});
 
 if (error.value) {
     console.log(error.value)
