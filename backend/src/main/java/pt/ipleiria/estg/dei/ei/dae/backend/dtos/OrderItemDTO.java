@@ -15,17 +15,6 @@ public class OrderItemDTO {
         this.quantity = quantity;
     }
 
-    public OrderItemDTO(String productName , String productImage, String productPackageMaterial,Integer quantity, Long productId) {
-        this.productName = productName;
-        this.productImage = productImage;
-        this.productPackageMaterial = productPackageMaterial;
-        this.productId = productId;
-        this.quantity = quantity;
-
-    }
-
-
-
     public Long getId() {
         return id;
     }

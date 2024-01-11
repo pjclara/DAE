@@ -191,14 +191,6 @@ public class EndConsumerService {
         );
     }
 
-    private PackageDTO packageToDTO(Package productPackage) {
-        return new PackageDTO(
-                productPackage.getId(),
-                productPackage.getPackagingType(),
-                productPackage.getPackagingMaterial(),
-                sensorsDTO(productPackage.getSensors())
-        );
-    }
 
     private List<SensorDTO> sensorsDTO(List<Sensor> sensors) {
         return sensors.stream().map(this::sensorDTO).collect(java.util.stream.Collectors.toList());

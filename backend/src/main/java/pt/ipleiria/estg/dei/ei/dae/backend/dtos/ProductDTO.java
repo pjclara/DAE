@@ -1,5 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
+
+import java.util.List;
+
 public class ProductDTO {
     private long id;
     private String name;
