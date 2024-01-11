@@ -15,6 +15,11 @@
                     <v-card-text>
                         <div v-if="product.image">
                             <v-img width="200" height="200" :src="product.image" />
+                            <v-badge color="green" overlap>
+                                <template v-slot:badge>
+                                    <span>{{ product.stock }}</span>
+                                </template>
+                            </v-badge>
                         </div>
                         <div v-else>
                             <v-img width="200" height="200"
