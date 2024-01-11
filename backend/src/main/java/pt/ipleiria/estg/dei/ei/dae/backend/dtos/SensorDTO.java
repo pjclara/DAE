@@ -30,7 +30,7 @@ public class SensorDTO implements Serializable {
     public SensorDTO() {
     }
 
-    public SensorDTO(long id, String source, String type, String value, String unit, String max, String min, long timestamp) {
+    public SensorDTO(long id, String source, String type, String value, String unit, String max, String min, long timestamp, long packageId) {
         this.id = id;
         this.source = source;
         this.type = type;
@@ -39,6 +39,7 @@ public class SensorDTO implements Serializable {
         this.max = max;
         this.min = min;
         this.timestamp = timestamp;
+        this.packageId = packageId;
     }
 
     public Long getId() {
@@ -121,7 +122,8 @@ public class SensorDTO implements Serializable {
                 sensor.getUnit(),
                 sensor.getMax(),
                 sensor.getMin(),
-                sensor.getTimestamp()
+                sensor.getTimestamp(),
+                sensor.getPackagging().getId()
         );
     }
 

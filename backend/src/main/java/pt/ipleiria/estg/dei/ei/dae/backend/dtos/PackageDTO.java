@@ -23,6 +23,11 @@ public class PackageDTO {
         this.sensors = sensors;
     }
 
+    public PackageDTO(Long id, List<Sensor> sensors) {
+        this.id = id;
+        this.sensors = SensorDTO.from(sensors);
+    }
+
     public long getId() {
         return id;
     }

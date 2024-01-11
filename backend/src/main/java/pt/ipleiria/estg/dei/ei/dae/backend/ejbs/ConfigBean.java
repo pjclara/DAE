@@ -87,6 +87,7 @@ public class ConfigBean {
         }
         try {
 
+
             System.out.println("final orderBean");
         }catch (Exception e){
             logger.warning(e.getMessage());
@@ -96,8 +97,7 @@ public class ConfigBean {
 
         // ADD SENSORS TO A PACKAGE
         try{
-            packageBean.addSensorToPackage( 4L, 1L);
-            packageBean.addSensorToPackage( 4L, 2L);
+            packageBean.addSensorToPackage( 1L, 1L);
         } catch (Exception e) {
             logger.severe(e.getMessage());
         }

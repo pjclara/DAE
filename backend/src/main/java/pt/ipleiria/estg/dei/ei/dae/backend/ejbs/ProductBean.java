@@ -6,6 +6,9 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
+import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
@@ -24,20 +27,20 @@ public class ProductBean {
         return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
-    public long create(String name, int stock, String image,  String manufacturerUsername, long packageId)
+    public long create(String name, int stock, String image,  String manufacturerUsername, long p)
             throws MyConstraintViolationException, MyEntityNotFoundException {
         // if manufacturer exists
         Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
 
         if (manufacturer == null) throw new MyEntityNotFoundException("Manufacturer with username " + null + " not found in database");
 
-        Package productPackage = entityManager.find(Package.class, packageId);
+        Package productPackage = entityManager.find(Package.class, p);
 
         try {
             Product product = new Product(name, stock, image, productPackage, manufacturer);
             entityManager.persist(product);
-
             manufacturer.addProduct(product);
+            productPackage.addProduct(product);
             return product.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
@@ -56,7 +59,7 @@ public class ProductBean {
         }
     }
 
-    public void update(Long id, String name, int stock, String manufacturerUsername, long packageId, String image)
+    public void update(Long id, String name, int stock, String manufacturerUsername, String image, PackageDTO packageDTO)
     throws MyEntityNotFoundException{
 
         if (!exists(id)) {throw new MyEntityNotFoundException("Product with id " + id + " not found in database"); }
@@ -64,9 +67,9 @@ public class ProductBean {
         Product product = entityManager.find(Product.class, id);
         entityManager.lock(product, LockModeType.OPTIMISTIC);
 
-        Package productPackage = entityManager.find(Package.class, packageId);
+        Package productPackage = entityManager.find(Package.class, packageDTO.getId());
 
-        if (productPackage == null) throw new MyEntityNotFoundException("Package with id " + packageId + " not found in database");
+        if (productPackage == null) throw new MyEntityNotFoundException("Package with id " + packageDTO.getId() + " not found in database");
 
         product.setProductPackage(productPackage);
         product.setName(name);
@@ -88,4 +91,13 @@ public class ProductBean {
         return (Long) query.getSingleResult() > 0L;
     }
 
+    public Product findWithPackage(Long id) {
+        Product product = entityManager.find(Product.class, id);
+
+        if (product == null) return null;
+
+        Hibernate.initialize(product.getProductPackage());
+
+        return product;
+    }
 }

@@ -38,7 +38,8 @@ public class SensorService {
                 sensor.getUnit(),
                 sensor.getMax(),
                 sensor.getMin(),
-                sensor.getTimestamp()
+                sensor.getTimestamp(),
+                sensor.getPackagging().getId()
         );
     }
 

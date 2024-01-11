@@ -44,7 +44,7 @@ export const useCartStore = defineStore("cartStore", () => {
 
     // Converting the object back to an array of unique IDs and their counts
     let itemsIds = Object.keys(idCounts).map((id) => ({
-      productId: id,
+      productId: parseInt(id),
       quantity: idCounts[id],
     }));
 
@@ -83,7 +83,6 @@ export const useCartStore = defineStore("cartStore", () => {
       cartItems.value = [];
       totalItens.value = 0;
       closeDialog();
-      router.push(`endConsumers/${customer}/orders`);
     }
 
   }

@@ -2,20 +2,24 @@ package pt.ipleiria.estg.dei.ei.dae.backend.ejbs;
 
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
+import jakarta.ws.rs.core.Response;
 import org.hibernate.Hibernate;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Stateless
 public class OrderBean {
@@ -39,29 +43,46 @@ public class OrderBean {
                 .getResultList();
     }
 
-    public long create(String endConsumerUsername,  String status, List<OrderItemDTO> orderItems) throws MyEntityNotFoundException, MyConstraintViolationException {
+    public long create(String endConsumerUsername, String data) throws MyEntityNotFoundException, MyConstraintViolationException {
 
-        // check endCostumer
-        EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
-        if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
+        try(JsonReader jsonReader = Json.createReader(new StringReader(data))){
 
-        // create order
-        Orderr order = new Orderr(status, endConsumer);
-        entityManager.persist(order);
+            JsonObject jsonObject = jsonReader.readObject();
 
-        // add order items
-        for (OrderItemDTO item : orderItems) {
-            // item.get(0) to a long
-            Product product = productBean.find(item.getProductId());
-            if (product == null) throw new IllegalArgumentException("Product with id " + item.getProductId() + " not found");
+            String status = jsonObject.getString("status");
 
-            OrderItem orderItem = new OrderItem(product, item.getQuantity(), order);
-            orderItem.setOrderr(order);
-            entityManager.persist(orderItem);
+            JsonArray orderItems = jsonObject.getJsonArray("orderItems");
 
+            // check endCostumer
+            EndConsumer endConsumer = entityManager.find(EndConsumer.class, endConsumerUsername);
+            if (endConsumer == null) throw new IllegalArgumentException("End Consumer with username " + endConsumerUsername + " not found");
+
+            // create order
+            Orderr order = new Orderr(status, endConsumer);
+            entityManager.persist(order);
+
+            // add order items
+            for (int i = 0; i < orderItems.size(); i++) {
+                JsonObject orderItem = orderItems.getJsonObject(i);
+                Long productId = orderItem.getJsonNumber("productId").longValue();
+                int quantity = orderItem.getInt("quantity");
+
+                Product product = entityManager.find(Product.class, productId);
+                if (product == null) throw new IllegalArgumentException("Product with id " + productId + " not found");
+
+                OrderItem orderItem1 = new OrderItem(product, quantity, order);
+                orderItem1.setOrderr(order);
+                entityManager.persist(orderItem1);
+            }
+
+            return order.getId();
+        }catch (Exception e){
+
+
+            return -1;
         }
 
-        return order.getId();
+
     }
 
     public void update(Long id, String status, String endConsumerName, String logisticOptName, long packageId)
@@ -135,5 +156,17 @@ public class OrderBean {
 
         return order;
 
+    }
+
+    public void addProductToOrder(long orderr, int i, Long productId1) {
+        Orderr order = entityManager.find(Orderr.class, orderr);
+        if (order == null) throw new IllegalArgumentException("Order with id " + orderr + " not found");
+
+        Product product = entityManager.find(Product.class, productId1);
+        if (product == null) throw new IllegalArgumentException("Product with id " + productId1 + " not found");
+
+        OrderItem orderItem = new OrderItem(product, i, order);
+        orderItem.setOrderr(order);
+        entityManager.persist(orderItem);
     }
 }

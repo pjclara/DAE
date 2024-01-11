@@ -118,4 +118,12 @@ public class Package extends Versionable {
             product.setProductPackage(this);
         }
     }
+
+    public void addProduct(Product product) {
+        if (product == null || product.equals(this.product)) {
+            return;
+        }
+        this.product = product;
+        product.setProductPackage(this); // Link the product to the package
+    }
 }

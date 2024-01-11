@@ -6,17 +6,12 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
-import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,23 +78,56 @@ public class OrderService {
     private OrderItemDTO orderItemDTO(OrderItem orderItem) {
         return new OrderItemDTO(
                 orderItem.getId(),
-                orderItem.getProduct().getName(),
-                orderItem.getProduct().getImage(),
-                orderItem.getProduct().getProductPackage().getPackagingMaterial(),
-                orderItem.getQuantity()
+                orderItem.getQuantity(),
+                productToDTO(orderItem.getProduct())
+        );
+    }
+
+    private ProductDTO productToDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getStock(),
+                product.getImage(),
+                product.getManufacturer().getUsername(),
+                packageToDTO(product.getProductPackage())
+        );
+    }
+
+    private PackageDTO packageToDTO(Package productPackage) {
+        return new PackageDTO(
+                productPackage.getId(),
+                productPackage.getPackagingType(),
+                productPackage.getPackagingMaterial(),
+                sensorsDTO(productPackage.getSensors())
+        );
+    }
+
+    private List<SensorDTO> sensorsDTO(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
+    }
+
+    private SensorDTO sensorDTO(Sensor sensor) {
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType(),
+                sensor.getValue(),
+                sensor.getUnit(),
+                sensor.getMax(),
+                sensor.getMin(),
+                sensor.getTimestamp(),
+                sensor.getPackagging().getId()
         );
     }
 
     @POST
     @Path("/")
-    public Response createNewOrder(OrderDTO orderDTO)
+    public Response createNewOrder(String username, String status, String orders)
             throws MyEntityNotFoundException, MyConstraintViolationException {
-        System.out.println("OrderDTO: " + orderDTO);
         long id = orderBean.create(
-                orderDTO.getStatus(),
-                orderDTO.getEndConsumerName(),
-                ordersItemDTO(new ArrayList<>())
-        );
+                username,
+                orders);
 
         Orderr order = orderBean.findOrFail(id);
         if (order == null) {
