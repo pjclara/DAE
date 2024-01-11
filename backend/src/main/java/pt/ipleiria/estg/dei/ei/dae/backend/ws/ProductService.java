@@ -4,12 +4,11 @@ import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.glassfish.jaxb.core.v2.TODO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.EndConsumerDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.ProductBean;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
@@ -38,7 +37,7 @@ public class ProductService {
     @GET
     @Path("{id}")
     public Response getProductDetails(@PathParam("id") Long id) throws MyEntityNotFoundException {
-        Product product = productBean.find(id);
+        Product product = productBean.findWithPackage(id);
         if (product != null) {
             return Response.ok(toDTO(product)).build();
         }
@@ -74,8 +73,8 @@ public class ProductService {
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getManufacturerUsername(),
-                productDTO.getPackageId(),
-                productDTO.getImage()
+                productDTO.getImage(),
+                productDTO.getPackageDTO()
         );
         Product product = productBean.find(id);
         if (product == null) {
@@ -90,7 +89,35 @@ public class ProductService {
                 product.getStock(),
                 product.getImage(),
                 product.getManufacturer().getUsername(),
-                product.getProductPackage() == null ? null:product.getProductPackage().getId()
+                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+        );
+    }
+
+    private PackageDTO packageDTO(Package productPackage) {
+        return new PackageDTO(
+                productPackage.getId(),
+                productPackage.getPackagingType(),
+                productPackage.getPackagingMaterial(),
+                sensorsDTO(productPackage.getSensors())
+        );
+
+    }
+
+    private List<SensorDTO> sensorsDTO(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorDTO).collect(java.util.stream.Collectors.toList());
+    }
+
+    private SensorDTO sensorDTO(Sensor sensor) {
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType(),
+                sensor.getValue(),
+                sensor.getUnit(),
+                sensor.getMax(),
+                sensor.getMin(),
+                sensor.getTimestamp(),
+                sensor.getPackagging().getId()
         );
     }
 

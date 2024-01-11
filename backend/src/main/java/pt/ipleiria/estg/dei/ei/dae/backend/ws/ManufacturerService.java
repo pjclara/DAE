@@ -137,11 +137,7 @@ public class ManufacturerService {
 
     private ProductDTO productToDo(Product product) {
         return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getStock(),
-                product.getImage(),
-                product.getProductPackage() == null ? null:product.getProductPackage().getId()
+
         );
     }
     // get all products from manufacturer

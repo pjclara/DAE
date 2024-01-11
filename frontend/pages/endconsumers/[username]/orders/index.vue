@@ -9,8 +9,8 @@
                             @click="detailsOrder(item)"><v-icon>mdi-eye-circle</v-icon></v-btn>
                     </template>
                     <template v-slot:item.productsIds="{ item }">
-                        <span v-for="(product, index) in item.orderItems" :key="index" style="align-items: center;">
-                            <v-img width="50" height="50" :src="product.productImage" />{{ product.product }}
+                        <span v-for="(item, index) in item.orderItems" :key="index" style="align-items: center;">
+                            <v-img width="50" height="50" :src="item.productDTO.image" />{{ item.productDTO.name }}
                             <br>
                         </span>
                     </template>

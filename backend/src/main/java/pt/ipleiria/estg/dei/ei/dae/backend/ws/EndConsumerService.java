@@ -1,21 +1,26 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.ws;
 
 import jakarta.ejb.EJB;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.bind.Jsonb;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.EndConsumerDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderItemDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.EndConsumerBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.EndConsumer;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
+import java.io.StringReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/endConsumers")
@@ -87,13 +92,12 @@ public class EndConsumerService {
     // consumer create a new order
     @POST
     @Path("{username}/orders")
-    public Response createNewOrder(@PathParam("username") String username, OrderDTO orderDTO)
+    public Response createNewOrder(@PathParam("username") String username, String data)
             throws MyEntityNotFoundException, MyConstraintViolationException {
 
         long orderId = orderBean.create(
                 username,
-                orderDTO.getStatus(),
-                orderDTO.getOrderItems()
+                data
         );
         Orderr order = orderBean.findOrFail(orderId);
         if (order == null) {
@@ -162,10 +166,75 @@ public class EndConsumerService {
     private OrderItemDTO orderItemToDTOs(OrderItem orderItem) {
         return new OrderItemDTO(
                 orderItem.getId(),
-                orderItem.getProduct().getName(),
-                orderItem.getProduct().getImage(),
-                orderItem.getProduct().getProductPackage().getPackagingMaterial(),
-                orderItem.getQuantity()
+                orderItem.getQuantity(),
+                productToDTO(orderItem.getProduct())
+        );
+    }
+
+    private ProductDTO productToDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getStock(),
+                product.getImage(),
+                product.getManufacturer().getUsername(),
+                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+        );
+    }
+
+    private PackageDTO packageDTO(Package aPackage) {
+        return new PackageDTO(
+                aPackage.getId(),
+                aPackage.getPackagingType(),
+                aPackage.getPackagingMaterial(),
+                sensorsDTO(aPackage.getSensors())
+        );
+    }
+
+    private PackageDTO packageToDTO(Package productPackage) {
+        return new PackageDTO(
+                productPackage.getId(),
+                productPackage.getPackagingType(),
+                productPackage.getPackagingMaterial(),
+                sensorsDTO(productPackage.getSensors())
+        );
+    }
+
+    private List<SensorDTO> sensorsDTO(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorDTO).collect(java.util.stream.Collectors.toList());
+    }
+
+    private SensorDTO sensorDTO(Sensor sensor) {
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType(),
+                sensor.getValue(),
+                sensor.getUnit(),
+                sensor.getMax(),
+                sensor.getMin(),
+                sensor.getTimestamp(),
+                sensor.getPackagging().getId()
+
+        );
+    }
+
+    private List<SensorDTO> sensorToDTOs(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorToDTO).collect(java.util.stream.Collectors.toList());
+    }
+
+    private SensorDTO sensorToDTO(Sensor sensor) {
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType(),
+                sensor.getValue(),
+                sensor.getUnit(),
+                sensor.getMax(),
+                sensor.getMin(),
+                sensor.getTimestamp(),
+                sensor.getPackagging().getId()
+
         );
     }
 

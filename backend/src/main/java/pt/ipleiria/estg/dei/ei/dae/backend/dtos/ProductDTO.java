@@ -5,28 +5,21 @@ public class ProductDTO {
     private String name;
     private int stock;
     private String image;
-    private int orderId;
     private String manufacturerUsername;
     private long packageId;
+
+    private PackageDTO packageDTO;
 
     public ProductDTO() {
     }
 
-    public ProductDTO(long id, String name, int stock, String image,Long packageId) {
+    public ProductDTO(long id, String name, int stock, String image, String manufacturerUsername, PackageDTO packageDTo) {
         this.id = id;
         this.name = name;
         this.stock = stock;
         this.image = image;
-        this.packageId = packageId;
-    }
-
-    public ProductDTO(Long id, String name, int stock, String image, String username, Long aLong) {
-        this.id = id;
-        this.name = name;
-        this.stock = stock;
-        this.image = image;
-        this.manufacturerUsername = username;
-        this.packageId = aLong;
+        this.manufacturerUsername = manufacturerUsername;
+        this.packageDTO = packageDTo;
     }
 
     public long getId() {
@@ -53,14 +46,6 @@ public class ProductDTO {
         this.stock = stock;
     }
 
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
     public String getManufacturerUsername() {
         return manufacturerUsername;
     }
@@ -69,16 +54,19 @@ public class ProductDTO {
         this.manufacturerUsername = manufacturerUsername;
     }
 
-    public long getPackageId() {
-        return packageId;
+    public PackageDTO getPackageDTO() {
+        return packageDTO;
     }
 
-    public void setPackageId(long packageId) {
-        this.packageId = packageId;
+    public void setPackageDTO(PackageDTO packageDTO) {
+        this.packageDTO = packageDTO;
     }
-
     public String getImage() {
         return image;
+    }
+
+    public long getPackageId() {
+        return packageId;
     }
 
 

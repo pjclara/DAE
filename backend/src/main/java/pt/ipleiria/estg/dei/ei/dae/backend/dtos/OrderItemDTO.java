@@ -1,43 +1,19 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OrderItemDTO {
 
     private Long id;
-
-    private Long productId;
-
-    private String productName;
-
-    private String productImage;
-
-    private String productPackageMaterial;
-
     private Integer quantity;
 
-    public OrderItemDTO() {
-    }
-    public OrderItemDTO(Long id, String productName , String productImage, String productPackageMaterial,Integer quantity) {
+    private ProductDTO productDTO;
+
+    public OrderItemDTO(long id, int quantity, ProductDTO productDTO) {
         this.id = id;
-        this.productName = productName;
-        this.productImage = productImage;
-        this.productPackageMaterial = productPackageMaterial;
+        this.productDTO = productDTO;
         this.quantity = quantity;
     }
-
-    public OrderItemDTO(String productName , String productImage, String productPackageMaterial,Integer quantity, Long productId) {
-        this.productName = productName;
-        this.productImage = productImage;
-        this.productPackageMaterial = productPackageMaterial;
-        this.productId = productId;
-        this.quantity = quantity;
-    }
-
 
 
     public Long getId() {
@@ -48,13 +24,6 @@ public class OrderItemDTO {
         this.id = id;
     }
 
-    public String getProduct() {
-        return productName;
-    }
-
-    public void setProduct(String productName) {
-        this.productName = productName;
-    }
 
     public Integer getQuantity() {
         return quantity;
@@ -64,28 +33,13 @@ public class OrderItemDTO {
         this.quantity = quantity;
     }
 
-    public String getProductImage() {
-        return productImage;
+
+    public ProductDTO getProductDTO() {
+        return productDTO;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
-    }
-
-    public String getProductPackageMaterial() {
-        return productPackageMaterial;
-    }
-
-    public void setProductPackageMaterial(String productPackageMaterial) {
-        this.productPackageMaterial = productPackageMaterial;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductDTO(ProductDTO productDTO) {
+        this.productDTO = productDTO;
     }
 
 

@@ -13,14 +13,35 @@
               <v-text-field v-model="order.status" disabled />
             </div>
             <div class="text-left">
-              <h3>Embalagem: </h3>
-              <v-text-field v-model="order.packageId" disabled />
-            </div>
-            <div class="text-left">
               <h3>Produtos da encomenda: </h3>
-              <span v-for="(product, index) in order.orderItems" :key="index" style="align-items: center;">
-                <v-img width="100" height="100" :src="product.productImage" /> {{ product.product }}
+              
+              <span v-for="(item, index) in order.orderItems" :key="index" style="align-items: center;">
+                <v-img width="100" height="100" :src="item.productDTO.image" />                
                 <br>
+                <ul>
+                  <li>
+                    <h4>Nome: {{ item.productDTO.name }}</h4>
+                  </li>
+                  <li>
+                    <h4>Quantidade: {{ item.quantity }}</h4>
+                  </li>
+                  <li>
+                    <ul>
+                      <li>
+                        <h4>Package material: {{ item.productDTO.packageDTO.packagingMaterial }}</h4>
+                        <ul v-for="sensor in item.productDTO.packageDTO.sensors" key="sensor.id">
+                          <li>
+                            <h4>Sensor type: {{ sensor.type }}</h4>
+                          </li>
+                          <li>
+                            <h4>Value: {{ sensor.value }}</h4>
+                          </li>
+                        </ul>
+                      </li>
+                      
+                    </ul>
+                  </li>
+                </ul>
               </span>
             </div>
           </v-card-text>
@@ -56,7 +77,7 @@ const username = route.params.username
 
 const { data: order, error: orderErr } = await useFetch(`${api}/orders/${id}`)
 
-
+console.log(order.value)
 </script>
 
 <style scoped>

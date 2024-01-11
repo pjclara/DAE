@@ -70,7 +70,15 @@ public class EndConsumerBean {
         EndConsumer endConsumer = entityManager.find(EndConsumer.class, username);
 
         if(endConsumer == null) throw new MyEntityNotFoundException("End consumer with username " + username + " not found in database");
+
         Hibernate.initialize(endConsumer.getOrders());
+
+        endConsumer.getOrders().forEach(order -> {
+            Hibernate.initialize(order.getOrderItems());
+            order.getOrderItems().forEach(orderItem -> {
+                Hibernate.initialize(orderItem.getProduct());
+            });
+        });
 
         if (endConsumer.getOrders().isEmpty()) throw new IllegalArgumentException("End consumer with username " + username + " has no orders");
         return endConsumer;

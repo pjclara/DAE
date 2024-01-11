@@ -1,7 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +32,12 @@ public class OrderDTO {
         this.endConsumerName = username;
         this.logisticsOperatorName = username1;
         this.packageId = id1;
+    }
+
+    public OrderDTO(Long id, String status, List<OrderItemDTO> orderItemDTOS) {
+        this.id = id;
+        this.status = status;
+        this.OrderItems = orderItemDTOS;
     }
 
     public Long getId() {
