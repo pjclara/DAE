@@ -92,7 +92,7 @@ GET http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1
 
 
 ### Get product by id
-GET http://localhost:8080/backend/api/products/2
+GET http://localhost:8080/backend/api/products/1
 
 ### Post product
 POST http://localhost:8080/backend/api/products
@@ -102,8 +102,7 @@ Content-Type: application/json
   "name": "product3",
   "stock": 10,
   "manufacturerUsername": "manufacturer1",
-  "image": "imagem",
-  "packageId": 1
+  "image": "imagem"
 }
 
 ### Put product
@@ -203,3 +202,6 @@ GET http://localhost:8080/backend/api/orders/1
 ## products
 ### Get all products
 GET http://localhost:8080/backend/api/products/1
+
+### get unitProducts
+GET http://localhost:8080/backend/api/unitProducts

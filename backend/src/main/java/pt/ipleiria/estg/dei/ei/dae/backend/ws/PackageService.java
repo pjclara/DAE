@@ -73,7 +73,7 @@ public class PackageService {
     @Path("{id}/sensors")
     public Response getPackageSensors(@PathParam("id") Long packageId) throws MyEntityNotFoundException {
         Package package_ = packageBean.findOrFail(packageId);
-        var sensors = package_.getSensors();
+        var sensors = package_.getAllPackageSensors();
 
         if (sensors == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("ERROR_FINDING_PACKAGE_SENSORS").build();
@@ -123,7 +123,6 @@ public class PackageService {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        packageBean.addSensorToPackage(id, sensorId);
         return Response.ok().build();
     }
 

@@ -2,7 +2,9 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,23 +18,28 @@ public class UnitProduct extends Versionable {
     @Column(name="id")
     long id;
 
-    @OneToOne
-    private Product product;
-
     @NotNull
     UUID serialNumber;
 
     @NotNull
-    boolean available = true;
+    boolean available;
+
+    @ManyToOne
+    private Product product;
+
+    @ManyToOne
+    private PackageSensor packageSensor;
 
     public UnitProduct() {
     }
 
-    public UnitProduct(Product product,  UUID serialNumber) {
+    public UnitProduct(Product product,  UUID serialNumber, boolean available, PackageSensor packageSensor) {
         this.product = product;
         this.serialNumber = serialNumber;
-        this.available = true;
+        this.available = available;
+        this.packageSensor = packageSensor;
     }
+
     public Product getProduct() {
         return product;
     }
@@ -55,5 +62,16 @@ public class UnitProduct extends Versionable {
 
     public boolean getAvailable() {
         return available;
+    }
+
+    public void setSerialNumber(UUID serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public PackageSensor getPackageSensor() {
+        return packageSensor;
+    }
+    public void setPackageSensor(PackageSensor packageSensor) {
+        this.packageSensor = packageSensor;
     }
 }

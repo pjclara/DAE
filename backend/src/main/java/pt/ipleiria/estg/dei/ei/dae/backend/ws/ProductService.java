@@ -54,8 +54,7 @@ public class ProductService {
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getImage(),
-                productDTO.getManufacturerUsername(),
-                productDTO.getPackageId()
+                productDTO.getManufacturerUsername()
         );
         Product product = productBean.find(id);
         if (product == null) {
@@ -73,8 +72,7 @@ public class ProductService {
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getManufacturerUsername(),
-                productDTO.getImage(),
-                productDTO.getPackageDTO()
+                productDTO.getImage()
         );
         Product product = productBean.find(id);
         if (product == null) {
@@ -88,8 +86,7 @@ public class ProductService {
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
@@ -98,7 +95,7 @@ public class ProductService {
                 productPackage.getId(),
                 productPackage.getPackagingType(),
                 productPackage.getPackagingMaterial(),
-                sensorsDTO(productPackage.getSensors())
+                sensorsDTO(productPackage.getAllPackageSensors())
         );
 
     }

@@ -26,20 +26,7 @@
                     <h4>Quantidade: {{ item.quantity}}</h4>
                   </li>
                   <li>
-                    <ul>
-                      <li>
-                        <h4>Package material: {{ item.unitProductDTO.productDTO.packageDTO.packagingMaterial }}</h4>
-                        <ul v-for="sensor in item.unitProductDTO.productDTO.packageDTO.sensors" key="sensor.id">
-                          <li>
-                            <h4>Sensor type: {{ sensor.type }}</h4>
-                          </li>
-                          <li>
-                            <h4>Value: {{ sensor.value }}</h4>
-                          </li>
-                        </ul>
-                      </li>
-                      
-                    </ul>
+                    
                   </li>
                 </ul>
               </span>

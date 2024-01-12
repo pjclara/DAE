@@ -1,6 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.UnitProduct;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 public class UnitProductDTO implements Serializable {
@@ -8,16 +11,22 @@ public class UnitProductDTO implements Serializable {
 
     private UUID serialNumber;
 
-    private ProductDTO productDTO;
+    private ProductDTO product;
 
+    private boolean available;
 
-    public UnitProductDTO() {
+    private PackageSensorDTO packageSensorDTO;
+
+    public UnitProductDTO(long id, UUID productDTO, boolean available, ProductDTO dto, PackageSensorDTO packageSensorDTO) {
+        this.id = id;
+        this.serialNumber = productDTO;
+        this.available = available;
+        this.product = dto;
+        this.packageSensorDTO = packageSensorDTO;
     }
 
-    public UnitProductDTO(long id, UUID serialNumber,ProductDTO productDTO) {
-        this.id = id;
-        this.serialNumber = serialNumber;
-        this.productDTO = productDTO;
+    public static List<UnitProduct> unitProducts(List<UnitProduct> unitProducts) {
+        return unitProducts;
     }
 
     // getters and setters
@@ -36,10 +45,26 @@ public class UnitProductDTO implements Serializable {
     }
 
     public ProductDTO getProductDTO() {
-        return productDTO;
+        return product;
     }
     public void setProductDTO(ProductDTO productDTO) {
-        this.productDTO = productDTO;
+        this.product = productDTO;
+    }
+
+    public boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public PackageSensorDTO getPackageSensorDTO() {
+        return packageSensorDTO;
+    }
+
+    public void setPackageSensorDTO(PackageSensorDTO packageSensorDTO) {
+        this.packageSensorDTO = packageSensorDTO;
     }
 
 }

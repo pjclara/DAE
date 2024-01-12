@@ -144,8 +144,7 @@ public class ManufacturerService {
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
@@ -165,7 +164,7 @@ public class ManufacturerService {
                 aPackage.getId(),
                 aPackage.getPackagingType(),
                 aPackage.getPackagingMaterial(),
-                sensorsDTO(aPackage.getSensors())
+                sensorsDTO(aPackage.getAllPackageSensors())
         );
     }
 

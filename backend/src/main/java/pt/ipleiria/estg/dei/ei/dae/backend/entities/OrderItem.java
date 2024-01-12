@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "orderItems")
+@Table(name = "order-items")
 @NamedQuery(name = "getAllOrdersItems", query = "SELECT o FROM OrderItem o ORDER BY o.id")
 public class OrderItem {
     @Id

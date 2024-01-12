@@ -92,19 +92,6 @@ public class PackageBean {
         package_.setPackagingMaterial(material);
     }
 
-    public void addSensorToPackage(Long packageId, Long sensorId) throws MyEntityNotFoundException {
-        //Package package_ = findOrFail(packageId);
-        Package package_ = packageBean.find(packageId);
-        if (package_ == null) {
-            throw new MyEntityNotFoundException("Package with id '" + packageId + "' not found");
-        }
-        Sensor sensorToAdd = sensorBean.find(sensorId);
-        if (sensorToAdd == null) {
-            throw new MyEntityNotFoundException("Sensor with id '" + sensorId + "' not found");
-        }
-        package_.addSensor(sensorToAdd);
-        entityManager.merge(package_);
-    }
 
     public void removeSensorFromPackage(Long packageId, Long sensorId) throws MyEntityNotFoundException {
         Package package_ = findOrFail(packageId);

@@ -28,6 +28,10 @@ public class PackageDTO {
         this.sensors = SensorDTO.from(sensors);
     }
 
+    public PackageDTO(Long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
@@ -65,7 +69,7 @@ public class PackageDTO {
                 package_.getId(),
                 package_.getPackagingType(),
                 package_.getPackagingMaterial(),
-                SensorDTO.from(package_.getSensors())
+                SensorDTO.from(package_.getAllPackageSensors())
         );
     }
 

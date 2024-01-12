@@ -87,8 +87,38 @@ public class OrderService {
         return new UnitProductDTO(
                 unitProduct.getId(),
                 unitProduct.getSerialNumber(),
-                productToDTO(unitProduct.getProduct())
+                unitProduct.getAvailable(),
+                productToDTO(unitProduct.getProduct()),
+                packageSensorToDTO(unitProduct.getPackageSensor()));
+    }
+
+    private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
+        return new PackageSensorDTO(
+                packageSensor.getId(),
+                sensorDTO(packageSensor.getSensor()),
+                packageDTO(packageSensor.getaPackage()),
+                packageSensor.getValue()
         );
+    }
+
+    private PackageDTO packageDTO(Package aPackage) {
+        return new PackageDTO(
+                aPackage.getId()
+        );
+    }
+
+    private PackageSensorDTO packageSensorDTO(PackageSensor packageSensor) {
+        return new PackageSensorDTO(
+                (Long) packageSensor.getId(),
+                sensorDTO(packageSensor.getSensor()),
+                packageToDTO(packageSensor.getPackagging()),
+                (UnitProductDTO) unitProductDTOs(UnitProductDTO.unitProducts(packageSensor.getUnitProducts())),
+                packageSensor.getValue()
+        );
+    }
+
+    private List<UnitProductDTO> unitProductDTOs(List<UnitProduct> unitProducts) {
+        return unitProducts.stream().map(this::unitProductDTO).collect(Collectors.toList());
     }
 
     private ProductDTO productToDTO(Product product) {
@@ -97,8 +127,7 @@ public class OrderService {
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageToDTO(product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
@@ -118,7 +147,7 @@ public class OrderService {
                 productPackage.getId(),
                 productPackage.getPackagingType(),
                 productPackage.getPackagingMaterial(),
-                sensorsDTO(productPackage.getSensors())
+                sensorsDTO(productPackage.getAllPackageSensors())
         );
     }
 

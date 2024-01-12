@@ -3,6 +3,8 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "sensors")
@@ -26,6 +28,9 @@ public class Sensor extends Versionable {
     private String min;     // valor mínimo aceitável
     @NotNull
     private long timestamp;
+
+    @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<PackageSensor> packageSensors;
 
     @ManyToOne
     @JoinTable(

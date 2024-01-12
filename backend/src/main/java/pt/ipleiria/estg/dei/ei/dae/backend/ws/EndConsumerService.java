@@ -1,11 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.ws;
 
 import jakarta.ejb.EJB;
-import jakarta.json.Json;
-import jakarta.json.JsonArray;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
-import jakarta.json.bind.Jsonb;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -18,9 +13,6 @@ import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationExcep
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
-import java.io.StringReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/endConsumers")
@@ -175,7 +167,17 @@ public class EndConsumerService {
         return new UnitProductDTO(
                 unitProduct.getId(),
                 unitProduct.getSerialNumber(),
-                productToDTO(unitProduct.getProduct())
+                unitProduct.getAvailable(),
+                productToDTO(unitProduct.getProduct()),
+                packageSensorToDTO(unitProduct.getPackageSensor()));
+    }
+
+    private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
+        return new PackageSensorDTO(
+                packageSensor.getId(),
+                sensorDTO(packageSensor.getSensor()),
+                packageDTO(packageSensor.getaPackage()),
+                packageSensor.getValue()
         );
     }
 
@@ -185,8 +187,7 @@ public class EndConsumerService {
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
@@ -195,7 +196,7 @@ public class EndConsumerService {
                 aPackage.getId(),
                 aPackage.getPackagingType(),
                 aPackage.getPackagingMaterial(),
-                sensorsDTO(aPackage.getSensors())
+                sensorsDTO(aPackage.getAllPackageSensors())
         );
     }
 
