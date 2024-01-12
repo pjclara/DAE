@@ -13,7 +13,6 @@ import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,7 +79,15 @@ public class OrderService {
         return new OrderItemDTO(
                 orderItem.getId(),
                 orderItem.getQuantity(),
-                productToDTO(orderItem.getProduct())
+                unitProductDTO(orderItem.getUnitProduct())
+        );
+    }
+
+    private UnitProductDTO unitProductDTO(UnitProduct unitProduct) {
+        return new UnitProductDTO(
+                unitProduct.getId(),
+                unitProduct.getSerialNumber(),
+                productToDTO(unitProduct.getProduct())
         );
     }
 

@@ -12,10 +12,12 @@ import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.UnitProduct;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Stateless
 public class ProductBean {
@@ -41,6 +43,11 @@ public class ProductBean {
             entityManager.persist(product);
             manufacturer.addProduct(product);
             productPackage.addProduct(product);
+            // create unit products
+            for (int i = 0; i < stock; i++) {
+                entityManager.persist(new UnitProduct(product, UUID.randomUUID()));
+            }
+
             return product.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
@@ -94,7 +101,7 @@ public class ProductBean {
     public Product findWithPackage(Long id) {
         Product product = entityManager.find(Product.class, id);
 
-        if (product == null) return null;
+        if (product == null) throw new IllegalArgumentException("Product with id " + id + " not found");
 
         Hibernate.initialize(product.getProductPackage());
 

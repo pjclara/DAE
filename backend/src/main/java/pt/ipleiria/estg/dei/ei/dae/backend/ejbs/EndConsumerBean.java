@@ -76,7 +76,7 @@ public class EndConsumerBean {
         endConsumer.getOrders().forEach(order -> {
             Hibernate.initialize(order.getOrderItems());
             order.getOrderItems().forEach(orderItem -> {
-                Hibernate.initialize(orderItem.getProduct());
+                Hibernate.initialize(orderItem.getUnitProduct());
             });
         });
 

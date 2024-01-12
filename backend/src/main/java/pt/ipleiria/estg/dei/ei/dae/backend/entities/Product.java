@@ -31,6 +31,10 @@ public class Product extends Versionable{
     @JoinColumn(name = "package_id")
     private Package productPackage;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private UnitProduct unitProduct;
+
     public Product() {
     }
 

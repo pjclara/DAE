@@ -198,7 +198,7 @@ Content-Type: application/json
 ### create a new order with order items
 
 
-GET http://localhost:8080/backend/api/orders
+GET http://localhost:8080/backend/api/orders/1
 
 ## products
 ### Get all products

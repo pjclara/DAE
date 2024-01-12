@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.UnitProduct;
+
 import java.util.List;
 
 public class OrderItemDTO {
@@ -7,11 +9,11 @@ public class OrderItemDTO {
     private Long id;
     private Integer quantity;
 
-    private ProductDTO productDTO;
+    private UnitProductDTO unitProductDTO;
 
-    public OrderItemDTO(long id, int quantity, ProductDTO productDTO) {
+    public OrderItemDTO(long id, int quantity, UnitProductDTO unitProductDTO) {
         this.id = id;
-        this.productDTO = productDTO;
+        this.unitProductDTO = unitProductDTO;
         this.quantity = quantity;
     }
 
@@ -32,14 +34,11 @@ public class OrderItemDTO {
         this.quantity = quantity;
     }
 
-
-    public ProductDTO getProductDTO() {
-        return productDTO;
+    public UnitProductDTO getUnitProductDTO() {
+        return unitProductDTO;
     }
 
-    public void setProductDTO(ProductDTO productDTO) {
-        this.productDTO = productDTO;
+    public void setUnitProductDTO(UnitProductDTO unitProductDTO) {
+        this.unitProductDTO = unitProductDTO;
     }
-
-
 }

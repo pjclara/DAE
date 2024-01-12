@@ -167,7 +167,15 @@ public class EndConsumerService {
         return new OrderItemDTO(
                 orderItem.getId(),
                 orderItem.getQuantity(),
-                productToDTO(orderItem.getProduct())
+                unitProductDTO(orderItem.getUnitProduct())
+        );
+    }
+
+    private UnitProductDTO unitProductDTO(UnitProduct unitProduct) {
+        return new UnitProductDTO(
+                unitProduct.getId(),
+                unitProduct.getSerialNumber(),
+                productToDTO(unitProduct.getProduct())
         );
     }
 
