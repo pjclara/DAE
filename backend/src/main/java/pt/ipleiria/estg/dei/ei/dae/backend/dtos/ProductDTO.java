@@ -22,16 +22,8 @@ public class ProductDTO {
         this.name = name;
         this.stock = stock;
         this.image = image;
-        this.packageDTO = packageDTO;
-    }
-
-    public ProductDTO(Long id, String name, int stock, String image, String username, Long aLong) {
-        this.id = id;
-        this.name = name;
-        this.stock = stock;
-        this.image = image;
-        this.manufacturerUsername = username;
-        this.packageId = aLong;
+        this.packageDTO = packageDTo;
+        this.manufacturerUsername = manufacturerUsername;
     }
 
     public long getId() {

@@ -157,6 +157,10 @@ public class OrderBean {
 
         if (order.getOrderItems().isEmpty()) throw new IllegalArgumentException("Order with id " + orderId + " has no products");
 
+        order.getOrderItems().forEach(orderItem -> {
+            Hibernate.initialize(orderItem.getProduct());
+            Hibernate.initialize(orderItem.getProduct().getProductPackage());
+        });
         return order;
 
     }

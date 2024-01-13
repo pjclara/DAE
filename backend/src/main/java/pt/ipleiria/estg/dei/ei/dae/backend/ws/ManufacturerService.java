@@ -149,6 +149,17 @@ public class ManufacturerService {
         );
     }
 
+    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
+        return new ManufacturerDTO(
+                manufacturer.getUsername(),
+                manufacturer.getPassword(),
+                manufacturer.getName(),
+                manufacturer.getEmail(),
+                manufacturer.getRole()
+        );
+    }
+
+
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
                 aPackage.getId(),

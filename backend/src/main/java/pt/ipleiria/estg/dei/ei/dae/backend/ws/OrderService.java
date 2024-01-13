@@ -38,7 +38,7 @@ public class OrderService {
     @GET
     @Path("{id}")
     public Response get(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Orderr orderr = orderBean.findOrFail(orderId);
+        Orderr orderr = orderBean.getOrderProducts(orderId);
         if (orderr != null) {
             var order = orderDto(orderr);
             return Response.ok(order).build();
@@ -55,7 +55,8 @@ public class OrderService {
                 orderr.getEndConsumer().getName(),
                 orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
                 orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
-                ordersItemDTO(orderr.getOrderItems())        );
+                ordersItemDTO(orderr.getOrderItems())
+        );
     }
 
     @GET
@@ -93,6 +94,17 @@ public class OrderService {
                 packageToDTO(product.getProductPackage())
         );
     }
+
+    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
+        return new ManufacturerDTO(
+                manufacturer.getUsername(),
+                manufacturer.getPassword(),
+                manufacturer.getName(),
+                manufacturer.getEmail(),
+                manufacturer.getRole()
+        );
+    }
+
 
     private PackageDTO packageToDTO(Package productPackage) {
         return new PackageDTO(
