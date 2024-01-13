@@ -29,11 +29,13 @@ public class PackageSensor {
     private UnitProduct unitProduct;
 
     public PackageSensor() {
+        this.sensorValues = new ArrayList<>();
     }
 
     public PackageSensor(Package aPackage, UnitProduct unitProducts) {
         this.aPackage = aPackage;
         this.unitProduct = unitProducts;
+        this.sensorValues = new ArrayList<>();
     }
 
     public Long getId() {
@@ -73,8 +75,9 @@ public class PackageSensor {
     }
 
     public void addSensorValue(SensorValue sensorValue) {
-        sensorValues.add(sensorValue);
+
         sensorValue.setPackageSensor(this);
+        this.sensorValues.add(sensorValue);
     }
 
 }

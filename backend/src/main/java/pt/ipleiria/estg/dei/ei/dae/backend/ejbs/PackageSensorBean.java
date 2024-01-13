@@ -61,6 +61,12 @@ public class PackageSensorBean {
 
         SensorValue sensorValue = new SensorValue(sensor,packageSensor);
 
+        SensorValue sensorValue1 = entityManager.find(SensorValue.class, sensorValue.getId());
+
+        if(sensorValue1 != null) throw new IllegalArgumentException("SensorValue not found in database");
+
+        packageSensor.addSensorValue(sensorValue);
+
         entityManager.persist(sensorValue);
     }
 }
