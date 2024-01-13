@@ -33,8 +33,9 @@ public class PackageSensorBean {
 
         if(unitProduct == null) throw new IllegalArgumentException("UnitProduct with id " + unitProductId + " not found in database");
 
-        List<UnitProduct> unitProducts = List.of(unitProduct);
-        PackageSensor packageSensor = new PackageSensor(sensor, aPackage, unitProducts, value);
+        List<Sensor> sensors = List.of(sensor);
+
+        PackageSensor packageSensor = new PackageSensor(sensors, aPackage, unitProduct, value);
 
         entityManager.persist(packageSensor);
     }
@@ -48,10 +49,13 @@ public class PackageSensorBean {
 
         if(unitProduct == null) throw new IllegalArgumentException("UnitProduct with id " + unitProductId + " not found in database");
 
-        packageSensor.getUnitProducts().add(unitProduct);
+        //packageSensor.getUnitProducts().add(unitProduct);
 
         entityManager.merge(packageSensor);
 
     }
 
+    public PackageSensor find(int i) {
+        return entityManager.find(PackageSensor.class, i);
+    }
 }

@@ -163,8 +163,7 @@ public class ManufacturerService {
         return new PackageDTO(
                 aPackage.getId(),
                 aPackage.getPackagingType(),
-                aPackage.getPackagingMaterial(),
-                sensorsDTO(aPackage.getAllPackageSensors())
+                aPackage.getPackagingMaterial()
         );
     }
 

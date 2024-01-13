@@ -36,4 +36,8 @@ public class UnitProductBean {
 
         return unitProduct;
     }
+
+    void update(UnitProduct unitProduct) {
+        entityManager.merge(unitProduct);
+    }
 }

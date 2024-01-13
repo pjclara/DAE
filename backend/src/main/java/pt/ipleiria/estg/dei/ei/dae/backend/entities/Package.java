@@ -25,18 +25,15 @@ public class Package extends Versionable {
     @OneToOne(mappedBy = "orderPackage")
     private Orderr order;
 
-    @OneToMany
-    private List<PackageSensor> packageSensors;
+    @ManyToOne
+    private PackageSensor packageSensor;
 
     public Package() {
-        this.packageSensors =  new ArrayList<>();
+
     }
-
-
     public Package(PackagingType packagingType, String packagingMaterial) {
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-        this.packageSensors =  new ArrayList<>();
     }
 
     public Long getId() {
@@ -71,40 +68,6 @@ public class Package extends Versionable {
         this.order = order;
         if (order != null) {
             order.setOrderPackage(this);
-        }
-    }
-
-    public List<Sensor> getAllPackageSensors() {
-        List<Sensor> sensors = new ArrayList<>();
-        for (PackageSensor packageSensor : packageSensors) {
-            sensors.add(packageSensor.getSensor());
-        }
-        return sensors;
-    }
-
-    public void setPackageSensors(List<PackageSensor> packageSensors) {
-        this.packageSensors = packageSensors;
-    }
-
-    public void addPackageSensor(PackageSensor packageSensor) {
-        this.packageSensors.add(packageSensor);
-    }
-
-    public void removePackageSensor(PackageSensor packageSensor) {
-        this.packageSensors.remove(packageSensor);
-    }
-
-    public void clearPackageSensors() {
-        this.packageSensors.clear();
-    }
-
-
-    public void removeSensor(Sensor sensorToRemove) {
-        for (PackageSensor packageSensor : packageSensors) {
-            if (packageSensor.getSensor().equals(sensorToRemove)) {
-                packageSensors.remove(packageSensor);
-                return;
-            }
         }
     }
 }

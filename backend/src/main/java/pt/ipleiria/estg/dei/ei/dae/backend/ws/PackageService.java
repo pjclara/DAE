@@ -16,6 +16,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.SensorBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
@@ -73,7 +74,7 @@ public class PackageService {
     @Path("{id}/sensors")
     public Response getPackageSensors(@PathParam("id") Long packageId) throws MyEntityNotFoundException {
         Package package_ = packageBean.findOrFail(packageId);
-        var sensors = package_.getAllPackageSensors();
+        List<Sensor> sensors = sensorBean.getSensorsByPackage(package_);
 
         if (sensors == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("ERROR_FINDING_PACKAGE_SENSORS").build();

@@ -26,7 +26,8 @@ public class SensorDTO implements Serializable {
     
     private long packageId;
 
-    public SensorDTO() {
+    public SensorDTO(long id) {
+        this.id = id;
     }
 
     public SensorDTO(Long id, String source, String type, String value, String unit, String max, String min, long timestamp) {

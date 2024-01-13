@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "sensors")
 @NamedQuery(name = "getAllSensors", query = "SELECT s FROM Sensor s ORDER BY s.id")
+@NamedQuery(name = "getSensorById", query = "SELECT s FROM Sensor s WHERE s.id = :id")
 public class Sensor extends Versionable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
@@ -29,7 +30,7 @@ public class Sensor extends Versionable {
     @NotNull
     private long timestamp;
 
-    @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "sensors")
     private List<PackageSensor> packageSensors;
 
     @ManyToOne

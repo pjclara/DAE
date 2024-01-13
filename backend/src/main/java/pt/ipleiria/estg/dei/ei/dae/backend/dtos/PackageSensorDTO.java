@@ -1,14 +1,15 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import jakarta.ejb.Stateless;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PackageSensorDTO implements Serializable {
 
     private long id;
 
-    private SensorDTO sensorDTO;
+    private List<SensorDTO> sensorDTOs;
 
     private PackageDTO packageDTO;
 
@@ -16,25 +17,17 @@ public class PackageSensorDTO implements Serializable {
 
     private String value;
 
-    public PackageSensorDTO() {
-    }
 
-    public PackageSensorDTO(Long id, SensorDTO sensorDTO, PackageDTO packageDTO, String value) {
+    public PackageSensorDTO(Long id, List<SensorDTO> sensorDTOs) {
         this.id = id;
-        this.sensorDTO = sensorDTO;
-        this.value = value;
-        this.packageDTO = packageDTO;
+        this.sensorDTOs = sensorDTOs;
     }
 
-    public PackageSensorDTO(long id, SensorDTO sensorDTO, PackageDTO packageDTO,
-                            UnitProductDTO unitProductDTO, String value) {
+    public PackageSensorDTO(Long id, String value, List<SensorDTO> sensorDTOs) {
         this.id = id;
-        this.sensorDTO = sensorDTO;
-        this.packageDTO = packageDTO;
-        this.unitProductDTO = unitProductDTO;
-        this.value = value;
+        this.value =  value;
+        this.sensorDTOs = sensorDTOs;
     }
-
 
 
     // getters and setters
@@ -43,14 +36,6 @@ public class PackageSensorDTO implements Serializable {
     }
     public void setId(long id) {
         this.id = id;
-    }
-
-    public SensorDTO getSensorDTO() {
-        return sensorDTO;
-    }
-
-    public void setSensorDTO(SensorDTO sensorDTO) {
-        this.sensorDTO = sensorDTO;
     }
 
     public PackageDTO getPackageDTO() {
@@ -68,6 +53,23 @@ public class PackageSensorDTO implements Serializable {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public UnitProductDTO getUnitProductDTO() {
+        return unitProductDTO;
+    }
+
+    public void setUnitProductDTO(UnitProductDTO unitProductDTO) {
+        this.unitProductDTO = unitProductDTO;
+    }
+
+    public List<SensorDTO> getSensorDTOs() {
+        return sensorDTOs;
+    }
+
+    public void setSensorDTOs(List<SensorDTO> sensorDTOs) {
+        this.sensorDTOs = sensorDTOs;
+    }
+
 
 
 

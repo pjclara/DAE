@@ -175,9 +175,8 @@ public class EndConsumerService {
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                sensorDTO(packageSensor.getSensor()),
-                packageDTO(packageSensor.getaPackage()),
-                packageSensor.getValue()
+                packageSensor.getValue(),
+                sensorToDTOs(packageSensor.getSensors() == null ? null : packageSensor.getSensors())
         );
     }
 
@@ -195,8 +194,7 @@ public class EndConsumerService {
         return new PackageDTO(
                 aPackage.getId(),
                 aPackage.getPackagingType(),
-                aPackage.getPackagingMaterial(),
-                sensorsDTO(aPackage.getAllPackageSensors())
+                aPackage.getPackagingMaterial()
         );
     }
 

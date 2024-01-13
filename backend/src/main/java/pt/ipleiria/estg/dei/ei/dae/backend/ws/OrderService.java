@@ -88,34 +88,31 @@ public class OrderService {
                 unitProduct.getId(),
                 unitProduct.getSerialNumber(),
                 unitProduct.getAvailable(),
-                productToDTO(unitProduct.getProduct()),
-                packageSensorToDTO(unitProduct.getPackageSensor()));
+                packageSensorToDTO(unitProduct.getPackageSensor() == null ?  new PackageSensor() : unitProduct.getPackageSensor())
+        );
     }
 
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                sensorDTO(packageSensor.getSensor()),
-                packageDTO(packageSensor.getaPackage()),
-                packageSensor.getValue()
+                packageSensor.getValue(),
+                sensorDTOs(packageSensor.getSensors())
         );
     }
 
+    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorsDTO).collect(Collectors.toList());
+    }
+
+    private SensorDTO sensorsDTO(Sensor sensor){
+        return new SensorDTO(
+                sensor.getId()
+        );
+    }
     private PackageDTO packageDTO(Package aPackage) {
-        return new PackageDTO(
-                aPackage.getId()
-        );
+        return new PackageDTO( );
     }
 
-    private PackageSensorDTO packageSensorDTO(PackageSensor packageSensor) {
-        return new PackageSensorDTO(
-                (Long) packageSensor.getId(),
-                sensorDTO(packageSensor.getSensor()),
-                packageToDTO(packageSensor.getPackagging()),
-                (UnitProductDTO) unitProductDTOs(UnitProductDTO.unitProducts(packageSensor.getUnitProducts())),
-                packageSensor.getValue()
-        );
-    }
 
     private List<UnitProductDTO> unitProductDTOs(List<UnitProduct> unitProducts) {
         return unitProducts.stream().map(this::unitProductDTO).collect(Collectors.toList());
@@ -146,8 +143,7 @@ public class OrderService {
         return new PackageDTO(
                 productPackage.getId(),
                 productPackage.getPackagingType(),
-                productPackage.getPackagingMaterial(),
-                sensorsDTO(productPackage.getAllPackageSensors())
+                productPackage.getPackagingMaterial()
         );
     }
 

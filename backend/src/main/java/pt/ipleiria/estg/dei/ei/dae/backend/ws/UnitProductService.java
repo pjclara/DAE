@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.backend.ws;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.UnitProductBean;
 
@@ -26,6 +27,19 @@ public class UnitProductService {
         return toDTOs(un.all());
     }
 
+    @GET
+    @Path("{id}")
+    public Response get(@PathParam("id") Long unitProductId) {
+        UnitProduct unitProduct = un.find(unitProductId);
+        if (unitProduct != null) {
+            var unitProductDTO = toDTO(unitProduct);
+            return Response.ok(unitProductDTO).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_UNIT_PRODUCT")
+                .build();
+    }
+
     private List<UnitProductDTO> toDTOs(List<UnitProduct> all) {
         return all.stream().map(this::toDTO).collect(Collectors.toList());
     }
@@ -43,15 +57,16 @@ public class UnitProductService {
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                sensorDTO(packageSensor.getSensor() == null ? new Sensor() : packageSensor.getSensor()),
-                packageDTO(packageSensor.getaPackage() == null ? new Package() : packageSensor.getaPackage()),
-                packageSensor.getValue()
+                (List<SensorDTO>) sensorDTOs(packageSensor.getSensors())
         );
+    }
+
+    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
     }
 
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
-                aPackage.getId()
         );
     }
 

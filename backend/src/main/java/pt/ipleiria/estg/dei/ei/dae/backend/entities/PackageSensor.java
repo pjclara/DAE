@@ -10,7 +10,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllPackageSensors",
-                query = "SELECT c FROM PackageSensor c ORDER BY c.sensor.id, c.aPackage.id"), // JPQL
+                query = "SELECT c FROM PackageSensor c ORDER BY c.id, c.aPackage.id"), // JPQL
 })
 public class PackageSensor {
     @Id
@@ -18,34 +18,28 @@ public class PackageSensor {
     @Column(name="id")
     long id;
 
-    @ManyToOne
-    private Sensor sensor;
+    @ManyToMany
+    private List<Sensor> sensors;
 
     @ManyToOne
     private Package aPackage;
 
-    @OneToMany(mappedBy = "packageSensor", cascade = CascadeType.REMOVE)
-    private List<UnitProduct> unitProducts;
+    @OneToOne
+    private UnitProduct unitProduct;
 
     private String value;
 
     public PackageSensor() {
     }
 
-    public PackageSensor(Sensor sensor, Package aPackage, List<UnitProduct> unitProducts, String value) {
-        this.sensor = sensor;
+    public PackageSensor(List<Sensor> s, Package aPackage, UnitProduct unitProducts, String value) {
+        this.sensors = s;
         this.aPackage = aPackage;
-        this.unitProducts = unitProducts;
+        this.unitProduct = unitProducts;
         this.value = value;
     }
 
-    public Sensor getSensor() {
-        return sensor;
-    }
 
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
-    }
 
     public void setValue(String s) {
         this.value = s;
@@ -79,16 +73,19 @@ public class PackageSensor {
         this.aPackage = aPackage;
     }
 
-    public List<UnitProduct> getUnitProducts() {
-        return unitProducts;
-    }
-
-    public void setUnitProducts(List<UnitProduct> unitProducts) {
-        this.unitProducts = unitProducts;
-    }
-
-
     public UnitProduct getUnitProduct() {
-        return unitProducts.get(0);
+        return unitProduct;
+    }
+
+    public void setUnitProduct(UnitProduct unitProduct) {
+        this.unitProduct = unitProduct;
+    }
+
+    public List<Sensor> getSensors() {
+        return sensors;
+    }
+
+    public void setSensors(List<Sensor> sensors) {
+        this.sensors = sensors;
     }
 }

@@ -68,4 +68,8 @@ public class OrderItem {
     public UnitProduct getUnitProduct() {
         return unitProduct;
     }
+
+    public void setUnitProduct(UnitProduct unitProduct) {
+        this.unitProduct = unitProduct;
+    }
 }

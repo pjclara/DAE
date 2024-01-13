@@ -27,7 +27,7 @@ public class UnitProduct extends Versionable {
     @ManyToOne
     private Product product;
 
-    @ManyToOne
+    @OneToOne
     private PackageSensor packageSensor;
 
     public UnitProduct() {
@@ -74,4 +74,6 @@ public class UnitProduct extends Versionable {
     public void setPackageSensor(PackageSensor packageSensor) {
         this.packageSensor = packageSensor;
     }
+
+
 }

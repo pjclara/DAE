@@ -99,7 +99,6 @@ public class PackageBean {
         if (sensorToRemove == null) {
             throw new MyEntityNotFoundException("Sensor with id '" + sensorId + "' not found");
         }
-        package_.removeSensor(sensorToRemove);
         entityManager.merge(package_);
     }
 

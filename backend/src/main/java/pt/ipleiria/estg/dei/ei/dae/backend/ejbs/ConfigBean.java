@@ -4,11 +4,9 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.OrderItem;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.ProductPackage;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
+import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +35,16 @@ public class ConfigBean {
     @EJB
     private OrderBean orderBean;
 
+    @EJB
+    private OrderItemBean orderItemBean;
+
+    @EJB
+    private UnitProductBean unitProductBean;
+
+
 
     @PostConstruct
-    public void populateDB() {
+    public void populateDB() throws MyEntityNotFoundException {
             System.out.println("Hello Java EE!");
 
             try {
@@ -88,6 +93,7 @@ public class ConfigBean {
 
             try{
                 packageSensorBean.create(1, 1, 1, "20");
+                System.out.println("PackageSensor created");
 
                 // add a unit product to the package
 
@@ -95,8 +101,33 @@ public class ConfigBean {
                 logger.warning(e.getMessage());
             }
 
+            try {
+                String data  = "{\n" +
+                        "  \"status\": \"WAITING_PAYMENT\",\n" +
+                        "  \"orderItems\": [\n" +
+                        "    {\n" +
+                        "      \"quantity\": 1,\n" +
+                        "      \"productId\": \"1\"\n" +
+                        "    }\n" +
+                        "  ]\n" +
+                        "}";
 
+                long order = orderBean.create("endConsumer1", data );
 
+                System.out.println("Order created");
+
+                //orderBean.addProductToOrder(order, 1, 1);
+            }catch (Exception e){
+                logger.warning(e.getMessage());
+            }
+
+            try {
+                orderItemBean.create(1, 1, 1);
+
+                System.out.println("OrderItem created");
+            }catch (Exception e){
+                logger.warning(e.getMessage());
+            }
 
 
         }

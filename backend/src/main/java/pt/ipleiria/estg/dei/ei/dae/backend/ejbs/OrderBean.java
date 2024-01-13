@@ -153,9 +153,15 @@ public class OrderBean {
 
         order.getOrderItems().forEach(orderItem -> {
             Hibernate.initialize(orderItem.getUnitProduct());
-            Hibernate.initialize(orderItem.getUnitProduct().getProduct());
+            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensors());
         });
         return order;
+
+    }
+
+    public void addProductToOrder(long order, int i, int i1) throws MyEntityNotFoundException {
+
 
     }
 }

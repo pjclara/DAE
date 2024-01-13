@@ -65,4 +65,10 @@ public class SensorBean {
         throw new MyConstraintViolationException(e);
     }
     }
+
+    public List<Sensor> getSensorsByPackage(Package aPackage) {
+        return entityManager.createNamedQuery("getSensorsByPackage", Sensor.class)
+                .setParameter("package", aPackage)
+                .getResultList();
+    }
 }

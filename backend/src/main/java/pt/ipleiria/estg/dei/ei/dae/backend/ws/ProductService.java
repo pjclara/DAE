@@ -94,8 +94,7 @@ public class ProductService {
         return new PackageDTO(
                 productPackage.getId(),
                 productPackage.getPackagingType(),
-                productPackage.getPackagingMaterial(),
-                sensorsDTO(productPackage.getAllPackageSensors())
+                productPackage.getPackagingMaterial()
         );
 
     }
