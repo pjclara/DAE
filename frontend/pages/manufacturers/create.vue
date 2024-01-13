@@ -1,33 +1,26 @@
 <template>
-    <div>
-        <h1>Create a manufacturer</h1>
-        <form @submit.prevent="create">
-        <div>Username:
-            <input v-model.trim="manufacturerForm.username" type="text">
-            <span v-if="manufacturerForm.username !== null && !isUsernameValid" class="error">
-                ERROR: {{ formFeedback.username }}</span>
-        </div>
-        <div>Password:
-            <input v-model.trim="manufacturerForm.password" type="password">
-            <span v-if="manufacturerForm.username !== null && !isPasswordValid" class="error">
-                ERROR: {{ formFeedback.password }}</span>
-        </div>
-        <div>Name:
-            <input v-model.trim="manufacturerForm.name" type="text">
-            <span v-if="manufacturerForm.username !== null && !isNameValid" class="error">
-                ERROR: {{ formFeedback.name }}</span>
-        </div>
-        <div>E-mail:
-            <input v-model.trim="manufacturerForm.email" type="email">
-            <span v-if="manufacturerForm.username !== null && !isEmailValid" class="error">
-                ERROR: {{ formFeedback.email }}</span>
-        </div>       
-        <button type="reset">RESET</button>
-        <button type="submit" :disabled="!isFormValid">CREATE</button>
-        <nuxt-link to="/">Return</nuxt-link>
-    </form>
-    {{ message }} 
-    </div>
+    <v-col align="center">
+        <v-col cols="6">
+            <h1>Criar um Fabricante</h1>
+
+            <v-form @submit.prevent="createManufacturer">
+                <v-text-field v-model.trim="manufacturerForm.username" label="Username"
+                    :rules="isUsernameValid ? [] : [formFeedback.username]" :counter="15" required></v-text-field>
+
+                <v-text-field v-model.trim="manufacturerForm.password" label="Password" type="password"
+                    :rules="isPasswordValid ? [] : [formFeedback.password]" :counter="15" required></v-text-field>
+
+                <v-text-field v-model.trim="manufacturerForm.name" label="Name"
+                    :rules="isNameValid ? [] : [formFeedback.name]" :counter="30" required></v-text-field>
+
+                <v-text-field v-model.trim="manufacturerForm.email" label="E-mail" type="email"
+                    :rules="isEmailValid ? [] : [formFeedback.email]" required></v-text-field>
+
+                <v-btn block rounded="xl" size="x-large" class="mt-2" @click="createManufacturer">Criar Fabricante</v-btn>
+            </v-form>
+            {{ message }}
+        </v-col>
+    </v-col>
 </template>
 
 <script setup>
@@ -35,7 +28,8 @@ const manufacturerForm = reactive({
     username: null,
     password: null,
     email: null,
-    name: null
+    name: null,
+    role: 'manufacturer'
 })
 const formFeedback = reactive({
     username: '',
@@ -46,6 +40,7 @@ const formFeedback = reactive({
 const message = ref('')
 const config = useRuntimeConfig()
 const api = config.public.API_URL
+
 
 const isUsernameValid = computed(() => {
     if (!manufacturerForm.username) {
@@ -88,8 +83,8 @@ const isNameValid = computed(() => {
         formFeedback.name = 'name must be at least 3 characters'
         return false
     }
-    if (manufacturerForm.name.length > 15) {
-        formFeedback.name = 'name must be at most 15 characters'
+    if (manufacturerForm.name.length > 30) {
+        formFeedback.name = 'name must be at most 30 characters'
         return false
     }
     return true
@@ -100,15 +95,6 @@ const isEmailValid = computed(() => {
         formFeedback.email = 'email is required'
         return false
     }
-    if (manufacturerForm.email.length < 3) {
-        formFeedback.email = 'email must be at least 3 characters'
-        return false
-    }
-    if (manufacturerForm.email.length > 15) {
-        formFeedback.email = 'email must be at most 15 characters'
-        return false
-    }
-    // is a email format
     const emailRegex = /\S+@\S+\.\S+/
     if (!emailRegex.test(manufacturerForm.email)) {
         formFeedback.email = 'email must be a valid email'
@@ -117,23 +103,23 @@ const isEmailValid = computed(() => {
     return true
 })
 
-
-// Form validation rules
 const isFormValid = computed(() => {
     return isUsernameValid.value &&
         isPasswordValid.value &&
         isNameValid.value &&
-        isEmailValid.value 
+        isEmailValid.value
 })
 
-async function create() {
+async function createManufacturer() {
     const requestOptions = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(manufacturerForm)
     }
     const { error } = await useFetch(`${api}/manufacturers`, requestOptions)
-    if (!error.value) navigateTo('/manufacturers')
+    if (!error.value) {
+        navigateTo('/auth/login')
+    }
     message.value = error.value
 }
 </script>
