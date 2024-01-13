@@ -94,7 +94,7 @@ public class ConfigBean {
             }
 
             try{
-                packageSensorBean.create(1, 1, 1, "20");
+                packageSensorBean.create(1, 1);
                 System.out.println("PackageSensor created");
 
                 // add a unit product to the package
@@ -124,15 +124,12 @@ public class ConfigBean {
             }
 
             try{
-                packageSensorBean.create(1, 1, 1, "20");
+                packageSensorBean.create(1, 1);
                 System.out.println("PackageSensor created");
 
                 unitProductBean.update(1,1);
 
                 System.out.println("Unitproduct update");
-
-
-                // add a unit product to the package
 
             }catch(Exception e){
                 logger.warning(e.getMessage());
@@ -140,8 +137,15 @@ public class ConfigBean {
 
             try {
                 orderItemBean.create(1, 1, 1);
-
                 System.out.println("OrderItem created");
+            }catch (Exception e){
+                logger.warning(e.getMessage());
+            }
+
+            try{
+                packageSensorBean.addSensorToPackage(1,1);
+                packageSensorBean.addSensorToPackage(1,2);
+                System.out.println("SensorValue add");
             }catch (Exception e){
                 logger.warning(e.getMessage());
             }

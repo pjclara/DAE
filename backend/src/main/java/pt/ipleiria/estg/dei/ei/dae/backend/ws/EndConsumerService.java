@@ -175,8 +175,19 @@ public class EndConsumerService {
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                packageSensor.getValue(),
-                sensorToDTOs(packageSensor.getSensors() == null ? null : packageSensor.getSensors())
+                sensorValueDTOs(packageSensor.getSensorValues())
+        );
+    }
+
+    private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
+        return sensorValues.stream().map(this::sensorValueDTO).collect(java.util.stream.Collectors.toList());
+    }
+
+    private SensorValueDTO sensorValueDTO(SensorValue sensorValue) {
+        return new SensorValueDTO(
+                sensorValue.getId(),
+                sensorDTO(sensorValue.getSensor()),
+                sensorValue.getValue()
         );
     }
 

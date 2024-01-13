@@ -95,8 +95,19 @@ public class OrderService {
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                packageSensor.getValue(),
-                sensorDTOs(packageSensor.getSensors())
+                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues())
+        );
+    }
+
+    private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
+        return sensorValues.stream().map(this::sensorValueDTO).collect(Collectors.toList());
+    }
+
+    private SensorValueDTO sensorValueDTO(SensorValue sensorValue) {
+        return new SensorValueDTO(
+                sensorValue.getId(),
+                sensorDTO(sensorValue.getSensor()),
+                sensorValue.getValue()
         );
     }
 
@@ -163,8 +174,7 @@ public class OrderService {
                 sensor.getUnit(),
                 sensor.getMax(),
                 sensor.getMin(),
-                sensor.getTimestamp(),
-                sensor.getPackagging().getId()
+                sensor.getTimestamp()
         );
     }
 

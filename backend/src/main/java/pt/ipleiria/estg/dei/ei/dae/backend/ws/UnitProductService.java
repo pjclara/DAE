@@ -57,11 +57,21 @@ public class UnitProductService {
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                (List<SensorDTO>) sensorDTOs(packageSensor.getSensors())
+                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues())
         );
     }
 
-    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
+    private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
+        return sensorValues.stream().map(this::sensorValueDTO).collect(Collectors.toList());
+    }
+
+    private SensorValueDTO sensorValueDTO(SensorValue sensorValue) {
+        return new SensorValueDTO(
+                sensorValue.getId(),
+                sensorDTO(sensorValue.getSensor()),
+                sensorValue.getValue()
+        );
+    }    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
         return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
     }
 

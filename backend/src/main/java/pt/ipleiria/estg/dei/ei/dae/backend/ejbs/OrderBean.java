@@ -154,7 +154,7 @@ public class OrderBean {
         order.getOrderItems().forEach(orderItem -> {
             Hibernate.initialize(orderItem.getUnitProduct());
             Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
-            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensors());
+            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
         });
         return order;
 

@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,8 @@ public class PackageSensor {
     @Column(name="id")
     long id;
 
-    @ManyToMany
-    private List<Sensor> sensors;
+    @OneToMany
+    private List<SensorValue> sensorValues;
 
     @ManyToOne
     private Package aPackage;
@@ -27,30 +28,16 @@ public class PackageSensor {
     @OneToOne
     private UnitProduct unitProduct;
 
-    private String value;
-
     public PackageSensor() {
     }
 
-    public PackageSensor(List<Sensor> s, Package aPackage, UnitProduct unitProducts, String value) {
-        this.sensors = s;
+    public PackageSensor(Package aPackage, UnitProduct unitProducts) {
         this.aPackage = aPackage;
         this.unitProduct = unitProducts;
-        this.value = value;
-    }
-
-
-
-    public void setValue(String s) {
-        this.value = s;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public Package getPackagging() {
@@ -81,11 +68,13 @@ public class PackageSensor {
         this.unitProduct = unitProduct;
     }
 
-    public List<Sensor> getSensors() {
-        return sensors;
+    public List<SensorValue> getSensorValues(){
+        return sensorValues;
     }
 
-    public void setSensors(List<Sensor> sensors) {
-        this.sensors = sensors;
+    public void addSensorValue(SensorValue sensorValue) {
+        sensorValues.add(sensorValue);
+        sensorValue.setPackageSensor(this);
     }
+
 }

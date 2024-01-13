@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.SensorValue;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,7 +10,7 @@ public class PackageSensorDTO implements Serializable {
 
     private long id;
 
-    private List<SensorDTO> sensorDTOs;
+    private List<SensorValueDTO> sensorValueDTOS;
 
     private PackageDTO packageDTO;
 
@@ -18,17 +19,16 @@ public class PackageSensorDTO implements Serializable {
     private String value;
 
 
-    public PackageSensorDTO(Long id, List<SensorDTO> sensorDTOs) {
+    public PackageSensorDTO(Long id, List<SensorValueDTO> sensorValueDTOS) {
         this.id = id;
-        this.sensorDTOs = sensorDTOs;
+        this.sensorValueDTOS = sensorValueDTOS;
     }
 
-    public PackageSensorDTO(Long id, String value, List<SensorDTO> sensorDTOs) {
+    public PackageSensorDTO(Long id, String value, List<SensorValueDTO> sensorValueDTOS) {
         this.id = id;
         this.value =  value;
-        this.sensorDTOs = sensorDTOs;
+        this.sensorValueDTOS = sensorValueDTOS;
     }
-
 
     // getters and setters
     public long getId() {
@@ -62,12 +62,13 @@ public class PackageSensorDTO implements Serializable {
         this.unitProductDTO = unitProductDTO;
     }
 
-    public List<SensorDTO> getSensorDTOs() {
-        return sensorDTOs;
+    public List<SensorValueDTO> getSensorValueDTOS() {
+        return sensorValueDTOS;
     }
 
-    public void setSensorDTOs(List<SensorDTO> sensorDTOs) {
-        this.sensorDTOs = sensorDTOs;
+    public void setSensorValueDTOS(List<SensorDTO> sensorDTOs) {
+        this.sensorValueDTOS = sensorValueDTOS;
+
     }
 
 
