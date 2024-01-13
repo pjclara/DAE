@@ -16,6 +16,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.SensorBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
@@ -60,20 +61,23 @@ public class PackageService {
     @GET
     @Path("{id}")
     public Response get(@PathParam("id") Long packageId) {
-        Package package_ = packageBean.find(packageId);
-        if (package_ != null) {
-            return Response.ok(PackageDTO.from(package_)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_PACKAGE")
-                .build();
+           Package package_ = packageBean.find(packageId);
+
+            if (package_ != null) {
+                var packageDTO = PackageDTO.from(package_);
+                return Response.ok(packageDTO).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("ERROR_FINDING_PACKAGE")
+                    .build();
+
     }
 
     @GET
     @Path("{id}/sensors")
     public Response getPackageSensors(@PathParam("id") Long packageId) throws MyEntityNotFoundException {
         Package package_ = packageBean.findOrFail(packageId);
-        var sensors = package_.getSensors();
+        List<Sensor> sensors = sensorBean.getSensorsByPackage(package_);
 
         if (sensors == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("ERROR_FINDING_PACKAGE_SENSORS").build();
@@ -123,7 +127,6 @@ public class PackageService {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        packageBean.addSensorToPackage(id, sensorId);
         return Response.ok().build();
     }
 

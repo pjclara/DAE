@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 
 import java.io.Serializable;
@@ -27,9 +26,22 @@ public class SensorDTO implements Serializable {
     
     private long packageId;
 
-    public SensorDTO() {
+    public SensorDTO(long id, String type, String source) {
+        this.id = id;
+        this.type = type;
+        this.source = source;
     }
 
+    public SensorDTO(Long id, String source, String type, String value, String unit, String max, String min, long timestamp) {
+        this.id = id;
+        this.source = source;
+        this.type = type;
+        this.value = value;
+        this.unit = unit;
+        this.max = max;
+        this.min = min;
+        this.timestamp = timestamp;
+    }
     public SensorDTO(long id, String source, String type, String value, String unit, String max, String min, long timestamp, long packageId) {
         this.id = id;
         this.source = source;
@@ -41,6 +53,8 @@ public class SensorDTO implements Serializable {
         this.timestamp = timestamp;
         this.packageId = packageId;
     }
+
+
 
     public Long getId() {
         return id;

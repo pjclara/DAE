@@ -10,7 +10,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
-import jakarta.ws.rs.core.Response;
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
@@ -18,7 +17,6 @@ import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationExcep
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -31,7 +29,8 @@ public class OrderBean {
     private OrderBean orderBean;
 
     @EJB
-    private ProductBean productBean;
+    private UnitProductBean unitProductBean;
+
 
     public List<Orderr> all() {
         return entityManager.createNamedQuery("getOrdersWithOrderItems", Orderr.class).getResultList();
@@ -73,7 +72,11 @@ public class OrderBean {
                 product.setStock(product.getStock() - quantity);
                 entityManager.merge(product);
 
-                OrderItem orderItem1 = new OrderItem(product, quantity, order);
+                UnitProduct unitProduct = unitProductBean.getUnitProductByProductId(productId);
+                unitProduct.setAvailable(false);
+                entityManager.merge(unitProduct);
+
+                OrderItem orderItem1 = new OrderItem(unitProduct, quantity, order);
                 orderItem1.setOrderr(order);
                 entityManager.persist(orderItem1);
             }
@@ -139,15 +142,6 @@ public class OrderBean {
         return order;
     }
 
-    // Auxiliary: Find an existing product in the order to calculate the quantity
-    private OrderItem findExistingItem(Orderr order, Product product) {
-        for (OrderItem orderItem : order.getOrderItems()) {
-            if (orderItem.getProduct().equals(product)) {
-                return orderItem;
-            }
-        }
-        return null;
-    }
 
     public Orderr getOrderProducts(Long orderId) {
         Orderr order = entityManager.find(Orderr.class, orderId);
@@ -158,22 +152,31 @@ public class OrderBean {
         if (order.getOrderItems().isEmpty()) throw new IllegalArgumentException("Order with id " + orderId + " has no products");
 
         order.getOrderItems().forEach(orderItem -> {
-            Hibernate.initialize(orderItem.getProduct());
-            Hibernate.initialize(orderItem.getProduct().getProductPackage());
+            Hibernate.initialize(orderItem.getUnitProduct());
+            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
         });
         return order;
 
     }
 
-    public void addProductToOrder(long orderr, int i, Long productId1) {
-        Orderr order = entityManager.find(Orderr.class, orderr);
-        if (order == null) throw new IllegalArgumentException("Order with id " + orderr + " not found");
+    public void addProductToOrder(long order, int i, int i1) throws MyEntityNotFoundException {
 
-        Product product = entityManager.find(Product.class, productId1);
-        if (product == null) throw new IllegalArgumentException("Product with id " + productId1 + " not found");
 
-        OrderItem orderItem = new OrderItem(product, i, order);
-        orderItem.setOrderr(order);
-        entityManager.persist(orderItem);
+    }
+
+    public List<Orderr> getAll() {
+        List<Orderr> orders = entityManager.createNamedQuery("getOrdersWithOrderItems", Orderr.class).getResultList();
+
+        orders.forEach(orderr -> {
+            Hibernate.initialize(orderr.getOrderItems());
+            orderr.getOrderItems().forEach(orderItem -> {
+                Hibernate.initialize(orderItem.getUnitProduct());
+                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+            });
+        });
+        return orders;
+
     }
 }

@@ -6,11 +6,14 @@ export const useAuthStore = defineStore("authStore", () => {
     const username = ref(null)
     const user = ref(null)
 
+
     function logout() {
         token.value = null
         userRole.value = null
         username.value = null
         user.value = null
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
     }
 
     function getUser() {

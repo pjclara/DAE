@@ -140,12 +140,10 @@ public class ManufacturerService {
 
     private ProductDTO productToDTO(Product product) {
         return new ProductDTO(
-                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
@@ -162,10 +160,6 @@ public class ManufacturerService {
 
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
-                aPackage.getId(),
-                aPackage.getPackagingType(),
-                aPackage.getPackagingMaterial(),
-                sensorsDTO(aPackage.getSensors())
         );
     }
 

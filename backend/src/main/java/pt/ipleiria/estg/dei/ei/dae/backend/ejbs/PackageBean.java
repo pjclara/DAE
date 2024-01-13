@@ -30,7 +30,6 @@ public class PackageBean {
         try {
             Package package_ = new Package(type, material);
             entityManager.persist(package_);
-            //entityManager.flush();
             return package_.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
@@ -92,19 +91,6 @@ public class PackageBean {
         package_.setPackagingMaterial(material);
     }
 
-    public void addSensorToPackage(Long packageId, Long sensorId) throws MyEntityNotFoundException {
-        //Package package_ = findOrFail(packageId);
-        Package package_ = packageBean.find(packageId);
-        if (package_ == null) {
-            throw new MyEntityNotFoundException("Package with id '" + packageId + "' not found");
-        }
-        Sensor sensorToAdd = sensorBean.find(sensorId);
-        if (sensorToAdd == null) {
-            throw new MyEntityNotFoundException("Sensor with id '" + sensorId + "' not found");
-        }
-        package_.addSensor(sensorToAdd);
-        entityManager.merge(package_);
-    }
 
     public void removeSensorFromPackage(Long packageId, Long sensorId) throws MyEntityNotFoundException {
         Package package_ = findOrFail(packageId);
@@ -112,7 +98,6 @@ public class PackageBean {
         if (sensorToRemove == null) {
             throw new MyEntityNotFoundException("Sensor with id '" + sensorId + "' not found");
         }
-        package_.removeSensor(sensorToRemove);
         entityManager.merge(package_);
     }
 

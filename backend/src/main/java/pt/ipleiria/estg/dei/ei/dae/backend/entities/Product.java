@@ -27,18 +27,14 @@ public class Product extends Versionable{
     @NotNull
     @ManyToOne
     private Manufacturer manufacturer;
-    @OneToOne
-    @JoinColumn(name = "package_id")
-    private Package productPackage;
 
     public Product() {
     }
 
-    public Product(String name, int stock, String image, Package productPackage, Manufacturer manufacturer) {
+    public Product(String name, int stock, String image, Manufacturer manufacturer) {
         this.name = name;
         this.stock = stock;
         this.manufacturer = manufacturer;
-        this.productPackage = productPackage;
         this.image = image;
     }
 
@@ -64,14 +60,6 @@ public class Product extends Versionable{
 
     public void setStock(int stock) {
         this.stock = stock;
-    }
-
-    public Package getProductPackage() {
-        return productPackage;
-    }
-
-    public void setProductPackage(Package productPackage) {
-        this.productPackage = productPackage;
     }
 
     public Manufacturer getManufacturer() {

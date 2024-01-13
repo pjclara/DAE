@@ -1,37 +1,36 @@
 <template>
-    <div>
-        <v-col align="center">
-            <v-col cols="6">
-                <h1>Create a product</h1>
-                <form @submit.prevent="create">
-                    <div>
-                        <v-text-field v-model="productForm.name" placeholder="Nome" required />
-                    </div>
-                    <div>
-                        <v-text-field v-model="productForm.stock" label="Stock" required />
-                    </div>
-                    <div>
-                        <v-select v-model="productForm.packageId" :items="packagesList" item-title="packagingMaterial"
-                            item-value="id" label="Package" />
-                    </div>
-                    <div>
-                        <v-file-input @change="createImage" label="Imagen" />
-                    </div>
-                    <div>
-                        <v-btn block rounded @click="create">Create</v-btn>
-                    </div>
-                    <div>
-                        <v-btn block rounded @click="cancel">Cancel</v-btn>
-                    </div>
+    <default>
+        <div>
+            <v-col align="center">
+                <v-col cols="6">
+                    <h1>Create a product</h1>
+                    <form @submit.prevent="create">
+                        <div>
+                            <v-text-field v-model="productForm.name" placeholder="Nome" required />
+                        </div>
+                        <div>
+                            <v-text-field v-model="productForm.stock" label="Stock" required />
+                        </div>
+                        <div>
+                            <v-file-input @change="createImage" label="Imagen" />
+                        </div>
+                        <div>
+                            <v-btn block rounded @click="create">Create</v-btn>
+                        </div>
+                        <div>
+                            <v-btn block rounded @click="cancel">Cancel</v-btn>
+                        </div>
 
-                </form>
+                    </form>
+                </v-col>
             </v-col>
-        </v-col>
 
-    </div>
+        </div>
+    </default>
 </template>
 
 <script setup>
+import Default from '/pages/layouts/default.vue'
 import { useAuthStore } from "~/store/auth-store.js"
 const authStore = useAuthStore()
 const { token, user } = storeToRefs(authStore)
@@ -54,8 +53,6 @@ const productForm = reactive({
     packageId: null,
     image: null
 })
-const { data: packagesList, packageError: productsErr } = await
-    useFetch(`${api}/packages/packagingType/PRIMARY`)
 
 const base64 = ref('')
 function createImage(e) {
