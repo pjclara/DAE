@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 public class ConfigBean {
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
     @EJB
+    private AdministratorBean administratorBean;
+    @EJB
     private EndConsumerBean endConsumerBean;
     @EJB
     private ManufacturerBean manufacturerBean;
@@ -46,6 +48,13 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() throws MyEntityNotFoundException {
             System.out.println("Hello Java EE!");
+
+            try {
+                administratorBean.create("administrator1", "administrator1", "Administrator1", "Administrator1@teste.pt", "administrator");
+                System.out.println("Administrator created");
+            } catch (Exception e) {
+                logger.warning(e.getMessage());
+            }
 
             try {
                 endConsumerBean.create("endConsumer1", "endConsumer1", "endConsumer1", "endConsumer1@teste.pt", "endConsumer");

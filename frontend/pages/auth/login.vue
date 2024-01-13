@@ -8,7 +8,8 @@
             <div>
                 <v-text-field type="password" v-model="loginFormData.password" label="Password" placeholder="manufacturer1"/>
             </div>
-            <v-btn block rounded="xl" size="x-large" @click="login">LOGIN</v-btn>
+            <v-btn block class="mb-2" rounded="xl" size="x-large" @click="login">LOGIN</v-btn>
+            <v-btn block rounded="xl" size="x-large"><nuxt-link to="/endConsumers/create">REGISTAR</nuxt-link></v-btn>
             <div v-if="messages.length > 0">
                 <h2>Messages</h2>
                 <div v-for="message in messages">
