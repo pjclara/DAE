@@ -193,7 +193,6 @@ public class EndConsumerService {
 
     private ProductDTO productToDTO(Product product) {
         return new ProductDTO(
-                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),

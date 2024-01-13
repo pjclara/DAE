@@ -61,7 +61,7 @@ public class OrderService {
     @GET
     @Path("{id}/items")
     public Response getProductsByOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Orderr orderr = orderBean.findOrFail(orderId);
+        Orderr orderr = orderBean.getOrderProducts(orderId);
         if(orderr != null) {
             var orderItems = ordersItemDTO(orderr.getOrderItems());
             return Response.ok(orderItems).build();

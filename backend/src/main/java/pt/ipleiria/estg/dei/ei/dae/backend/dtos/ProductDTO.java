@@ -1,6 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-public class ProductDTO {
+import java.io.Serializable;
+
+public class ProductDTO implements Serializable {
     private long id;
     private String name;
     private int stock;
@@ -12,8 +14,7 @@ public class ProductDTO {
         this.image = image;
     }
 
-    public ProductDTO(long id, String name, int stock, String image, String manufacturerUsername) {
-        this.id = id;
+    public ProductDTO(String name, int stock, String manufacturerUsername, String image) {
         this.name = name;
         this.stock = stock;
         this.image = image;

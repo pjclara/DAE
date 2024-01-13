@@ -49,7 +49,8 @@ public class ProductService {
     // create new product
     @POST
     @Path("/")
-    public Response createNewProduct(ProductDTO productDTO) throws MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
+    public Response createNewProduct(ProductDTO productDTO) throws
+            MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
         long id  = productBean.create(
                 productDTO.getName(),
                 productDTO.getStock(),
@@ -82,7 +83,6 @@ public class ProductService {
     }
     private ProductDTO toDTO(Product product) {
         return new ProductDTO(
-                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),

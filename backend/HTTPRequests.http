@@ -110,7 +110,6 @@ PUT http://localhost:8080/backend/api/products/3
 Content-Type: application/json
 
 {
-  "id"  : 3,
   "name": "product_3",
   "stock": 1,
   "image": "imagem3",
@@ -194,8 +193,7 @@ Content-Type: application/json
   ]
 }
 
-### create a new order with order items
-
+###
 
 GET http://localhost:8080/backend/api/orders/1
 
@@ -204,4 +202,4 @@ GET http://localhost:8080/backend/api/orders/1
 GET http://localhost:8080/backend/api/products/1
 
 ### get unitProducts
-GET http://localhost:8080/backend/api/orders/1
+GET http://localhost:8080/backend/api/orders/1/items
