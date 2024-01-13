@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @jakarta.persistence.NamedQuery(name = "getAllPackageOfPackages", query = "SELECT pp FROM ProductPackage pp ORDER BY pp.id")
+        @jakarta.persistence.NamedQuery(name = "getAllPackageOfPackages", query = "SELECT pp FROM Package pp ORDER BY pp.id")
 })
 public class PackageOfPackage extends Package {
 

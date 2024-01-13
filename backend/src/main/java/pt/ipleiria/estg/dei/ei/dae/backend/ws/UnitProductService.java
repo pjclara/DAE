@@ -57,8 +57,8 @@ public class UnitProductService {
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues())
-        );
+                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
+                packageDTO(packageSensor.getPackagging() == null ? new Package() : packageSensor.getPackagging()));
     }
 
     private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {

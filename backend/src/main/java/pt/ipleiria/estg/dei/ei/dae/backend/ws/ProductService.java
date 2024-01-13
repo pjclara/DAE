@@ -92,9 +92,6 @@ public class ProductService {
 
     private PackageDTO packageDTO(Package productPackage) {
         return new PackageDTO(
-                productPackage.getId(),
-                productPackage.getPackagingType(),
-                productPackage.getPackagingMaterial()
         );
 
     }

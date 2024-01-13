@@ -41,7 +41,7 @@ public class ProductBean {
             manufacturer.addProduct(product);
             // create unit products
             try{
-                ProductPackage productPackage = new ProductPackage(PackagingType.PRIMARY, "Vidro");
+                PackageProduct productPackage = new PackageProduct(PackagingType.PRIMARY, "Vidro");
             }catch (ConstraintViolationException e) {
                 throw new MyConstraintViolationException(e);
             }

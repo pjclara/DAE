@@ -7,8 +7,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackageProduct;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackagingType;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.ProductPackage;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 
 @Stateless
@@ -18,11 +18,11 @@ public class ProductPackageBean {
 
     public void create(PackagingType type, String material)  throws EntityExistsException, EntityNotFoundException, MyConstraintViolationException {
         try {
-        var productPackage = new ProductPackage(
+        var PackageProduct = new PackageProduct(
                 type,
                 material
         );
-        entityManager.persist(productPackage);
+        entityManager.persist(PackageProduct);
 
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);

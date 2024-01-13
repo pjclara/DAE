@@ -61,13 +61,16 @@ public class PackageService {
     @GET
     @Path("{id}")
     public Response get(@PathParam("id") Long packageId) {
-        Package package_ = packageBean.find(packageId);
-        if (package_ != null) {
-            return Response.ok(PackageDTO.from(package_)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_PACKAGE")
-                .build();
+           Package package_ = packageBean.find(packageId);
+
+            if (package_ != null) {
+                var packageDTO = PackageDTO.from(package_);
+                return Response.ok(packageDTO).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("ERROR_FINDING_PACKAGE")
+                    .build();
+
     }
 
     @GET

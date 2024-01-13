@@ -88,14 +88,23 @@ public class OrderService {
                 unitProduct.getId(),
                 unitProduct.getSerialNumber(),
                 unitProduct.getAvailable(),
+                productDTO(unitProduct.getProduct() == null ? new Product() : unitProduct.getProduct()),
                 packageSensorToDTO(unitProduct.getPackageSensor() == null ?  new PackageSensor() : unitProduct.getPackageSensor())
+        );
+    }
+
+    private ProductDTO productDTO(Product product) {
+        return new ProductDTO(
+                product.getName(),
+                product.getImage()
         );
     }
 
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
         return new PackageSensorDTO(
                 packageSensor.getId(),
-                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues())
+                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
+                packageDTO(packageSensor.getPackagging() == null ? new Package() : packageSensor.getPackagging())
         );
     }
 
@@ -120,49 +129,14 @@ public class OrderService {
                 sensor.getId(),
                 sensor.getSource(),
                 sensor.getType()
-
         );
     }
     private PackageDTO packageDTO(Package aPackage) {
-        return new PackageDTO( );
-    }
-
-
-    private List<UnitProductDTO> unitProductDTOs(List<UnitProduct> unitProducts) {
-        return unitProducts.stream().map(this::unitProductDTO).collect(Collectors.toList());
-    }
-
-    private ProductDTO productToDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getStock(),
-                product.getImage(),
-                product.getManufacturer().getUsername()
-        );
-    }
-
-    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
-        return new ManufacturerDTO(
-                manufacturer.getUsername(),
-                manufacturer.getPassword(),
-                manufacturer.getName(),
-                manufacturer.getEmail(),
-                manufacturer.getRole()
-        );
-    }
-
-
-    private PackageDTO packageToDTO(Package productPackage) {
         return new PackageDTO(
-                productPackage.getId(),
-                productPackage.getPackagingType(),
-                productPackage.getPackagingMaterial()
+                aPackage.getId(),
+                aPackage.getPackagingType(),
+                aPackage.getPackagingMaterial()
         );
-    }
-
-    private List<SensorDTO> sensorsDTO(List<Sensor> sensors) {
-        return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
     }
 
     private SensorDTO sensorDTO(Sensor sensor) {

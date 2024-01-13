@@ -1,8 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.SensorValue;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,9 +16,10 @@ public class PackageSensorDTO implements Serializable {
     private String value;
 
 
-    public PackageSensorDTO(Long id, List<SensorValueDTO> sensorValueDTOS) {
+    public PackageSensorDTO(Long id, List<SensorValueDTO> sensorValueDTOS, PackageDTO packageDTO) {
         this.id = id;
         this.sensorValueDTOS = sensorValueDTOS;
+        this.packageDTO = packageDTO;
     }
 
     public PackageSensorDTO(Long id, String value, List<SensorValueDTO> sensorValueDTOS) {

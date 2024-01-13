@@ -161,9 +161,6 @@ public class ManufacturerService {
 
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
-                aPackage.getId(),
-                aPackage.getPackagingType(),
-                aPackage.getPackagingMaterial()
         );
     }
 
