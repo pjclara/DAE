@@ -86,6 +86,8 @@ public class ConfigBean {
 
             try {
                 sensorBean.create("sensor1", "sensor1", "sensor1", "celcius", "20", "30", 15555555L);
+                sensorBean.create("sensor2", "sensor2", "sensor2", "celcius", "20", "30", 15555555L);
+
                 System.out.println("Sensor created");
             } catch (Exception e) {
                 logger.warning(e.getMessage());
@@ -118,6 +120,21 @@ public class ConfigBean {
 
                 //orderBean.addProductToOrder(order, 1, 1);
             }catch (Exception e){
+                logger.warning(e.getMessage());
+            }
+
+            try{
+                packageSensorBean.create(1, 1, 1, "20");
+                System.out.println("PackageSensor created");
+
+                unitProductBean.update(1,1);
+
+                System.out.println("Unitproduct update");
+
+
+                // add a unit product to the package
+
+            }catch(Exception e){
                 logger.warning(e.getMessage());
             }
 

@@ -5,6 +5,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackageSensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.UnitProduct;
 
 import java.util.List;
@@ -37,7 +38,17 @@ public class UnitProductBean {
         return unitProduct;
     }
 
-    void update(UnitProduct unitProduct) {
-        entityManager.merge(unitProduct);
+    public void update(long unitProductId, long packageSensorId) {
+       UnitProduct u =  entityManager.find(UnitProduct.class, unitProductId);
+
+       if(u == null) throw new IllegalArgumentException("UnitProduct with id " + unitProductId + " not found in database");
+
+        PackageSensor pk = entityManager.find(PackageSensor.class, packageSensorId);
+
+        if(pk == null) throw new IllegalArgumentException("PackageSensor with id " + packageSensorId + " not found in database");
+
+        u.setPackageSensor(pk);
+
+        entityManager.merge(u);
     }
 }

@@ -106,7 +106,10 @@ public class OrderService {
 
     private SensorDTO sensorsDTO(Sensor sensor){
         return new SensorDTO(
-                sensor.getId()
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType()
+
         );
     }
     private PackageDTO packageDTO(Package aPackage) {
