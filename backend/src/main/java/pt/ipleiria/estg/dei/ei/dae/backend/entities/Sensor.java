@@ -30,8 +30,6 @@ public class Sensor extends Versionable {
     @NotNull
     private long timestamp;
 
-    @OneToMany
-    private List<SensorValue> sensorValues;
 
     @ManyToOne
     @JoinTable(

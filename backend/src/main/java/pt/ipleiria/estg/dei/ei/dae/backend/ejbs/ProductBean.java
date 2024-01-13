@@ -34,7 +34,6 @@ public class ProductBean {
 
         if (manufacturer == null) throw new MyEntityNotFoundException("Manufacturer with username " + null + " not found in database");
 
-
         try {
             Product product = new Product(name, stock, image, manufacturer);
             entityManager.persist(product);
@@ -59,8 +58,6 @@ public class ProductBean {
             throw new MyConstraintViolationException(e);
         }
     }
-
-
     public Product find(Long id) throws MyEntityNotFoundException {
         return entityManager.find(Product.class, id);
     }

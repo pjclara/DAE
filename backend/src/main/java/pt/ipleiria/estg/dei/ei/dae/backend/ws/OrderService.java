@@ -31,7 +31,8 @@ public class OrderService {
     @GET
     @Path("/")
     public List<OrderDTO> getOrdersWithOrderItems() {
-        return toDTOs(orderBean.all());
+        List<Orderr> orders = orderBean.getAll();
+        return toDTOs(orders);
     }
 
     @GET

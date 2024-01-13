@@ -164,4 +164,19 @@ public class OrderBean {
 
 
     }
+
+    public List<Orderr> getAll() {
+        List<Orderr> orders = entityManager.createNamedQuery("getOrdersWithOrderItems", Orderr.class).getResultList();
+
+        orders.forEach(orderr -> {
+            Hibernate.initialize(orderr.getOrderItems());
+            orderr.getOrderItems().forEach(orderItem -> {
+                Hibernate.initialize(orderItem.getUnitProduct());
+                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+            });
+        });
+        return orders;
+
+    }
 }

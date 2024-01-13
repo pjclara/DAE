@@ -88,9 +88,6 @@ GET http://localhost:8080/backend/api/logisticsOperators
 ### GET logisticsOperator by id
 GET http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1
 
-
-
-
 ### Get product by id
 GET http://localhost:8080/backend/api/products/1
 
@@ -202,4 +199,4 @@ GET http://localhost:8080/backend/api/orders/1
 GET http://localhost:8080/backend/api/products/1
 
 ### get unitProducts
-GET http://localhost:8080/backend/api/orders/1/items
+GET http://localhost:8080/backend/api/orders
