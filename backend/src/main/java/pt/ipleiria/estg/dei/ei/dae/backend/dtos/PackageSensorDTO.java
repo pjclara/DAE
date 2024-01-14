@@ -28,6 +28,10 @@ public class PackageSensorDTO implements Serializable {
         this.sensorValueDTOS = sensorValueDTOS;
     }
 
+    public PackageSensorDTO() {
+
+    }
+
     // getters and setters
     public long getId() {
         return id;

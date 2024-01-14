@@ -106,7 +106,7 @@ Content-Type: application/json
 PUT http://localhost:8080/backend/api/products/2/package/2
 
 ### Put product
-PUT http://localhost:8080/backend/api/products/3
+PUT http://localhost:8080/backend/api/products/2
 Content-Type: application/json
 
 {
@@ -117,7 +117,10 @@ Content-Type: application/json
 }
 
 ### Delete product
-DELETE http://localhost:8080/backend/api/products/3
+DELETE http://localhost:8080/backend/api/products/2
+
+### get all units from product
+GET http://localhost:8080/backend/api/products/1/unitProducts
 
 
 ## order
@@ -203,3 +206,6 @@ GET http://localhost:8080/backend/api/products/1
 
 ### get unitProducts
 GET http://localhost:8080/backend/api/orders
+
+### get all units from product
+GET http://localhost:8080/backend/api/products/1/unitProducts

@@ -20,6 +20,7 @@ public class SensorValueDTO implements Serializable {
 
     }
 
+
     //region getters/setters
     public long getId() {
         return id;

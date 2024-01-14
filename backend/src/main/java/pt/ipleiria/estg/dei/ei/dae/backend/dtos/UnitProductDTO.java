@@ -18,6 +18,10 @@ public class UnitProductDTO implements Serializable {
 
     private PackageSensorDTO packageSensorDTO;
 
+    public UnitProductDTO() {
+
+    }
+
     public UnitProductDTO(long id, UUID productDTO, boolean available, ProductDTO dto, PackageSensorDTO packageSensorDTO) {
         this.id = id;
         this.serialNumber = productDTO;
@@ -26,11 +30,28 @@ public class UnitProductDTO implements Serializable {
         this.packageSensorDTO = packageSensorDTO;
     }
 
+    public UnitProductDTO(long id, UUID productDTO, boolean available, ProductDTO dto) {
+        this.id = id;
+        this.serialNumber = productDTO;
+        this.available = available;
+        this.product = dto;
+        this.packageSensorDTO = null;
+    }
+
     public UnitProductDTO(long id, UUID serialNumber, boolean available, PackageSensorDTO packageSensorDTO ) {
             this.id = id;
             this.serialNumber = serialNumber;
             this.available = available;
             this.packageSensorDTO = packageSensorDTO;
+            this.product = null;
+    }
+
+    public UnitProductDTO(long id, UUID serialNumber, boolean available) {
+        this.id = id;
+        this.serialNumber = serialNumber;
+        this.available = available;
+        this.product = null;
+        this.packageSensorDTO = null;
     }
 
     public static List<UnitProduct> unitProducts(List<UnitProduct> unitProducts) {

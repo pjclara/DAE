@@ -28,6 +28,9 @@ public class Product extends Versionable{
     @ManyToOne
     private Manufacturer manufacturer;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private List<UnitProduct> unitProducts;
+
     public Product() {
     }
 
@@ -76,6 +79,14 @@ public class Product extends Versionable{
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<UnitProduct> getUnitProducts() {
+        return unitProducts;
+    }
+
+    public void setUnitProducts(List<UnitProduct> unitProducts) {
+        this.unitProducts = unitProducts;
     }
 
 }

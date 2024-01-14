@@ -136,4 +136,23 @@ public class ProductBean {
 
 
     }
+
+    public List<UnitProduct> getAllUnitProducts(Long id) {
+        Product product = entityManager.find(Product.class, id);
+        if (product == null) throw new IllegalArgumentException("Product with id " + id + " not found");
+
+        List<UnitProduct> unitProducts = product.getUnitProducts();
+
+        if (unitProducts.isEmpty()) throw new IllegalArgumentException("Product with id " + id + " has no unit products");
+
+        unitProducts.forEach(unitProduct ->
+                {
+                    Hibernate.initialize(unitProduct.getPackageSensor());
+                    if (unitProduct.getPackageSensor() != null)
+                        Hibernate.initialize(unitProduct.getPackageSensor().getSensorValues());
+                }
+        );
+
+        return unitProducts;
+    }
 }
