@@ -1,5 +1,4 @@
 <template>
-    <default>
         <v-col align="center">
             <v-col cols="6">
                 <h1>Criar Sensor</h1>
@@ -29,11 +28,9 @@
                 </form>
             </v-col>
         </v-col>
-    </default>
 </template>
 
 <script setup>
-import Default from '/pages/layouts/default.vue'
 const sensorForm = reactive({
     source: null,
     type: null,

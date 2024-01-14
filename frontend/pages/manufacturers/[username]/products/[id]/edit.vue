@@ -1,5 +1,4 @@
 <template>
-    <default>
         <div>
             <div v-if="productForm">
                 <v-col align="center">
@@ -10,18 +9,18 @@
                                 <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
                             </div>
                             <div>
-                                <v-text-field v-model="productForm.stock" label="Stock" />
+                                <v-text-field v-model="productForm.stock" disabled label="Stock" />
                             </div>
-                            <div>
+                            <!-- <div>
                                 <v-select v-model="productForm.packageId" :items="packagesList"
                                     item-title="packagingMaterial" item-value="id" label="Package" />
-                            </div>
+                            </div> -->
                             <div>
-                                <v-file-input @change="createImage" label="Imagen" />
+                                <v-file-input @change="createImage" label="Imagem" />
                             </div>
                             <div>
                                 <div>
-                                    <v-btn block rounded="xl" size="x-large" @click="update">Update</v-btn>
+                                    <v-btn block rounded="xl" size="x-large" @click="update" class="mb-2">Update</v-btn>
                                 </div>
                                 <div>
                                     <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
@@ -41,11 +40,9 @@
                 <h1>Product not found</h1>
             </div>
         </div>
-    </default>
 </template>
 
 <script setup>
-import Default from '/pages/layouts/default.vue'
 import { useAuthStore } from "~/store/auth-store.js"
 import { onMounted, ref } from "vue";
 const message = ref('')
@@ -57,8 +54,7 @@ const api = config.public.API_URL
 const route = useRoute()
 const id = route.params.id
 const username = route.params.username
-const { data: packagesList, packageError: productsErr } = await
-    useFetch(`${api}/packages/packagingType/PRIMARY`)
+//const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packages/packagingType/PRIMARY`)
 
 const base64 = ref('')
 
@@ -79,6 +75,9 @@ const { data: product, error: productErr } = await useFetch(`${api}/manufacturer
         'Authorization': 'Bearer ' + token.value
     }
 })
+
+console.log("product: ", product.value)
+
 const productForm = reactive(product)
 
 async function update() {

@@ -4,7 +4,7 @@
             <h2>Sensores</h2>
             <v-btn><nuxt-link to="/sensors/create">Criar sensor</nuxt-link></v-btn>
         </v-row>
-        <div v-if="user.role === 'Manufacturer'">
+        <div v-if="user?.role === 'Manufacturer'">
             <v-data-table
               :headers="headers"
               :items="manufacturerSensors"
@@ -35,13 +35,12 @@
     const headers = ref([
         { title: 'Fonte', value: 'source', align: 'center' },
         { title: 'Tipo', value: 'type', align: 'center' },
-        { title: 'Valor', value: 'value', align: 'center' },
         { title: 'Unidade', value: 'unit', align: 'center' },
         { title: 'Máximo', value: 'max', align: 'center' },
         { title: 'Mínimo', value: 'min', align: 'center' }
     ])
 
-    const manufacturerSensors = sensors.value.filter(sensor => sensor.source === 'Produto')
-    const logisticOperatorSensors = sensors.value.filter(sensor => sensor.source === 'Encomenda')
+    const manufacturerSensors = (sensors.value || []).filter(sensor => sensor.source === 'Product')
+    const logisticOperatorSensors = (sensors.value || []).filter(sensor => sensor.source === 'Order')
     
 </script>

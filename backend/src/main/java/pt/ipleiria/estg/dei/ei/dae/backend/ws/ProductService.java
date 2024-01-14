@@ -83,6 +83,7 @@ public class ProductService {
     }
     private ProductDTO toDTO(Product product) {
         return new ProductDTO(
+                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),

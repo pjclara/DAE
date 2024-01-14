@@ -11,6 +11,10 @@ import java.util.List;
 @Entity
 @Table(name = "packages")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NamedQueries({
+        @NamedQuery(name = "getPackageByType", query = "SELECT p FROM Package p WHERE p.packagingType = :packagingType"),
+        @NamedQuery(name = "getAllPackages", query = "SELECT p FROM Package p ORDER BY p.id")
+})
 public class Package extends Versionable {
 
     @Id

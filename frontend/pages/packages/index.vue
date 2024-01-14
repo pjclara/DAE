@@ -4,7 +4,7 @@
             <h2>Embalagens</h2>
             <v-btn><nuxt-link to="/packages/create">Criar embalagem</nuxt-link></v-btn>
         </v-row>
-        <div class="w-100" v-if="user.role === 'LogisticsOperator'">
+        <div class="w-100" v-if="user?.role === 'LogisticsOperator'">
             <v-data-table :headers="headers" :items="logisticsOperatorsPackages" :items-per-page="15" class="elevation-1">
     
                 <template v-slot:item.action="{ item }">
@@ -40,12 +40,12 @@ const { data: packages, error, refresh } = await useFetch(`${api}/packages`, {
     }
 })
 if (error.value) {
-    messages.value.push({ error: error.value.message })
+    //messages.value.push({ error: error.value })
 }
-const manufacturersPackages = packages.value.filter(productPackage => productPackage.packagingType !== 'TRANSPORT')
-const logisticsOperatorsPackages = packages.value.filter(productPackage => productPackage.packagingType === 'TRANSPORT')
+const manufacturersPackages = (packages.value ||[]).filter(productPackage => productPackage.packagingType !== 'TRANSPORT')
+const logisticsOperatorsPackages = (packages.value ||[]).filter(orderPackage => orderPackage.packagingType === 'TRANSPORT')
 
-
+console.log("user: ", user.value)
 //console.log("packages: ", packages.value);
 
 // const getPackages = () => {

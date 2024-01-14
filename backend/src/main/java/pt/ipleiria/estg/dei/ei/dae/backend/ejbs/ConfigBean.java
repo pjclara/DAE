@@ -80,7 +80,7 @@ public class ConfigBean {
             }
 
             try {
-                productBean.create("product1", 2, "image1", "manufacturer1");
+                productBean.create("product1", 10, "image1", "manufacturer1");
                 System.out.println("Product created");
             } catch (Exception e) {
                 logger.warning(e.getMessage());
@@ -94,8 +94,8 @@ public class ConfigBean {
             }
 
             try {
-                sensorBean.create("sensor1", "sensor1", "sensor1", "celcius", "20", "30", 15555555L);
-                sensorBean.create("sensor2", "sensor2", "sensor2", "celcius", "20", "30", 15555555L);
+                sensorBean.create("sensor1", "Product", "sensor1", "celcius", "20", "30", 15555555L);
+                sensorBean.create("sensor2", "Order", "sensor2", "celcius", "20", "30", 15555555L);
 
                 System.out.println("Sensor created");
             } catch (Exception e) {

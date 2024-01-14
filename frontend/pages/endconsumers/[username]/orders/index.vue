@@ -1,5 +1,4 @@
 <template>
-    <default>
         <div>
             <h1>List of Orders</h1>
             <div v-if="orders">
@@ -20,11 +19,9 @@
                 Sem Encomendas
             </div>
         </div>
-    </default>
 </template>
 
 <script setup>
-import Default from '/pages/layouts/default.vue'
 import { useAuthStore } from "~/store/auth-store.js"
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)

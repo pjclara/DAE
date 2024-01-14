@@ -4,7 +4,7 @@
       <v-col cols="6">
         <v-card>
           <v-card-title justify="center">
-            {{ product.name }}
+            {{ product?.name }}
           </v-card-title>
 
           <v-card-text>
@@ -37,8 +37,9 @@ const { token, user } = storeToRefs(authStore)
 const config = useRuntimeConfig()
 const api = config.public.API_URL
 const route = useRoute()
+const username = route.params.username
 const id = route.params.id
-const { data: product, error: productErr } = await useFetch(`${api}/products/${id}`, {
+const { data: product, error: productErr } = await useFetch(`${api}/manufacturers/${username}/products/${id}`, {
   method: 'get',
   headers: {
     'Accept': 'application/json',

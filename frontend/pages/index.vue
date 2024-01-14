@@ -1,9 +1,6 @@
 <template>
-    <Default>
-        Index
-    </Default>
+    Index
 </template>
 
 <script setup>
-    import Default from '/pages/layouts/default.vue'
 </script>

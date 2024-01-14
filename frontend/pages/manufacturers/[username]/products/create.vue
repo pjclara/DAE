@@ -1,5 +1,4 @@
 <template>
-    <default>
         <div>
             <v-col align="center">
                 <v-col cols="6">
@@ -11,6 +10,9 @@
                         <div>
                             <v-text-field v-model="productForm.stock" label="Stock" required />
                         </div>
+                        <!-- <div>
+                            <v-select v-model="productForm.packageId" :items="packagesList" item-title="packagingMaterial" item-value="id" label="Package" />
+                        </div> -->
                         <div>
                             <v-file-input @change="createImage" label="Imagem" />
                         </div>
@@ -26,11 +28,9 @@
             </v-col>
 
         </div>
-    </default>
 </template>
 
 <script setup>
-import Default from '/pages/layouts/default.vue'
 import { useAuthStore } from "~/store/auth-store.js"
 const authStore = useAuthStore()
 const { token, user } = storeToRefs(authStore)
@@ -63,6 +63,8 @@ function createImage(e) {
         productForm.image = base64.value
     }
 }
+
+//const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packages/packagingType/PRIMARY`)
 
 async function create() {
     console.log("JSON.stringify(productForm): ",JSON.stringify(productForm))

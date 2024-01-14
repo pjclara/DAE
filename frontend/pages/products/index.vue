@@ -1,5 +1,4 @@
 <template>
-    <default>
         <v-col align="center">
             <v-row class="ma-2" justify="space-between">
                 <h1> Listagem de Produtos </h1>
@@ -34,11 +33,9 @@
                 <cart-modal v-if="cartStore.modalOpen"></cart-modal>
             </v-container>
         </v-col>
-    </default>
 </template>
 
 <script setup>
-import Default from '/pages/layouts/default.vue'
 import { useAuthStore } from "~/store/auth-store.js"
 import CartModal from '@/components/CardModal.vue'
 import { useCartStore } from "@/store/cart-store"

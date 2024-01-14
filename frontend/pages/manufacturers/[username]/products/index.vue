@@ -1,5 +1,4 @@
 <template>
-  <default>
     <v-data-table :headers="headers" :items="products" :sort-by="[{ key: 'name', order: 'asc' }]">
       <template v-slot:top>
         <v-toolbar flat>
@@ -29,10 +28,8 @@
         </v-btn>
       </template>
     </v-data-table>
-  </default>
 </template>
 <script setup>
-import Default from '/pages/layouts/default.vue'
 import { ref } from 'vue'
 import { useAuthStore } from "~/store/auth-store.js"
 const authStore = useAuthStore()
@@ -62,6 +59,7 @@ const { data: products, error: productsErr } = await
       'Authorization': 'Bearer ' + token.value
     }
   })
+  console.log("products :", products.value)
 
 const editItem = (item) => {
   navigateTo('/manufacturers/' + route.params.username + '/products/' + item.id + '/edit/')

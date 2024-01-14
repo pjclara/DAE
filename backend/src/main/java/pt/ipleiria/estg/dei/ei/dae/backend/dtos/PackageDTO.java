@@ -18,7 +18,6 @@ public class PackageDTO {
     }
 
     public PackageDTO() {
-
     }
 
     public long getId() {

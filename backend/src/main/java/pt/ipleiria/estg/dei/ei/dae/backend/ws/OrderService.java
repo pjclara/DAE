@@ -97,6 +97,7 @@ public class OrderService {
 
     private ProductDTO productDTO(Product product) {
         return new ProductDTO(
+                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),

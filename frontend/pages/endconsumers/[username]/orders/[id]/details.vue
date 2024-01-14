@@ -1,5 +1,4 @@
 <template>
-  <Default>
     <v-col align="center">
       <v-col cols="8">
         <v-card>
@@ -35,12 +34,10 @@
         </v-card>
       </v-col>
     </v-col>
-  </Default>
 </template>
 
 <script setup>
 
-import Default from '/pages/layouts/default.vue'
 
 import { useAuthStore } from "~/store/auth-store.js"
 

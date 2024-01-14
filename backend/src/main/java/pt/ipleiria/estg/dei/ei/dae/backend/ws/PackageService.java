@@ -42,7 +42,7 @@ public class PackageService {
     private SecurityContext securityContext;
 
     @GET
-    @Authenticated
+    //@Authenticated
     @Path("/")
     public List<PackageDTO> getAllPackages() {
         // Get the user's role from the security context
