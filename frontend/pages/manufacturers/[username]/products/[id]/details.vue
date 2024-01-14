@@ -20,8 +20,9 @@
             <p>Product Package: {{ product.productPackage }}</p>
           </v-card-text>
 
-          <v-card-actions class="justify-center">
-            <v-btn><nuxt-link class="link " :to="`/products/${product.id}/edit`">Editar</nuxt-link></v-btn>
+          <v-card-actions class="justify-center d-flex flex-wrap">
+            <v-btn block rounded="xl" size="x-large" class="mb-2" @click="editItem">Editar</v-btn>
+            <v-btn block rounded="xl" size="x-large" @click="editItem">Produtos Unitários</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -46,6 +47,9 @@ const { data: product, error: productErr } = await useFetch(`${api}/manufacturer
     'Authorization': 'Bearer ' + token.value
   }
 })
+const editItem = (item) => {
+  navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/edit/')
+}
 console.log("product: ", product.value)
 </script>
 

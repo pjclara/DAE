@@ -4,8 +4,8 @@
     <v-list color="transparent" v-if="user?.role == 'Manufacturer'">
       <v-list-item prepend-icon="mdi-account-box" title="Fabricante"></v-list-item>
       <v-list-item><v-btn><nuxt-link to="/manufacturers/manufacturer1/products">Produtos</nuxt-link></v-btn></v-list-item>
-      <v-list-item><v-btn><nuxt-link to="/packages">Embalagens</nuxt-link></v-btn></v-list-item>
-      <v-list-item><v-btn><nuxt-link to="/sensors">Sensores</nuxt-link></v-btn></v-list-item>
+      <!-- <v-list-item><v-btn><nuxt-link to="/packages">Embalagens</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/sensors">Sensores</nuxt-link></v-btn></v-list-item> -->
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'LogisticsOperator'">
       <v-list-item prepend-icon="mdi-account-box" title="O. Logistica"></v-list-item>
