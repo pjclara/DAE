@@ -69,7 +69,7 @@ public class ProductService {
     public Response updateProduct(@PathParam("id") Long id, ProductDTO productDTO)
     throws MyEntityNotFoundException {
         productBean.update(
-                productDTO.getId(),
+                id,
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getManufacturerUsername(),
@@ -81,6 +81,21 @@ public class ProductService {
         }
         return Response.status(Response.Status.CREATED).entity(toDTO(product)).build();
     }
+
+    // SETT PACKAGING
+    @PUT
+    @Path("{id}/package/{packageId}")
+    public Response setPackaging(@PathParam("id") Long id, @PathParam("packageId") Long packageId)
+            throws MyEntityNotFoundException {
+        productBean.setPackaging(id, packageId);
+        Product product = productBean.find(id);
+        if (product == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(toDTO(product)).build();
+    }
+
+    // AUXILIARY FUNCTIONS
     private ProductDTO toDTO(Product product) {
         return new ProductDTO(
                 product.getName(),

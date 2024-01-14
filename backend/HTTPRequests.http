@@ -89,7 +89,7 @@ GET http://localhost:8080/backend/api/logisticsOperators
 GET http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1
 
 ### Get product by id
-GET http://localhost:8080/backend/api/products/1
+GET http://localhost:8080/backend/api/products
 
 ### Post product
 POST http://localhost:8080/backend/api/products
@@ -97,10 +97,13 @@ Content-Type: application/json
 
 {
   "name": "product3",
-  "stock": 10,
+  "stock": 3,
   "manufacturerUsername": "manufacturer1",
   "image": "imagem"
 }
+
+### set product package
+PUT http://localhost:8080/backend/api/products/2/package/2
 
 ### Put product
 PUT http://localhost:8080/backend/api/products/3

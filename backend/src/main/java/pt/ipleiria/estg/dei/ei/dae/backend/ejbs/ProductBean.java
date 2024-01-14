@@ -38,7 +38,9 @@ public class ProductBean {
             Product product = new Product(name, stock, image, manufacturer);
             entityManager.persist(product);
             manufacturer.addProduct(product);
+
             // create unit products
+            /*
             try{
                 PackageProduct productPackage = new PackageProduct(PackagingType.PRIMARY, "Vidro");
             }catch (ConstraintViolationException e) {
@@ -46,10 +48,10 @@ public class ProductBean {
             }
 
             PackageSensor packageSensor = entityManager.find(PackageSensor.class, 1L);
+            */
 
-            System.out.println("ANTES DO MERGE!!!!!!!!!!!!!!!!!!");
             for (int i = 0; i < stock; i++) {
-                UnitProduct unitProduct = new UnitProduct(product, UUID.randomUUID(), true, packageSensor);
+                UnitProduct unitProduct = new UnitProduct(product, UUID.randomUUID(), true, null);
                 entityManager.persist(unitProduct);
             }
 
@@ -104,5 +106,34 @@ public class ProductBean {
         Hibernate.initialize(product.getManufacturer());
 
         return product;
+    }
+
+    public void setPackaging(Long id, Long packageId) {
+        Product product = entityManager.find(Product.class, id);
+        if (product == null) throw new IllegalArgumentException("Product with id " + id + " not found");
+
+        Package productPackage = entityManager.find(Package.class, packageId);
+        if (productPackage == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
+
+        // FIND ALL UNIT PRODUCTS
+        Query query = entityManager.createQuery("SELECT s FROM UnitProduct s WHERE s.product.id = :id", UnitProduct.class);
+        query.setParameter("id", id);
+
+        List<UnitProduct> unitProducts = query.getResultList();
+
+
+        if (unitProducts.isEmpty()) throw new IllegalArgumentException("Product with id " + id + " has no unit products");
+
+
+        // SET PACKAGING
+        for (UnitProduct unitProduct : unitProducts) {
+            PackageSensor packageSensor = new PackageSensor(productPackage, unitProduct);
+            entityManager.persist(packageSensor);
+
+            unitProduct.setPackageSensor(packageSensor);
+            entityManager.merge(unitProduct);
+        }
+
+
     }
 }
