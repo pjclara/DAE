@@ -34,6 +34,7 @@ public class Package extends Versionable {
 
     public Package() {
 
+
     }
     public Package(PackagingType packagingType, String packagingMaterial) {
         this.packagingType = packagingType;

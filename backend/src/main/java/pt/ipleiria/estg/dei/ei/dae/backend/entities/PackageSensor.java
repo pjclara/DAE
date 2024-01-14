@@ -30,6 +30,7 @@ public class PackageSensor {
 
     public PackageSensor() {
         this.sensorValues = new ArrayList<>();
+
     }
 
     public PackageSensor(Package aPackage, UnitProduct unitProducts) {

@@ -10,14 +10,14 @@ public class PackageDTO {
     private PackagingType packagingType;
     private String packagingMaterial;
 
+    public PackageDTO() {
+
+    }
 
     public PackageDTO(long id, PackagingType packagingType, String packagingMaterial) {
         this.id = id;
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-    }
-
-    public PackageDTO() {
     }
 
     public long getId() {
