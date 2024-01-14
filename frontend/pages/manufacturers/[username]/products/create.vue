@@ -3,7 +3,7 @@
         <div>
             <v-col align="center">
                 <v-col cols="6">
-                    <h1>Create a product</h1>
+                    <h1>Criar Produto</h1>
                     <form @submit.prevent="create">
                         <div>
                             <v-text-field v-model="productForm.name" placeholder="Nome" required />
@@ -12,13 +12,13 @@
                             <v-text-field v-model="productForm.stock" label="Stock" required />
                         </div>
                         <div>
-                            <v-file-input @change="createImage" label="Imagen" />
+                            <v-file-input @change="createImage" label="Imagem" />
                         </div>
                         <div>
-                            <v-btn block rounded @click="create">Create</v-btn>
+                            <v-btn block rounded @click="create" class="mb-2">Criar Produto</v-btn>
                         </div>
                         <div>
-                            <v-btn block rounded @click="cancel">Cancel</v-btn>
+                            <v-btn block rounded @click="cancel">Cancelar</v-btn>
                         </div>
 
                     </form>
@@ -50,7 +50,6 @@ const productForm = reactive({
     name: null,
     stock: null,
     manufacturerUsername: route.params.username,
-    packageId: null,
     image: null
 })
 
@@ -66,6 +65,7 @@ function createImage(e) {
 }
 
 async function create() {
+    console.log("JSON.stringify(productForm): ",JSON.stringify(productForm))
     const requestOptions = {
         method: 'POST',
         headers: {

@@ -9,9 +9,7 @@ public class ProductDTO implements Serializable {
     private String image;
     private String manufacturerUsername;
 
-    public ProductDTO(String name, String image) {
-        this.name = name;
-        this.image = image;
+    public ProductDTO() {
     }
 
     public ProductDTO(String name, int stock, String manufacturerUsername, String image) {

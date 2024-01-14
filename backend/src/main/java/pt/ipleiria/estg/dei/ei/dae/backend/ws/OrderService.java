@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.*;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ManufacturerDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
@@ -97,7 +98,9 @@ public class OrderService {
     private ProductDTO productDTO(Product product) {
         return new ProductDTO(
                 product.getName(),
-                product.getImage()
+                product.getStock(),
+                product.getImage(),
+                product.getManufacturer().getUsername()
         );
     }
 
@@ -208,6 +211,16 @@ public class OrderService {
                 logisticsOperatorName,
                 packageId,
                 ordersItemDTO(order.getOrderItems())
+        );
+    }
+
+    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
+        return new ManufacturerDTO(
+                manufacturer.getUsername(),
+                manufacturer.getPassword(),
+                manufacturer.getName(),
+                manufacturer.getEmail(),
+                manufacturer.getRole()
         );
     }
 
