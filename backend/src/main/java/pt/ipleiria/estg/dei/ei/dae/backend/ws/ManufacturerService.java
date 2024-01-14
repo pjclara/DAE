@@ -21,7 +21,7 @@ import java.util.List;
 @Path("/manufacturers")
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
-@Authenticated
+//@Authenticated
 
 public class ManufacturerService {
 
@@ -58,7 +58,7 @@ public class ManufacturerService {
         if (manufacturer == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDo(manufacturer)).build();
+        return Response.status(Response.Status.CREATED).entity(toDTO(manufacturer)).build();
     }
 
     @PUT

@@ -21,7 +21,7 @@
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'Administrator'">
       <v-list-item prepend-icon="mdi-account-box" title="Administrador"></v-list-item>
-      <v-list-item><v-btn @click="customerOrders"><nuxt-link to="/logisticsOperator/create">Criar O.Logistica</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/logisticsOperator/create">Criar O.Logistica</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link to="/manufacturers/create">Criar Fabricante</nuxt-link></v-btn></v-list-item>
     </v-list>
 
