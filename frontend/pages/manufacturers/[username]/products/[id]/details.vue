@@ -22,7 +22,7 @@
 
           <v-card-actions class="justify-center d-flex flex-wrap">
             <v-btn block rounded="xl" size="x-large" class="mb-2" @click="editItem">Editar</v-btn>
-            <v-btn block rounded="xl" size="x-large" @click="editItem">Produtos Unitários</v-btn>
+            <v-btn block rounded="xl" size="x-large" @click="listUnitProducts">Produtos Unitários</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -49,6 +49,9 @@ const { data: product, error: productErr } = await useFetch(`${api}/manufacturer
 })
 const editItem = (item) => {
   navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/edit/')
+}
+const listUnitProducts = (item) => {
+  navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/unitProductsIndex/')
 }
 console.log("product: ", product.value)
 </script>
