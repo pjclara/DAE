@@ -4,7 +4,7 @@
         <v-col cols="8">
           <v-card>
             <v-card-title class="mb-4" justify="center">
-              <h1>Detalhes da encomenda</h1>
+              <h2>Detalhes da encomenda</h2>
             </v-card-title>
 
             <v-card-text>
