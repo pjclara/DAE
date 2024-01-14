@@ -1,7 +1,7 @@
 <template>
     <v-col align="center">
         <v-col cols="6">
-            <h1>Create a logisticOperator</h1>
+            <h1>Criar Operador de Logistica</h1>
 
             <v-form @submit.prevent="createLogisticOperator">
                 <v-text-field v-model.trim="logisticOperatorForm.username" label="Username"
