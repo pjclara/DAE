@@ -21,7 +21,7 @@ import java.util.List;
 @Path("/manufacturers")
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
-@Authenticated
+//@Authenticated
 
 public class ManufacturerService {
 
@@ -58,7 +58,7 @@ public class ManufacturerService {
         if (manufacturer == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDo(manufacturer)).build();
+        return Response.status(Response.Status.CREATED).entity(toDTO(manufacturer)).build();
     }
 
     @PUT
@@ -140,12 +140,10 @@ public class ManufacturerService {
 
     private ProductDTO productToDTO(Product product) {
         return new ProductDTO(
-                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
@@ -162,10 +160,6 @@ public class ManufacturerService {
 
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
-                aPackage.getId(),
-                aPackage.getPackagingType(),
-                aPackage.getPackagingMaterial(),
-                sensorsDTO(aPackage.getSensors())
         );
     }
 

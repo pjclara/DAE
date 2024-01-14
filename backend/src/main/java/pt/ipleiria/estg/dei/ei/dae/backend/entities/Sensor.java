@@ -3,10 +3,13 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "sensors")
 @NamedQuery(name = "getAllSensors", query = "SELECT s FROM Sensor s ORDER BY s.id")
+@NamedQuery(name = "getSensorById", query = "SELECT s FROM Sensor s WHERE s.id = :id")
 public class Sensor extends Versionable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
@@ -26,6 +29,7 @@ public class Sensor extends Versionable {
     private String min;     // valor mínimo aceitável
     @NotNull
     private long timestamp;
+
 
     @ManyToOne
     @JoinTable(

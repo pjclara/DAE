@@ -49,13 +49,13 @@ public class ProductService {
     // create new product
     @POST
     @Path("/")
-    public Response createNewProduct(ProductDTO productDTO) throws MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
+    public Response createNewProduct(ProductDTO productDTO) throws
+            MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
         long id  = productBean.create(
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getImage(),
-                productDTO.getManufacturerUsername(),
-                productDTO.getPackageId()
+                productDTO.getManufacturerUsername()
         );
         Product product = productBean.find(id);
         if (product == null) {
@@ -73,8 +73,7 @@ public class ProductService {
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getManufacturerUsername(),
-                productDTO.getImage(),
-                productDTO.getPackageDTO()
+                productDTO.getImage()
         );
         Product product = productBean.find(id);
         if (product == null) {
@@ -84,21 +83,15 @@ public class ProductService {
     }
     private ProductDTO toDTO(Product product) {
         return new ProductDTO(
-                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageDTO(product.getProductPackage() == null ? new Package() : product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
     private PackageDTO packageDTO(Package productPackage) {
         return new PackageDTO(
-                productPackage.getId(),
-                productPackage.getPackagingType(),
-                productPackage.getPackagingMaterial(),
-                sensorsDTO(productPackage.getSensors())
         );
 
     }

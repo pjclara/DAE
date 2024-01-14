@@ -7,13 +7,13 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.*;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ManufacturerDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +32,8 @@ public class OrderService {
     @GET
     @Path("/")
     public List<OrderDTO> getOrdersWithOrderItems() {
-        return toDTOs(orderBean.all());
+        List<Orderr> orders = orderBean.getAll();
+        return toDTOs(orders);
     }
 
     @GET
@@ -62,7 +63,7 @@ public class OrderService {
     @GET
     @Path("{id}/items")
     public Response getProductsByOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Orderr orderr = orderBean.findOrFail(orderId);
+        Orderr orderr = orderBean.getOrderProducts(orderId);
         if(orderr != null) {
             var orderItems = ordersItemDTO(orderr.getOrderItems());
             return Response.ok(orderItems).build();
@@ -80,43 +81,66 @@ public class OrderService {
         return new OrderItemDTO(
                 orderItem.getId(),
                 orderItem.getQuantity(),
-                productToDTO(orderItem.getProduct())
+                unitProductDTO(orderItem.getUnitProduct())
         );
     }
 
-    private ProductDTO productToDTO(Product product) {
+    private UnitProductDTO unitProductDTO(UnitProduct unitProduct) {
+        return new UnitProductDTO(
+                unitProduct.getId(),
+                unitProduct.getSerialNumber(),
+                unitProduct.getAvailable(),
+                productDTO(unitProduct.getProduct() == null ? new Product() : unitProduct.getProduct()),
+                packageSensorToDTO(unitProduct.getPackageSensor() == null ?  new PackageSensor() : unitProduct.getPackageSensor())
+        );
+    }
+
+    private ProductDTO productDTO(Product product) {
         return new ProductDTO(
-                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername(),
-                packageToDTO(product.getProductPackage())
+                product.getManufacturer().getUsername()
         );
     }
 
-    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
-        return new ManufacturerDTO(
-                manufacturer.getUsername(),
-                manufacturer.getPassword(),
-                manufacturer.getName(),
-                manufacturer.getEmail(),
-                manufacturer.getRole()
+    private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
+        return new PackageSensorDTO(
+                packageSensor.getId(),
+                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
+                packageDTO(packageSensor.getPackagging() == null ? new Package() : packageSensor.getPackagging())
         );
     }
 
+    private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
+        return sensorValues.stream().map(this::sensorValueDTO).collect(Collectors.toList());
+    }
 
-    private PackageDTO packageToDTO(Package productPackage) {
+    private SensorValueDTO sensorValueDTO(SensorValue sensorValue) {
+        return new SensorValueDTO(
+                sensorValue.getId(),
+                sensorDTO(sensorValue.getSensor()),
+                sensorValue.getValue()
+        );
+    }
+
+    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorsDTO).collect(Collectors.toList());
+    }
+
+    private SensorDTO sensorsDTO(Sensor sensor){
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType()
+        );
+    }
+    private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
-                productPackage.getId(),
-                productPackage.getPackagingType(),
-                productPackage.getPackagingMaterial(),
-                sensorsDTO(productPackage.getSensors())
+                aPackage.getId(),
+                aPackage.getPackagingType(),
+                aPackage.getPackagingMaterial()
         );
-    }
-
-    private List<SensorDTO> sensorsDTO(List<Sensor> sensors) {
-        return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
     }
 
     private SensorDTO sensorDTO(Sensor sensor) {
@@ -128,8 +152,7 @@ public class OrderService {
                 sensor.getUnit(),
                 sensor.getMax(),
                 sensor.getMin(),
-                sensor.getTimestamp(),
-                sensor.getPackagging().getId()
+                sensor.getTimestamp()
         );
     }
 
@@ -188,6 +211,16 @@ public class OrderService {
                 logisticsOperatorName,
                 packageId,
                 ordersItemDTO(order.getOrderItems())
+        );
+    }
+
+    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
+        return new ManufacturerDTO(
+                manufacturer.getUsername(),
+                manufacturer.getPassword(),
+                manufacturer.getName(),
+                manufacturer.getEmail(),
+                manufacturer.getRole()
         );
     }
 

@@ -9,13 +9,13 @@ import jakarta.validation.ConstraintViolationException;
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Stateless
 public class ProductBean {
@@ -27,27 +27,37 @@ public class ProductBean {
         return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
     }
 
-    public long create(String name, int stock, String image,  String manufacturerUsername, long p)
+    public long create(String name, int stock, String image,  String manufacturerUsername)
             throws MyConstraintViolationException, MyEntityNotFoundException {
         // if manufacturer exists
         Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
 
         if (manufacturer == null) throw new MyEntityNotFoundException("Manufacturer with username " + null + " not found in database");
 
-        Package productPackage = entityManager.find(Package.class, p);
-
         try {
-            Product product = new Product(name, stock, image, productPackage, manufacturer);
+            Product product = new Product(name, stock, image, manufacturer);
             entityManager.persist(product);
             manufacturer.addProduct(product);
-            productPackage.addProduct(product);
+            // create unit products
+            try{
+                PackageProduct productPackage = new PackageProduct(PackagingType.PRIMARY, "Vidro");
+            }catch (ConstraintViolationException e) {
+                throw new MyConstraintViolationException(e);
+            }
+
+            PackageSensor packageSensor = entityManager.find(PackageSensor.class, 1L);
+
+            System.out.println("ANTES DO MERGE!!!!!!!!!!!!!!!!!!");
+            for (int i = 0; i < stock; i++) {
+                UnitProduct unitProduct = new UnitProduct(product, UUID.randomUUID(), true, packageSensor);
+                entityManager.persist(unitProduct);
+            }
+
             return product.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
     }
-
-
     public Product find(Long id) throws MyEntityNotFoundException {
         return entityManager.find(Product.class, id);
     }
@@ -59,7 +69,7 @@ public class ProductBean {
         }
     }
 
-    public void update(Long id, String name, int stock, String manufacturerUsername, String image, PackageDTO packageDTO)
+    public void update(Long id, String name, int stock, String manufacturerUsername, String image)
     throws MyEntityNotFoundException{
 
         if (!exists(id)) {throw new MyEntityNotFoundException("Product with id " + id + " not found in database"); }
@@ -67,11 +77,6 @@ public class ProductBean {
         Product product = entityManager.find(Product.class, id);
         entityManager.lock(product, LockModeType.OPTIMISTIC);
 
-        Package productPackage = entityManager.find(Package.class, packageDTO.getId());
-
-        if (productPackage == null) throw new MyEntityNotFoundException("Package with id " + packageDTO.getId() + " not found in database");
-
-        product.setProductPackage(productPackage);
         product.setName(name);
         product.setStock(stock);
         product.setImage(image);
@@ -94,9 +99,7 @@ public class ProductBean {
     public Product findWithPackage(Long id) {
         Product product = entityManager.find(Product.class, id);
 
-        if (product == null) return null;
-
-        Hibernate.initialize(product.getProductPackage());
+        if (product == null) throw new IllegalArgumentException("Product with id " + id + " not found");
 
         Hibernate.initialize(product.getManufacturer());
 

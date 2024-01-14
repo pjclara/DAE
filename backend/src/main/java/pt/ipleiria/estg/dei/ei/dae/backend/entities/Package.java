@@ -2,26 +2,15 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllPackages",
-                query = "SELECT p FROM Package p ORDER BY p.packagingType"
-        ),
-
-        @NamedQuery(
-                name = "getAllRoleTypePackages",
-                query = "SELECT p FROM Package p WHERE p.packagingType IN :rolesTypes ORDER BY p.packagingType"
-        ),
-        @NamedQuery(
-                name = "getPackageByType",
-                query = "SELECT p FROM Package p WHERE p.packagingType = :packagingType")
-})
+@Table(name = "packages")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Package extends Versionable {
 
     @Id
@@ -33,25 +22,18 @@ public class Package extends Versionable {
     @NotNull
     private String packagingMaterial;
 
-    @OneToOne(mappedBy = "productPackage")
-    private Product product;
-
     @OneToOne(mappedBy = "orderPackage")
     private Orderr order;
 
-    //@OneToMany
-    @OneToMany(mappedBy = "packagging", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<Sensor> sensors;
+    @ManyToOne
+    private PackageSensor packageSensor;
 
     public Package() {
-        this.sensors =  new ArrayList<>();
+
     }
-
-
     public Package(PackagingType packagingType, String packagingMaterial) {
         this.packagingType = packagingType;
         this.packagingMaterial = packagingMaterial;
-        this.sensors =  new ArrayList<>();
     }
 
     public Long getId() {
@@ -87,43 +69,5 @@ public class Package extends Versionable {
         if (order != null) {
             order.setOrderPackage(this);
         }
-    }
-
-    public List<Sensor> getSensors() {
-        return sensors;
-    }
-
-    public void addSensor(Sensor sensor) {
-        if (sensor == null || sensors.contains(sensor)) {
-            return;
-        }
-        sensors.add(sensor);
-        sensor.setPackaging(this); // Link the sensor to the package
-    }
-
-    public void removeSensor(Sensor sensor) {
-        if (sensor == null || !sensors.contains(sensor)) {
-            return;
-        }
-        sensors.remove(sensor);
-        sensor.setPackaging(null); // Unlink the sensor from the package
-    }
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-        if (product != null) {
-            product.setProductPackage(this);
-        }
-    }
-
-    public void addProduct(Product product) {
-        if (product == null || product.equals(this.product)) {
-            return;
-        }
-        this.product = product;
-        product.setProductPackage(this); // Link the product to the package
     }
 }

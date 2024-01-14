@@ -16,30 +16,17 @@
               <h3>Produtos da encomenda: </h3>
               
               <span v-for="(item, index) in order.orderItems" :key="index" style="align-items: center;">
-                <v-img width="100" height="100" :src="item.productDTO.image" />                
+                <v-img width="100" height="100" :src="item.unitProductDTO.productDTO.image" />                
                 <br>
                 <ul>
                   <li>
-                    <h4>Nome: {{ item.productDTO.name }}</h4>
+                    <h4>Nome: {{ item.unitProductDTO.productDTO.name }}</h4>
                   </li>
                   <li>
-                    <h4>Quantidade: {{ item.quantity }}</h4>
+                    <h4>Quantidade: {{ item.quantity}}</h4>
                   </li>
                   <li>
-                    <ul>
-                      <li>
-                        <h4>Package material: {{ item.productDTO.packageDTO.packagingMaterial }}</h4>
-                        <ul v-for="sensor in item.productDTO.packageDTO.sensors" key="sensor.id">
-                          <li>
-                            <h4>Sensor type: {{ sensor.type }}</h4>
-                          </li>
-                          <li>
-                            <h4>Value: {{ sensor.value }}</h4>
-                          </li>
-                        </ul>
-                      </li>
-                      
-                    </ul>
+                    
                   </li>
                 </ul>
               </span>

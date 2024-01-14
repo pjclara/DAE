@@ -10,7 +10,7 @@
                     </template>
                     <template v-slot:item.productsIds="{ item }">
                         <span v-for="(item, index) in item.orderItems" :key="index" style="align-items: center;">
-                            <v-img width="50" height="50" :src="item.productDTO.image" />{{ item.productDTO.name }}
+                            <v-img width="50" height="50" :src="item.unitProductDTO.productDTO.image" />{{ item.unitProductDTO.productDTO.name }}
                             <br>
                         </span>
                     </template>
