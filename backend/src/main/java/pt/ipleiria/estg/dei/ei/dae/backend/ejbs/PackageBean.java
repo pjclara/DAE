@@ -30,7 +30,6 @@ public class PackageBean {
         try {
             Package package_ = new Package(type, material);
             entityManager.persist(package_);
-            //entityManager.flush();
             return package_.getId().intValue();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
