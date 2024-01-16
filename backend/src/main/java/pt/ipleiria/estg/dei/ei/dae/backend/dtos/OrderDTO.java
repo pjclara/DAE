@@ -1,7 +1,10 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderDTO {
 
@@ -86,5 +89,20 @@ public class OrderDTO {
 
     public void setOrderItems(List<OrderItemDTO> orderItems) {
         OrderItems = orderItems;
+    }
+
+    public static List<OrderDTO> toDTOs(List<Orderr> orders) {
+        return orders.stream().map(OrderDTO::toDTO).collect(Collectors.toList());
+    }
+
+    public static OrderDTO toDTO(Orderr orderr) {
+        return new OrderDTO(
+                orderr.getId(),
+                orderr.getStatus(),
+                orderr.getEndConsumer().getName(),
+                orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
+                orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
+                OrderItemDTO.toDTOs(orderr.getOrderItems())
+        );
     }
 }
