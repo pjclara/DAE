@@ -9,9 +9,10 @@
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'LogisticsOperator'">
       <v-list-item prepend-icon="mdi-account-box" title="O. Logistica"></v-list-item>
-      <v-list-item><v-btn><nuxt-link to="/orders">Encomendas</nuxt-link></v-btn></v-list-item>
-      <v-list-item><v-btn><nuxt-link to="/packages/create">Criar Embalagens</nuxt-link></v-btn></v-list-item>
-      <v-list-item><v-btn><nuxt-link to="/sensors/create">Criar Sensores</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/`">Home page</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/orders`">Lista de Encomendas</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/packageOrders`">Lista de Embalagens</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/sensors`">Lista de Sensores</nuxt-link></v-btn></v-list-item>
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'EndConsumer'">
       <v-list-item prepend-icon="mdi-account-box" title="Cliente"></v-list-item>

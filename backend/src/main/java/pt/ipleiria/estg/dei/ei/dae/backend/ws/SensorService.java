@@ -39,6 +39,12 @@ public class SensorService {
                 .build();
     }
 
+    @GET
+    @Path("/source/{source}")
+    public List<SensorDTO> getSensorsByType(@PathParam("source") String source) {
+        return SensorDTO.toDTOs(sensorBean.getSensorsBySource(source));
+    }
+
     @POST
     @Path("/")
     public Response createNewSensor(SensorDTO sensorDTO) throws MyConstraintViolationException {

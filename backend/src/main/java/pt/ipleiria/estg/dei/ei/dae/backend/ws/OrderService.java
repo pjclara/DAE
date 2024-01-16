@@ -48,18 +48,6 @@ public class OrderService {
                 .entity("ERROR_FINDING_ORDER")
                 .build();
     }
-
-    private OrderDTO orderDto(Orderr orderr) {
-        return new OrderDTO(
-                orderr.getId(),
-                orderr.getStatus(),
-                orderr.getEndConsumer().getName(),
-                orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
-                orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
-                ordersItemDTO(orderr.getOrderItems())
-        );
-    }
-
     @GET
     @Path("{id}/items")
     public Response getProductsByOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
@@ -71,6 +59,71 @@ public class OrderService {
     return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_ORDER")
                 .build();
+    }
+
+
+    @POST
+    @Path("/")
+    public Response createNewOrder(String username, String status, String orders)
+            throws MyEntityNotFoundException, MyConstraintViolationException {
+        long id = orderBean.create(
+                username,
+                orders);
+
+        Orderr order = orderBean.findOrFail(id);
+        if (order == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(toDTO(order)).build();
+    }
+
+    @PUT
+    @Path("{id}")
+    public Response updateOrder(@PathParam("id") Long id, OrderDTO orderDTO)
+            throws MyEntityNotFoundException {
+        orderBean.update(
+                id,
+                orderDTO.getStatus(),
+                orderDTO.getEndConsumerName(),
+                orderDTO.getLogisticsOperatorName(),
+                orderDTO.getPackageId()
+        );
+        Orderr order = orderBean.findOrFail(id);
+        if (order == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).entity(toDTO(order)).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteEndConsumer(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
+        orderBean.delete(orderId);
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("{id}/package/{packageId}")
+    public Response updateOrderPackage(@PathParam("id") Long id, @PathParam("packageId") Long packageId)
+            throws MyEntityNotFoundException {
+        orderBean.updateOrderPackage(id, packageId);
+        Orderr order = orderBean.findOrFail(id);
+        if (order == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).entity(toDTO(order)).build();
+    }
+
+
+    private OrderDTO orderDto(Orderr orderr) {
+        return new OrderDTO(
+                orderr.getId(),
+                orderr.getStatus(),
+                orderr.getEndConsumer().getName(),
+                orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
+                orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
+                ordersItemDTO(orderr.getOrderItems())
+        );
     }
 
     private List<OrderItemDTO> ordersItemDTO(List<OrderItem> orderItems) {
@@ -131,46 +184,6 @@ public class OrderService {
                 aPackage.getPackagingType(),
                 aPackage.getPackagingMaterial()
         );
-    }
-
-    @POST
-    @Path("/")
-    public Response createNewOrder(String username, String status, String orders)
-            throws MyEntityNotFoundException, MyConstraintViolationException {
-        long id = orderBean.create(
-                username,
-                orders);
-
-        Orderr order = orderBean.findOrFail(id);
-        if (order == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        return Response.status(Response.Status.CREATED).entity(toDTO(order)).build();
-    }
-
-    @PUT
-    @Path("{id}")
-    public Response updateOrder(@PathParam("id") Long id, OrderDTO orderDTO)
-    throws MyEntityNotFoundException {
-        orderBean.update(
-                id,
-                orderDTO.getStatus(),
-                orderDTO.getEndConsumerName(),
-                orderDTO.getLogisticsOperatorName(),
-                orderDTO.getPackageId()
-        );
-        Orderr order = orderBean.findOrFail(id);
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.status(Response.Status.OK).entity(toDTO(order)).build();
-    }
-
-    @DELETE
-    @Path("{id}")
-    public Response deleteEndConsumer(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        orderBean.delete(orderId);
-        return Response.ok().build();
     }
 
     // -----------------------------------------------------

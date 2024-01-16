@@ -41,7 +41,7 @@ public class Orderr extends Versionable {
 
     @OneToOne
     @JoinColumn(name = "package_id")
-    private Package orderPackage;
+    private PackageOrder packageOrder;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems;
@@ -88,37 +88,17 @@ public class Orderr extends Versionable {
         this.logisticsOperators = logisticsOperators;
     }
 
-    public Package getOrderPackage() {
-        return orderPackage;
+    public PackageOrder getOrderPackage() {
+        return packageOrder;
     }
 
-    public void setOrderPackage(Package orderPackage) {
-        this.orderPackage = orderPackage;
+    public void setPackageOrder(PackageOrder packageOrder) {
+        this.packageOrder = packageOrder;
     }
+
 
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
-    public void addOrderItems(List<OrderItem> orderItems) {
-        this.orderItems.clear();  // Clear existing items
-        if (orderItems != null) {
-            this.orderItems.addAll(orderItems);
-            for (OrderItem orderItem : orderItems) {
-                orderItem.setOrder(this);
-            }
-        }
-    }
-
-    // Add a single order item
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setOrder(this);
-    }
-
-    // Remove a single order item
-    public void removeOrderItem(OrderItem orderItem) {
-        orderItems.remove(orderItem);
-        orderItem.setOrder(null);
-    }
 }

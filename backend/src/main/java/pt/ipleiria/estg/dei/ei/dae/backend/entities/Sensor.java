@@ -11,6 +11,7 @@ import java.util.List;
 @NamedQuery(name = "getAllSensors", query = "SELECT s FROM Sensor s ORDER BY s.id")
 @NamedQuery(name = "getSensorById", query = "SELECT s FROM Sensor s WHERE s.id = :id")
 @NamedQuery(name = "getSensorsByPackage", query = "SELECT s FROM Sensor s WHERE s.type = :package")
+@NamedQuery(name = "getSensorsBySource", query = "SELECT s FROM Sensor s WHERE s.source = :source")
 public class Sensor extends Versionable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")

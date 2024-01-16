@@ -65,4 +65,10 @@ public class SensorBean {
                 .setParameter("package", aPackage)
                 .getResultList();
     }
+
+    public List<Sensor> getSensorsBySource(String source) {
+        return entityManager.createNamedQuery("getSensorsBySource", Sensor.class)
+                .setParameter("source", source)
+                .getResultList();
+    }
 }

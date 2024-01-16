@@ -110,9 +110,9 @@ public class OrderBean {
             order.setLogisticsOperators(logisticOpt);
         }
         if (packageId != 0){
-            Package orderPackage = entityManager.find(Package.class, packageId);
-            if (orderPackage == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
-            order.setOrderPackage(orderPackage);
+            PackageOrder packageOrder = entityManager.find(PackageOrder.class, packageId);
+            if (packageOrder == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
+            order.setPackageOrder(packageOrder);
         }
 
         entityManager.merge(order);
@@ -177,6 +177,18 @@ public class OrderBean {
             });
         });
         return orders;
+
+    }
+
+    public void updateOrderPackage(Long id, Long packageId) {
+        Orderr order = entityManager.find(Orderr.class, id);
+        if (order == null) throw new IllegalArgumentException("Order with id " + id + " not found");
+
+        PackageOrder packageOrder = entityManager.find(PackageOrder.class, packageId);
+        if (packageOrder == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
+
+        order.setPackageOrder(packageOrder);
+        entityManager.merge(order);
 
     }
 }

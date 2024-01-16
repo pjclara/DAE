@@ -26,9 +26,6 @@ public class Package extends Versionable {
     @NotNull
     private String packagingMaterial;
 
-    @OneToOne(mappedBy = "orderPackage")
-    private Orderr order;
-
     @ManyToOne
     private PackageSensor packageSensor;
 
@@ -65,14 +62,4 @@ public class Package extends Versionable {
         this.packagingMaterial = packagingMaterial;
     }
 
-    public Orderr getOrder() {
-        return order;
-    }
-
-    public void setOrder(Orderr order) {
-        this.order = order;
-        if (order != null) {
-            order.setOrderPackage(this);
-        }
-    }
 }
