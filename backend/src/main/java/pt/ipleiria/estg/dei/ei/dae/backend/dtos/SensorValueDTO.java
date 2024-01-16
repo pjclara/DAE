@@ -1,5 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
+
 import java.io.Serializable;
 
 public class SensorValueDTO implements Serializable {
@@ -8,14 +10,13 @@ public class SensorValueDTO implements Serializable {
 
     private String value;
 
-    private long sensorId;
+    private SensorDTO sensorDTO;
 
     private long packageSensorId;
 
     public SensorValueDTO(long id, SensorDTO sensorDTO, String value) {
         this.id = id;
-        this.value = sensorDTO.getValue();
-        this.sensorId = sensorDTO.getId();
+        this.sensorDTO = sensorDTO;
         this.value = value;
 
     }
@@ -30,8 +31,8 @@ public class SensorValueDTO implements Serializable {
         return value;
     }
 
-    public long getSensorId() {
-        return sensorId;
+    public SensorDTO getSensorDTO() {
+        return sensorDTO;
     }
 
     public long getPackageSensorId() {

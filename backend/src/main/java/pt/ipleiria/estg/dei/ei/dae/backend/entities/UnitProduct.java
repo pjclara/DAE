@@ -31,6 +31,7 @@ public class UnitProduct extends Versionable {
     private PackageSensor packageSensor;
 
     public UnitProduct() {
+
         this.packageSensor = null;
     }
 

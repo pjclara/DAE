@@ -10,8 +10,6 @@
             <v-icon class="grey--text">mdi-plus</v-icon>
           </v-btn>
 
-
-
         </v-toolbar>
       </template>
       <template v-slot:item.image="{ item }">
@@ -20,9 +18,6 @@
       <template v-slot:item.actions="{ item }">
         <v-icon size="small" class="me-2" @click="itemDetails(item)">
           mdi-eye
-        </v-icon>
-        <v-icon size="small" class="me-2" @click="editItem(item)">
-          mdi-pencil
         </v-icon>
       </template>
       <template v-slot:no-data>
@@ -50,7 +45,7 @@ const headers = [
     key: 'name',
   },
   { title: 'Stock', key: 'stock' },
-  { title: 'Package', key: 'packageId' },
+  { title: 'Package', key: 'packagingMaterial' },
   { title: 'Image', key: 'image' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]

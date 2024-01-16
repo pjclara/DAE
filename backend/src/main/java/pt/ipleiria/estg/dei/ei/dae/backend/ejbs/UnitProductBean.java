@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.ejbs;
 
+import com.sun.source.tree.IfTree;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -34,6 +35,14 @@ public class UnitProductBean {
         UnitProduct unitProduct = entityManager.find(UnitProduct.class, id);
 
         if(unitProduct == null) throw new IllegalArgumentException("UnitProduct with id " + id + " not found in database");
+
+        Hibernate.initialize(unitProduct.getProduct());
+        Hibernate.initialize(unitProduct.getProduct());
+        if (unitProduct.getPackageSensor() != null) {
+            Hibernate.initialize(unitProduct.getPackageSensor());
+            if (unitProduct.getPackageSensor() != null)
+                Hibernate.initialize(unitProduct.getPackageSensor().getSensorValues());
+        }
 
         return unitProduct;
     }

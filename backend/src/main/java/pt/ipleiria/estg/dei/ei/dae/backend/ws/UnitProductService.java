@@ -19,18 +19,18 @@ import java.util.stream.Collectors;
 public class UnitProductService {
 
     @EJB
-    private UnitProductBean un;
+    private UnitProductBean unitProductsBean;
 
     @GET
     @Path("/")
     public List<UnitProductDTO> getAllUnitProducts() {
-        return toDTOs(un.all());
+        return toDTOs(unitProductsBean.all());
     }
 
     @GET
     @Path("{id}")
     public Response get(@PathParam("id") Long unitProductId) {
-        UnitProduct unitProduct = un.find(unitProductId);
+        UnitProduct unitProduct = unitProductsBean.find(unitProductId);
         if (unitProduct != null) {
             var unitProductDTO = toDTO(unitProduct);
             return Response.ok(unitProductDTO).build();
@@ -50,15 +50,18 @@ public class UnitProductService {
                 unitProduct.getSerialNumber(),
                 unitProduct.getAvailable(),
                 productToDTO(unitProduct.getProduct() == null ? new Product() : unitProduct.getProduct()),
-                packageSensorToDTO(unitProduct.getPackageSensor() == null ? new PackageSensor() : unitProduct.getPackageSensor())
+                packageSensorToDTO(unitProduct.getPackageSensor() == null ? null : unitProduct.getPackageSensor())
         );
     }
 
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
-        return new PackageSensorDTO(
+        if (packageSensor != null)
+            return new PackageSensorDTO(
                 packageSensor.getId(),
                 sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
-                packageDTO(packageSensor.getPackagging() == null ? new Package() : packageSensor.getPackagging()));
+                packageDTO(packageSensor.getPackagging() == null ? null : packageSensor.getPackagging()));
+        else
+            return new PackageSensorDTO();
     }
 
     private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
@@ -68,30 +71,19 @@ public class UnitProductService {
     private SensorValueDTO sensorValueDTO(SensorValue sensorValue) {
         return new SensorValueDTO(
                 sensorValue.getId(),
-                sensorDTO(sensorValue.getSensor()),
+                SensorDTO.toDTO(sensorValue.getSensor()),
                 sensorValue.getValue()
         );
-    }    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
-        return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
     }
 
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
+                aPackage.getId(),
+                aPackage.getPackagingType(),
+                aPackage.getPackagingMaterial()
         );
     }
 
-    private SensorDTO sensorDTO(Sensor sensor) {
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType(),
-                sensor.getValue(),
-                sensor.getUnit(),
-                sensor.getMax(),
-                sensor.getMin(),
-                sensor.getTimestamp()
-        );
-    }
 
     private ProductDTO productToDTO(Product product) {
         return new ProductDTO(

@@ -1,33 +1,34 @@
 <template>
-        <div>
-            <v-col align="center">
-                <v-col cols="6">
-                    <h1>Criar Produto</h1>
-                    <form @submit.prevent="create">
-                        <div>
-                            <v-text-field v-model="productForm.name" placeholder="Nome" required />
-                        </div>
-                        <div>
-                            <v-text-field v-model="productForm.stock" label="Stock" required />
-                        </div>
-                        <!-- <div>
-                            <v-select v-model="productForm.packageId" :items="packagesList" item-title="packagingMaterial" item-value="id" label="Package" />
-                        </div> -->
-                        <div>
-                            <v-file-input @change="createImage" label="Imagem" />
-                        </div>
-                        <div>
-                            <v-btn block rounded @click="create" class="mb-2">Criar Produto</v-btn>
-                        </div>
-                        <div>
-                            <v-btn block rounded @click="cancel">Cancelar</v-btn>
-                        </div>
+    <div>
+        <v-col align="center">
+            <v-col cols="6">
+                <h1>Criar Produto</h1>
+                <form @submit.prevent="create">
+                    <div>
+                        <v-text-field v-model="productForm.name" placeholder="Nome" required />
+                    </div>
+                    <div>
+                        <v-text-field v-model="productForm.stock" label="Stock" required />
+                    </div>
+                    <div>
+                        <v-select v-model="productForm.packageProductId" :items="packagesList" item-title="packagingMaterial"
+                            item-value="id" label="Package" />
+                    </div>
+                    <div>
+                        <v-file-input @change="createImage" label="Imagem" />
+                    </div>
+                    <div>
+                        <v-btn block rounded @click="create" class="mb-2">Criar Produto</v-btn>
+                    </div>
+                    <div>
+                        <v-btn block rounded @click="cancel">Cancelar</v-btn>
+                    </div>
 
-                    </form>
-                </v-col>
+                </form>
             </v-col>
+        </v-col>
 
-        </div>
+    </div>
 </template>
 
 <script setup>
@@ -50,7 +51,8 @@ const productForm = reactive({
     name: null,
     stock: null,
     manufacturerUsername: route.params.username,
-    image: null
+    image: null,
+    packageProductId: null
 })
 
 const base64 = ref('')
@@ -64,10 +66,10 @@ function createImage(e) {
     }
 }
 
-//const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packages/packagingType/PRIMARY`)
+const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packageProducts/type/PRIMARY`)
 
 async function create() {
-    console.log("JSON.stringify(productForm): ",JSON.stringify(productForm))
+    console.log("JSON.stringify(productForm): ", JSON.stringify(productForm))
     const requestOptions = {
         method: 'POST',
         headers: {

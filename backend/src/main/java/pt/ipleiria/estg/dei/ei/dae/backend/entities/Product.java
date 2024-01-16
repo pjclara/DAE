@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
 import javax.sound.midi.Sequence;
 import java.util.List;
@@ -88,5 +89,6 @@ public class Product extends Versionable{
     public void setUnitProducts(List<UnitProduct> unitProducts) {
         this.unitProducts = unitProducts;
     }
+
 
 }

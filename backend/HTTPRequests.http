@@ -106,7 +106,7 @@ Content-Type: application/json
 PUT http://localhost:8080/backend/api/products/2/package/2
 
 ### Put product
-PUT http://localhost:8080/backend/api/products/2
+PUT http://localhost:8080/backend/api/products/1
 Content-Type: application/json
 
 {
@@ -202,10 +202,42 @@ GET http://localhost:8080/backend/api/orders/1
 
 ## products
 ### Get all products
-GET http://localhost:8080/backend/api/products/1
+GET http://localhost:8080/backend/api/products/2
+
 
 ### get unitProducts
 GET http://localhost:8080/backend/api/orders
 
 ### get all units from product
-GET http://localhost:8080/backend/api/products/1/unitProducts
+GET http://localhost:8080/backend/api/products/2/unitProducts
+
+### get all packages from product
+GET http://localhost:8080/backend/api/packageProducts/type/PRIMARY
+
+### create package
+POST http://localhost:8080/backend/api/packageProducts
+Content-Type: application/json
+
+{
+  "packagingType": 1,
+  "packagingMaterial": "test_material"
+}
+
+### get all packages from product
+GET http://localhost:8080/backend/api/unitProducts/1
+
+### get all sensors
+GET http://localhost:8080/backend/api/sensors
+
+### add a new sensor
+POST http://localhost:8080/backend/api/sensors
+Content-Type: application/json
+
+{
+  "source": "test_source",
+  "type": "TEMPERATURE",
+  "unit": "CELSIUS",
+  "max": 100,
+  "min": 0
+
+}

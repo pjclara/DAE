@@ -28,7 +28,7 @@ public class ProductService {
     @GET
     @Path("/")
     public List<ProductDTO> getAllProducts() {
-        return toDTOs(productBean.all());
+        return ProductDTO.toDTOs(productBean.all());
     }
 
 
@@ -38,7 +38,7 @@ public class ProductService {
     public Response getProductDetails(@PathParam("id") Long id) throws MyEntityNotFoundException {
         Product product = productBean.findWithPackage(id);
         if (product != null) {
-            return Response.ok(toDTO(product)).build();
+            return Response.ok(ProductDTO.toDTO(product)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_PRODUCT")
@@ -95,37 +95,12 @@ public class ProductService {
     private SensorValueDTO sensorValueDTO(SensorValue sensorValue) {
         return new SensorValueDTO(
                 sensorValue.getId(),
-                sensorDTO(sensorValue.getSensor()),
+                SensorDTO.toDTO(sensorValue.getSensor()),
                 sensorValue.getValue()
-        );
-    }
-
-    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
-        return sensors.stream().map(this::sensorsDTO).collect(Collectors.toList());
-    }
-
-    private SensorDTO sensorsDTO(Sensor sensor){
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType()
         );
     }
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
-        );
-    }
-
-    private SensorDTO sensorDTO(Sensor sensor) {
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType(),
-                sensor.getValue(),
-                sensor.getUnit(),
-                sensor.getMax(),
-                sensor.getMin(),
-                sensor.getTimestamp()
         );
     }
 
@@ -138,13 +113,14 @@ public class ProductService {
                 productDTO.getName(),
                 productDTO.getStock(),
                 productDTO.getImage(),
-                productDTO.getManufacturerUsername()
+                productDTO.getManufacturerUsername(),
+                productDTO.getPackageProductId()
         );
         Product product = productBean.find(id);
         if (product == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDTO(product)).build();
+        return Response.status(Response.Status.CREATED).entity(ProductDTO.toDTO(product)).build();
     }
     // update product
     @PUT
@@ -162,7 +138,7 @@ public class ProductService {
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDTO(product)).build();
+        return Response.status(Response.Status.CREATED).entity(ProductDTO.toDTO(product)).build();
     }
 
     // SETT PACKAGING
@@ -175,19 +151,10 @@ public class ProductService {
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDTO(product)).build();
+        return Response.status(Response.Status.CREATED).entity(ProductDTO.toDTO(product)).build();
     }
 
     // AUXILIARY FUNCTIONS
-    private ProductDTO toDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getStock(),
-                product.getImage(),
-                product.getManufacturer().getUsername()
-        );
-    }
 
     // delete product
     @DELETE
@@ -196,9 +163,8 @@ public class ProductService {
         productBean.delete(id);
         return Response.ok().build();
     }
-    private List<ProductDTO> toDTOs(List<Product> all) {
-        return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
-    }
+
+
 
 
 

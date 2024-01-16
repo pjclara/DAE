@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.backend.ejbs;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
@@ -53,7 +54,21 @@ public class ManufacturerBean {
 
         if(manufacturer == null) throw new IllegalArgumentException("Manufacturer with username " + username + " not found in database");
 
-        System.out.println("Manufacturer products: "+manufacturer.getProducts());
+        if (manufacturer.getProducts().isEmpty()) throw new IllegalArgumentException("Manufacturer with username " + username + " has no products");
+
+        if (!manufacturer.getProducts().isEmpty()){
+            manufacturer.getProducts().forEach(product -> {
+                Hibernate.initialize(product.getUnitProducts());
+                product.getUnitProducts().forEach(unitProduct -> {
+                    if (unitProduct.getPackageSensor() != null) {
+                        Hibernate.initialize(unitProduct.getPackageSensor());
+                        Hibernate.initialize(unitProduct.getPackageSensor().getPackagging());
+                    }
+                });
+            });
+        }
+
+
 
         return manufacturer;
     }

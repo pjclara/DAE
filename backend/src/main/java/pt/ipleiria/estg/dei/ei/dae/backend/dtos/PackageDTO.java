@@ -5,7 +5,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PackageDTO {
+public class PackageDTO implements java.io.Serializable {
     private Long id;
     private PackagingType packagingType;
     private String packagingMaterial;

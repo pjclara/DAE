@@ -1,45 +1,45 @@
 <template>
-        <div>
-            <div v-if="productForm">
-                <v-col align="center">
-                    <v-col cols="6">
-                        <h1>Editar Producto</h1>
-                        <form @submit.prevent="update">
+    <div>
+        <div v-if="productForm">
+            <v-col align="center">
+                <v-col cols="6">
+                    <h1>Editar Producto</h1>
+                    <form @submit.prevent="update">
+                        <div>
+                            <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
+                        </div>
+                        <div>
+                            <v-text-field v-model="productForm.stock" disabled label="Stock" />
+                        </div>
+                        <div>
+                            <v-select v-model="productForm.packageProductId" :items="packagesList" item-title="packagingMaterial"
+                            item-value="id" label="Package" />
+                        </div>
+                        <div>
+                            <v-file-input @change="createImage" label="Imagem" />
+                        </div>
+                        <div>
                             <div>
-                                <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
+                                <v-btn block rounded="xl" size="x-large" @click="update" class="mb-2">Update</v-btn>
                             </div>
                             <div>
-                                <v-text-field v-model="productForm.stock" disabled label="Stock" />
+                                <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
                             </div>
-                            <!-- <div>
-                                <v-select v-model="productForm.packageId" :items="packagesList"
-                                    item-title="packagingMaterial" item-value="id" label="Package" />
-                            </div> -->
-                            <div>
-                                <v-file-input @change="createImage" label="Imagem" />
+                        </div>
+                        <div v-if="message?.length > 0">
+                            <h2>Messages</h2>
+                            <div v-for="msg in message">
+                                <pre>{{ msg }}</pre>
                             </div>
-                            <div>
-                                <div>
-                                    <v-btn block rounded="xl" size="x-large" @click="update" class="mb-2">Update</v-btn>
-                                </div>
-                                <div>
-                                    <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
-                                </div>
-                            </div>
-                            <div v-if="message?.length > 0">
-                                <h2>Messages</h2>
-                                <div v-for="msg in message">
-                                    <pre>{{ msg }}</pre>
-                                </div>
-                            </div>
-                        </form>
-                    </v-col>
+                        </div>
+                    </form>
                 </v-col>
-            </div>
-            <div v-else>
-                <h1>Product not found</h1>
-            </div>
+            </v-col>
         </div>
+        <div v-else>
+            <h1>Product not found</h1>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -67,8 +67,8 @@ function createImage(e) {
         productForm.value.image = base64.value
     }
 }
-
-const { data: product, error: productErr } = await useFetch(`${api}/manufacturers/${username}/products/${id}`, {
+const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packageProducts/type/PRIMARY`)
+const { data: product, error: productErr } = await useFetch(`${api}/products/${id}`, {
     method: 'get',
     headers: {
         'Accept': 'application/json',
@@ -93,7 +93,7 @@ async function update() {
     const { error } = await useFetch(`${api}/products/` + id, requestOptions)
     console.log(base64.value)
     if (!error.value)
-        navigateTo('/manufacturers/' + route.params.username + '/products/')
+        navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/details/')
     else {
         message.value = error.value
         console.log(message.value)
@@ -101,7 +101,7 @@ async function update() {
 }
 
 function cancel() {
-    navigateTo('/manufacturers/' + route.params.username + '/products/')
+    navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/details/')
 }
 </script>
 

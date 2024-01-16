@@ -120,40 +120,16 @@ public class OrderService {
     private SensorValueDTO sensorValueDTO(SensorValue sensorValue) {
         return new SensorValueDTO(
                 sensorValue.getId(),
-                sensorDTO(sensorValue.getSensor()),
+                SensorDTO.toDTO(sensorValue.getSensor()),
                 sensorValue.getValue()
         );
     }
 
-    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
-        return sensors.stream().map(this::sensorsDTO).collect(Collectors.toList());
-    }
-
-    private SensorDTO sensorsDTO(Sensor sensor){
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType()
-        );
-    }
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
                 aPackage.getId(),
                 aPackage.getPackagingType(),
                 aPackage.getPackagingMaterial()
-        );
-    }
-
-    private SensorDTO sensorDTO(Sensor sensor) {
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType(),
-                sensor.getValue(),
-                sensor.getUnit(),
-                sensor.getMax(),
-                sensor.getMin(),
-                sensor.getTimestamp()
         );
     }
 

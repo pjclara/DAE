@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "sensors")
 @NamedQuery(name = "getAllSensors", query = "SELECT s FROM Sensor s ORDER BY s.id")
 @NamedQuery(name = "getSensorById", query = "SELECT s FROM Sensor s WHERE s.id = :id")
+@NamedQuery(name = "getSensorsByPackage", query = "SELECT s FROM Sensor s WHERE s.type = :package")
 public class Sensor extends Versionable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")
@@ -20,16 +21,11 @@ public class Sensor extends Versionable {
     @NotNull
     private String type;    // enum / tabela tipo de Sensor (Temperatura, Humidade, Pressão, integridade, localização)
     @NotNull
-    private String value;
-    @NotNull
     private String unit;    // enum / tabela unidade de medida (ºC, %, Pa, m/s, m, etc)
     @NotNull
     private String max;     // valor máximo aceitável
     @NotNull
     private String min;     // valor mínimo aceitável
-    @NotNull
-    private long timestamp;
-
 
     @ManyToOne
     @JoinTable(
@@ -43,14 +39,12 @@ public class Sensor extends Versionable {
     public Sensor() {
     }
 
-    public Sensor(String source, String type, String value, String unit, String max, String min, long timestamp) {
+    public Sensor(String source, String type, String unit, String max, String min) {
         this.source = source;
         this.type = type;
-        this.value = value;
         this.unit = unit;
         this.max = max;
         this.min = min;
-        this.timestamp = timestamp;
     }
 
     public Long getId() {
@@ -76,10 +70,6 @@ public class Sensor extends Versionable {
         this.type = type;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public String getUnit() {
         return unit;
     }
@@ -102,18 +92,6 @@ public class Sensor extends Versionable {
 
     public void setMin(String min) {
         this.min = min;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 
     public Package getPackagging() {

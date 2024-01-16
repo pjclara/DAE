@@ -89,7 +89,7 @@ public class ManufacturerService {
     public Response getAllProductsFromManufacturer(@PathParam("username") String username) {
         Manufacturer manufacturer = manufacturerBean.getAllProductsFromManufacturer(username);
         if (manufacturer != null) {
-           return Response.ok(productsToDo(manufacturer.getProducts())).build();
+           return Response.ok(ProductDTO.toDTOs(manufacturer.getProducts())).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_MANUFACTURER")
@@ -102,7 +102,7 @@ public class ManufacturerService {
     public Response getProductDetails(@PathParam("username") String username, @PathParam("id") Long id) throws MyEntityNotFoundException {
         Product product = manufacturerBean.getProductDetails(username, id);
         if (product != null) {
-            return Response.ok(productToDTO(product)).build();
+            return Response.ok(ProductDTO.toDTO(product)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_PRODUCT")
@@ -110,16 +110,6 @@ public class ManufacturerService {
     }
 
     // AUXILIARY FUNCTIONS
-
-    private ManufacturerDTO toDo(Manufacturer manufacturer) {
-        return new ManufacturerDTO(
-                manufacturer.getUsername(),
-                manufacturer.getPassword(),
-                manufacturer.getName(),
-                manufacturer.getEmail(),
-                manufacturer.getRole()
-        );
-    }
     private List<ManufacturerDTO> toDTOs(List<Manufacturer> all) {
         return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
     }
@@ -134,53 +124,6 @@ public class ManufacturerService {
         );
     }
 
-    private List<ProductDTO> productsToDo(List<Product> products) {
-        return products.stream().map(this::productToDTO).collect(java.util.stream.Collectors.toList());
-    }
 
-    private ProductDTO productToDTO(Product product) {
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getStock(),
-                product.getImage(),
-                product.getManufacturer().getUsername()
-        );
-    }
-
-    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
-        return new ManufacturerDTO(
-                manufacturer.getUsername(),
-                manufacturer.getPassword(),
-                manufacturer.getName(),
-                manufacturer.getEmail(),
-                manufacturer.getRole()
-        );
-    }
-
-
-    private PackageDTO packageDTO(Package aPackage) {
-        return new PackageDTO(
-        );
-    }
-
-    private List<SensorDTO> sensorsDTO(List<Sensor> sensors) {
-        return sensors.stream().map(this::sensorToDo).collect(java.util.stream.Collectors.toList());
-    }
-
-    private SensorDTO sensorToDo(Sensor sensor) {
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType(),
-                sensor.getValue(),
-                sensor.getUnit(),
-                sensor.getMax(),
-                sensor.getMin(),
-                sensor.getTimestamp(),
-                sensor.getPackagging().getId()
-        );
-    }
-    // get all products from manufacturer
 
 }

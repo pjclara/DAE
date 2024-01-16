@@ -8,8 +8,6 @@ import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 @Startup
@@ -79,23 +77,27 @@ public class ConfigBean {
                 logger.warning(e.getMessage());
             }
 
+        try {
+            productPackageBean.create(PackagingType.PRIMARY, "Vidro");
+            productPackageBean.create(PackagingType.SECONDARY, "Cartão");
+        }catch (MyConstraintViolationException e) {
+            logger.warning(e.getMessage());
+        }
+
             try {
-                productBean.create("product1", 10, "image1", "manufacturer1");
+                productBean.create("product1", 1, "image1", "manufacturer1",1);
+                productBean.create("product2", 2, "image2", "manufacturer2", 0);
+
                 System.out.println("Product created");
             } catch (Exception e) {
                 logger.warning(e.getMessage());
             }
 
-            try {
-                productPackageBean.create(PackagingType.PRIMARY, "Vidro");
-                productPackageBean.create(PackagingType.SECONDARY, "Cartão");
-            }catch (MyConstraintViolationException e) {
-                logger.warning(e.getMessage());
-            }
+
 
             try {
-                sensorBean.create("sensor1", "Product", "sensor1", "celcius", "20", "30", 15555555L);
-                sensorBean.create("sensor2", "Order", "sensor2", "celcius", "20", "30", 15555555L);
+                sensorBean.create("sensor1", "sensor1", "sensor1", "sensor1", "sensor1");
+                sensorBean.create("sensor2", "sensor2", "sensor2", "sensor2", "sensor2");
 
                 System.out.println("Sensor created");
             } catch (Exception e) {

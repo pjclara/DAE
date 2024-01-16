@@ -24,23 +24,7 @@ public class SensorService {
     @GET
     @Path("/")
     public List<SensorDTO> getAllSensors() {
-        return toDTOs(sensorBean.getAll());
-    }
-    private List<SensorDTO> toDTOs(List<Sensor> sensors) {
-        return sensors.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
-    }
-    private SensorDTO toDTO(Sensor sensor) {
-        return new SensorDTO(
-                sensor.getId(),
-                sensor.getSource(),
-                sensor.getType(),
-                sensor.getValue(),
-                sensor.getUnit(),
-                sensor.getMax(),
-                sensor.getMin(),
-                sensor.getTimestamp(),
-                sensor.getPackagging().getId()
-        );
+        return SensorDTO.toDTOs(sensorBean.getAll());
     }
 
     @GET
@@ -48,7 +32,7 @@ public class SensorService {
     public Response getSensorDetails(@PathParam("id") Long id) throws MyEntityNotFoundException {
         Sensor sensor = sensorBean.find(id);
         if (sensor != null) {
-            return Response.ok(toDTO(sensor)).build();
+            return Response.ok(SensorDTO.toDTO(sensor)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_SENSOR")
@@ -57,42 +41,37 @@ public class SensorService {
 
     @POST
     @Path("/")
-    public Response createNewSensor(SensorDTO sensorDTO) throws MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
+    public Response createNewSensor(SensorDTO sensorDTO) throws MyConstraintViolationException {
         long id = sensorBean.create(
                 sensorDTO.getSource(),
                 sensorDTO.getType(),
-                sensorDTO.getValue(),
                 sensorDTO.getUnit(),
                 sensorDTO.getMax(),
-                sensorDTO.getMin(),
-                sensorDTO.getTimestamp()
+                sensorDTO.getMin()
         );
         Sensor sensor = sensorBean.find(id);
         if (sensor == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDTO(sensor)).build();
+        return Response.status(Response.Status.CREATED).entity(SensorDTO.toDTO(sensor)).build();
     }
 
     @PUT
     @Path("{id}")
     public Response updateSensor(@PathParam("id") long id, SensorDTO sensorDTO) throws MyEntityNotFoundException, MyConstraintViolationException {
         sensorBean.update(
-                sensorDTO.getId(),
+                id,
                 sensorDTO.getSource(),
                 sensorDTO.getType(),
-                sensorDTO.getValue(),
                 sensorDTO.getUnit(),
                 sensorDTO.getMax(),
-                sensorDTO.getMin(),
-                sensorDTO.getTimestamp(),
-                sensorDTO.getPackageId()
+                sensorDTO.getMin()
         );
         Sensor sensor = sensorBean.find(id);
         if (sensor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.CREATED).entity(toDTO(sensor)).build();
+        return Response.status(Response.Status.CREATED).entity(SensorDTO.toDTO(sensor)).build();
     }
 
     @DELETE

@@ -21,10 +21,9 @@ public class SensorDTO implements Serializable {
     private String max;
     
     private String min;
-    
-    private long timestamp;
-    
-    private long packageId;
+
+    public SensorDTO() {
+    }
 
     public SensorDTO(long id, String type, String source) {
         this.id = id;
@@ -32,29 +31,30 @@ public class SensorDTO implements Serializable {
         this.source = source;
     }
 
-    public SensorDTO(Long id, String source, String type, String value, String unit, String max, String min, long timestamp) {
+    public SensorDTO(long id, String source, String type,  String unit, String max, String min) {
         this.id = id;
         this.source = source;
         this.type = type;
-        this.value = value;
         this.unit = unit;
         this.max = max;
         this.min = min;
-        this.timestamp = timestamp;
     }
-    public SensorDTO(long id, String source, String type, String value, String unit, String max, String min, long timestamp, long packageId) {
+
+    public SensorDTO(Long id, String source, String type, String unit, String max, String min) {
         this.id = id;
         this.source = source;
         this.type = type;
-        this.value = value;
         this.unit = unit;
         this.max = max;
         this.min = min;
-        this.timestamp = timestamp;
-        this.packageId = packageId;
     }
-
-
+    public SensorDTO(String source, String type, String unit, String max, String min) {
+        this.source = source;
+        this.type = type;
+        this.unit = unit;
+        this.max = max;
+        this.min = min;
+    }
 
     public Long getId() {
         return id;
@@ -77,10 +77,6 @@ public class SensorDTO implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public String getUnit() {
@@ -107,41 +103,17 @@ public class SensorDTO implements Serializable {
         this.min = min;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public static  List<SensorDTO> toDTOs(List<Sensor> sensors) {
+        return sensors.stream().map(SensorDTO::toDTO).collect(java.util.stream.Collectors.toList());
     }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public long getPackageId() {
-        return packageId;
-    }
-
-    public void setPackageId(long packageId) {
-        this.packageId = packageId;
-    }
-
-    public static SensorDTO from(Sensor sensor) {
+    public static SensorDTO toDTO(Sensor sensor) {
         return new SensorDTO(
                 sensor.getId(),
                 sensor.getSource(),
                 sensor.getType(),
-                sensor.getValue(),
                 sensor.getUnit(),
                 sensor.getMax(),
-                sensor.getMin(),
-                sensor.getTimestamp(),
-                sensor.getPackagging().getId()
+                sensor.getMin()
         );
-    }
-
-    public static List<SensorDTO> from(List<Sensor> sensors) {
-        return sensors.stream().map(SensorDTO::from).collect(Collectors.toList());
     }
 }

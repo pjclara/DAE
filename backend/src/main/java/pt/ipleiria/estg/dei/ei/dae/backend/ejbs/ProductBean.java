@@ -7,8 +7,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
 import org.hibernate.Hibernate;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
@@ -24,10 +22,15 @@ public class ProductBean {
     private EntityManager entityManager;
 
     public List<Product> all() {
-        return entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
+        List<Product> products = entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
+        products.forEach(product -> {
+            Hibernate.initialize(product.getManufacturer());
+            Hibernate.initialize(product.getUnitProducts());
+        });
+        return products;
     }
 
-    public long create(String name, int stock, String image,  String manufacturerUsername)
+    public long create(String name, int stock, String image, String manufacturerUsername, long packageProductId)
             throws MyConstraintViolationException, MyEntityNotFoundException {
         // if manufacturer exists
         Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
@@ -39,20 +42,22 @@ public class ProductBean {
             entityManager.persist(product);
             manufacturer.addProduct(product);
 
-            // create unit products
-            /*
-            try{
-                PackageProduct productPackage = new PackageProduct(PackagingType.PRIMARY, "Vidro");
-            }catch (ConstraintViolationException e) {
-                throw new MyConstraintViolationException(e);
+            PackageProduct productPackage = null;
+            if(packageProductId != 0) {
+                productPackage = entityManager.find(PackageProduct.class, packageProductId);
+                if (productPackage == null)
+                    throw new MyEntityNotFoundException("Package with id " + packageProductId + " not found in database");
             }
-
-            PackageSensor packageSensor = entityManager.find(PackageSensor.class, 1L);
-            */
 
             for (int i = 0; i < stock; i++) {
                 UnitProduct unitProduct = new UnitProduct(product, UUID.randomUUID(), true, null);
                 entityManager.persist(unitProduct);
+                if (productPackage != null) {
+                    PackageSensor packageSensor = new PackageSensor(productPackage, unitProduct);
+                    entityManager.persist(packageSensor);
+                    unitProduct.setPackageSensor(packageSensor);
+                    entityManager.merge(unitProduct);
+                }
             }
 
             return product.getId().intValue();
@@ -61,6 +66,11 @@ public class ProductBean {
         }
     }
     public Product find(Long id) throws MyEntityNotFoundException {
+        Product product = entityManager.find(Product.class, id);
+        if (product == null) throw new MyEntityNotFoundException("Product with id " + id + " not found in database");
+        Hibernate.initialize(product.getManufacturer());
+        Hibernate.initialize(product.getUnitProducts());
+
         return entityManager.find(Product.class, id);
     }
 
@@ -104,7 +114,15 @@ public class ProductBean {
         if (product == null) throw new IllegalArgumentException("Product with id " + id + " not found");
 
         Hibernate.initialize(product.getManufacturer());
+        Hibernate.initialize(product.getUnitProducts());
 
+        product.getUnitProducts().forEach(unitProduct ->
+                {
+                    Hibernate.initialize(unitProduct.getPackageSensor());
+                    if (unitProduct.getPackageSensor() != null)
+                        Hibernate.initialize(unitProduct.getPackageSensor().getSensorValues());
+                }
+        );
         return product;
     }
 

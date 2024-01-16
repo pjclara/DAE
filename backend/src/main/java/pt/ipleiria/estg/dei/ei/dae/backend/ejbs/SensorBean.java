@@ -18,9 +18,9 @@ public class SensorBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public long create(String source, String type, String value, String unit, String max, String min, Long timestamp) throws MyConstraintViolationException {
+    public long create(String source, String type, String unit, String max, String min) throws MyConstraintViolationException {
         try {
-            Sensor sensor = new Sensor(source, type, value, unit, max, min, timestamp);
+            Sensor sensor = new Sensor(source, type,  unit, max, min);
             entityManager.persist(sensor);
 
             return sensor.getId().intValue();
@@ -44,22 +44,16 @@ public class SensorBean {
         }
     }
 
-    public void update(long id, String source, String type, String value, String unit, String max, String min, Long timestamp, long packageId) throws MyConstraintViolationException {
-        Package packagging = entityManager.find(Package.class, packageId);
-
-        if (packagging == null) throw new IllegalArgumentException("Package with id: " + packageId + " not found in database");
-
-        var sensor = find(id);
+    public void update(long id, String source, String type, String unit, String max, String min) throws MyConstraintViolationException {
+        Sensor sensor = entityManager.find(Sensor.class, id);
+        if (sensor == null) throw new IllegalArgumentException("Sensor with id " + id + " not found in database");
 
         try {
             sensor.setSource(source);
             sensor.setType(type);
-            sensor.setValue(value);
             sensor.setUnit(unit);
             sensor.setMax(max);
             sensor.setMin(min);
-            sensor.setTimestamp(timestamp);
-            sensor.setPackaging(packagging);
             entityManager.merge(sensor);
         } catch (ConstraintViolationException e) {
         throw new MyConstraintViolationException(e);

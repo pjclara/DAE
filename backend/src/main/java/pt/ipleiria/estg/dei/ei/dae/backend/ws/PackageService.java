@@ -82,9 +82,8 @@ public class PackageService {
         if (sensors == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("ERROR_FINDING_PACKAGE_SENSORS").build();
         }
-
         Hibernate.initialize(sensors);
-        return Response.ok(SensorDTO.from(sensors)).build();
+        return Response.ok(SensorDTO.toDTOs(sensors)).build();
     }
 
     @POST
