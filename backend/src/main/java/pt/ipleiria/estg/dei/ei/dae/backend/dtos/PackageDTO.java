@@ -20,7 +20,6 @@ public class PackageDTO implements java.io.Serializable {
         this.packagingMaterial = packagingMaterial;
     }
 
-
     public long getId() {
         return id;
     }
@@ -54,13 +53,4 @@ public class PackageDTO implements java.io.Serializable {
     public static List<PackageDTO> from(List<Package> packages) {
         return packages.stream().map(PackageDTO::from).collect(Collectors.toList());
     }
-
-    public static PackageDTO toDTO(Package aPackage) {
-        return new PackageDTO(
-                aPackage.getId(),
-                aPackage.getPackagingType(),
-                aPackage.getPackagingMaterial()
-        );
-    }
-
 }

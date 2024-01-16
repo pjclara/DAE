@@ -1,9 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
 
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.LogisticsOperator;
-
-import java.util.List;
 
 public class LogisticsOperatorDTO {
     private String username;
@@ -61,20 +58,5 @@ public class LogisticsOperatorDTO {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-
-    public static List<LogisticsOperatorDTO> toDTOs(List<LogisticsOperator> all) {
-        return all.stream().map(LogisticsOperatorDTO::toDTO).collect(java.util.stream.Collectors.toList());
-    }
-
-    public static LogisticsOperatorDTO toDTO(LogisticsOperator logisticsOperator) {
-        return new LogisticsOperatorDTO(
-                logisticsOperator.getUsername(),
-                logisticsOperator.getPassword(),
-                logisticsOperator.getName(),
-                logisticsOperator.getEmail(),
-                logisticsOperator.getRole()
-        );
     }
 }

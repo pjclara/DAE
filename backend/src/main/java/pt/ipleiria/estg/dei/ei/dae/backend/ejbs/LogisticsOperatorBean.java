@@ -3,9 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.backend.ejbs;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.LogisticsOperator;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 import pt.ipleiria.estg.dei.ei.dae.backend.security.Hasher;
 
 import java.util.List;
@@ -49,20 +47,4 @@ public class LogisticsOperatorBean {
     }
 
 
-    public List<Orderr> getLogisticsOperatorOrders(String username) {
-        LogisticsOperator logisticsOperator = entityManager.find(LogisticsOperator.class, username);
-        if (logisticsOperator != null) throw new IllegalArgumentException("Logistics Operator not found");
-
-        //get orders from logistics operator
-
-        Query query = entityManager.createQuery("SELECT o FROM Orderr o WHERE o.logisticsOperators.username = :username");
-        query.setParameter("username", username);
-
-        return query.getResultList();
-
-
-
-
-
-    }
 }

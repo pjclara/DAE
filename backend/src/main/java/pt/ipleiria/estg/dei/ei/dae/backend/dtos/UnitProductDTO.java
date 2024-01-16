@@ -1,7 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.dtos;
 
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.PackageSensor;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.UnitProduct;
 
 import java.io.Serializable;
@@ -95,16 +94,6 @@ public class UnitProductDTO implements Serializable {
 
     public void setPackageSensorDTO(PackageSensorDTO packageSensorDTO) {
         this.packageSensorDTO = packageSensorDTO;
-    }
-
-    public static UnitProductDTO toDTO(UnitProduct unitProduct) {
-        return new UnitProductDTO(
-                unitProduct.getId(),
-                unitProduct.getSerialNumber(),
-                unitProduct.getAvailable(),
-                ProductDTO.toDTO(unitProduct.getProduct() == null ? new Product() : unitProduct.getProduct()),
-                PackageSensorDTO.toDTO(unitProduct.getPackageSensor() == null ?  new PackageSensor() : unitProduct.getPackageSensor())
-        );
     }
 
 }

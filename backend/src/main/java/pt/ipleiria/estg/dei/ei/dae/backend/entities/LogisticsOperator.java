@@ -12,6 +12,8 @@ import java.util.List;
         name = "getAllLogisticsOperators",
         query = "SELECT lo FROM LogisticsOperator lo ORDER BY lo.name ") // JPQL
 public class LogisticsOperator extends User{
+    //@OneToMany(mappedBy = "logisticsOperators")
+    //private List<Orderr> orders;
 
     public LogisticsOperator() {
     }
@@ -19,4 +21,7 @@ public class LogisticsOperator extends User{
         super(username, password, name, email, role);
     }
 
+    // public void addOrder(Orderr newOrder) {
+    //     orders.add(newOrder);
+    // }
 }

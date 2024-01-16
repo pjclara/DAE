@@ -5,10 +5,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.LogisticsOperatorDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.OrderDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.LogisticsOperatorBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.LogisticsOperator;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Orderr;
 
 import java.util.List;
 
@@ -23,15 +21,28 @@ public class LogisticsOperatorService {
     @GET
     @Path("/")
     public List<LogisticsOperatorDTO> getAllLogisticsOperators() {
-        return LogisticsOperatorDTO.toDTOs(logisticsOperatorBean.all());
+        return toDTOs(logisticsOperatorBean.all());
     }
 
+    private List<LogisticsOperatorDTO> toDTOs(List<LogisticsOperator> all) {
+        return all.stream().map(this::toDTO).collect(java.util.stream.Collectors.toList());
+    }
+
+    private LogisticsOperatorDTO toDTO(LogisticsOperator logisticsOperator) {
+        return new LogisticsOperatorDTO(
+                logisticsOperator.getUsername(),
+                logisticsOperator.getPassword(),
+                logisticsOperator.getName(),
+                logisticsOperator.getEmail(),
+                logisticsOperator.getRole()
+        );
+    }
     @GET
     @Path("{username}")
     public Response getLogisticsOperatorDetails(@PathParam("username") String username) {
         LogisticsOperator logisticsOperator = logisticsOperatorBean.find(username);
         if (logisticsOperator != null) {
-            return Response.ok(LogisticsOperatorDTO.toDTO(logisticsOperator)).entity(LogisticsOperatorDTO.toDTO(logisticsOperator)).build();
+            return Response.ok(toDTO(logisticsOperator)).entity(toDTO(logisticsOperator)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_LOGISTICS_OPERATOR")
@@ -50,7 +61,7 @@ public class LogisticsOperatorService {
         );
         LogisticsOperator logisticsOperator = logisticsOperatorBean.find(username);
         if (logisticsOperator != null) {
-            return Response.status(Response.Status.OK).entity(LogisticsOperatorDTO.toDTO(logisticsOperator)).build();
+            return Response.status(Response.Status.OK).entity(toDTO(logisticsOperator)).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
@@ -69,7 +80,7 @@ public class LogisticsOperatorService {
         if (logisticsOperator == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.CREATED).entity(LogisticsOperatorDTO.toDTO(logisticsOperator)).build();
+        return Response.status(Response.Status.CREATED).entity(toDTO(logisticsOperator)).build();
     }
 
     @DELETE
@@ -77,18 +88,6 @@ public class LogisticsOperatorService {
     public Response deleteLogisticsOperator(@PathParam("username") String username) {
         logisticsOperatorBean.delete(username);
         return Response.ok().build();
-    }
-
-    @GET
-    @Path("{username}/orders")
-    public Response getLogisticsOperatorOrders(@PathParam("username") String username) {
-        List<Orderr> orderrs = logisticsOperatorBean.getLogisticsOperatorOrders(username);
-        if (orderrs.size()>0) {
-            return Response.ok(OrderDTO.toDTOs(orderrs)).build();
-        }
-        return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_LOGISTICS_OPERATOR")
-                .build();
     }
 
 }
