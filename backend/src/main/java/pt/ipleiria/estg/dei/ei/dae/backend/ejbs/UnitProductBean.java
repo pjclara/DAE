@@ -18,6 +18,9 @@ public class UnitProductBean {
     @EJB
     private OrderBean orderBean;
 
+    @EJB
+    private PackageSensorBean packageSensorBean;
+
    public List<UnitProduct> all() {
        List<UnitProduct> unitProducts =
                entityManager.createNamedQuery("getAllUnitProducts", UnitProduct.class).getResultList();
@@ -48,7 +51,6 @@ public class UnitProductBean {
         if(unitProduct == null) throw new IllegalArgumentException("UnitProduct with id " + id + " not found in database");
 
         Hibernate.initialize(unitProduct.getProduct());
-        Hibernate.initialize(unitProduct.getProduct());
         if (unitProduct.getPackageSensor() != null) {
             Hibernate.initialize(unitProduct.getPackageSensor());
             if (unitProduct.getPackageSensor() != null)
@@ -72,14 +74,25 @@ public class UnitProductBean {
         entityManager.merge(u);
     }
 
-    public List<Sensor> findSensorsNotAttribute(Long unitProductId) {
+    public List<Sensor> getAllSensorsNotAttribute(Long unitProductId) {
         UnitProduct unitProduct = entityManager.find(UnitProduct.class, unitProductId);
 
         if(unitProduct == null) throw new IllegalArgumentException("UnitProduct with id " + unitProductId + " not found in database");
 
-        List<Sensor> sensors = entityManager.createNamedQuery("getSensorsNotAttribute", Sensor.class)
-                .setParameter("productId", unitProduct.getProduct().getId())
+        Hibernate.initialize(unitProduct.getProduct());
+        if (unitProduct.getPackageSensor() != null) {
+            Hibernate.initialize(unitProduct.getPackageSensor());
+            if (unitProduct.getPackageSensor() != null)
+                Hibernate.initialize(unitProduct.getPackageSensor().getSensorValues());
+        }
+
+    //get list of sensors source from the product
+        String source = "Product";
+        List<Sensor> sensors = entityManager.createNamedQuery("getSensorsBySource", Sensor.class)
+                .setParameter("source", source)
                 .getResultList();
+
+        sensors.removeIf(sensor -> unitProduct.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue -> sensorValue.getSensor().getId() == sensor.getId()));
 
         return sensors;
     }
@@ -106,16 +119,28 @@ public class UnitProductBean {
         return unitProduct;
     }
 
-    public UnitProduct setSensorToTheUnitProduct(Long unitProductId, Long sensorId) {
-       UnitProduct unitProduct = entityManager.find(UnitProduct.class, unitProductId);
-       if(unitProduct == null) throw new IllegalArgumentException("UnitProduct with id " + unitProductId + " not found in database");
+    public UnitProduct addSensorToTheUnitProduct(Long unitProductId, Long sensorId) {
 
-       Sensor sensor = entityManager.find(Sensor.class, sensorId);
-       if(sensor == null) throw new IllegalArgumentException("Sensor with id " + sensorId + " not found in database");
+       UnitProduct unitProduct = find(unitProductId);
+       if (unitProduct == null) throw new IllegalArgumentException("UnitProduct with id " + unitProductId + " not found in database");
+        System.out.println("UnitProduct: " + unitProduct);
 
-       unitProduct.addSensor(sensor);
+        Sensor sensor = entityManager.find(Sensor.class, sensorId);
+       if (sensor == null) throw new IllegalArgumentException("Sensor with id " + sensorId + " not found in database");
+        System.out.println("Sensor: " + sensor);
 
-       entityManager.merge(unitProduct);
+        PackageSensor packageSensor = packageSensorBean.findUnitProduct(unitProductId);
+        if (packageSensor == null) throw new IllegalArgumentException("PackageSensor with id " + unitProductId + " not found in database");
+        System.out.println("PackageSensor: " + packageSensor);
+
+       packageSensorBean.addSensorToPackage(packageSensor.getId(), sensorId);
+
+        Hibernate.initialize(unitProduct.getProduct());
+        if (unitProduct.getPackageSensor() != null) {
+            Hibernate.initialize(unitProduct.getPackageSensor());
+            if (unitProduct.getPackageSensor() != null)
+                Hibernate.initialize(unitProduct.getPackageSensor().getSensorValues());
+        }
 
        return unitProduct;
 

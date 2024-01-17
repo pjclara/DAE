@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.ejbs;
 
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
@@ -20,6 +21,13 @@ public class ProductBean {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @EJB
+    private PackageSensorBean packageSensorBean;
+
+    @EJB
+    private UnitProductBean unitProductBean;
+
 
     public List<Product> all() {
         List<Product> products = entityManager.createNamedQuery("getAllProducts", Product.class).getResultList();
@@ -172,5 +180,47 @@ public class ProductBean {
         );
 
         return unitProducts;
+    }
+
+    public List<Sensor> getAllSensorsNotAttribute(Long id) {
+        Product product = entityManager.find(Product.class, id);
+        if (product == null) throw new IllegalArgumentException("Product with id " + id + " not found");
+
+        String source = "Product";
+        List<Sensor> sensors = entityManager.createNamedQuery("getSensorsBySource", Sensor.class)
+                .setParameter("source", source)
+                .getResultList();
+
+        if (sensors.isEmpty()) throw new IllegalArgumentException("Product with id " + id + " has no sensors");
+
+        sensors.removeIf(sensor -> product.getUnitProducts().stream().anyMatch(unitProduct ->
+                unitProduct.getPackageSensor() != null && unitProduct.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue ->
+                        sensorValue.getSensor().getId() == sensor.getId())));
+
+        return sensors;
+    }
+
+    public List<UnitProduct> addSensorToProduct(Long productId, Long sensorId) {
+        Product product = entityManager.find(Product.class, productId);
+        if (product == null) throw new IllegalArgumentException("Product with id " + productId + " not found");
+
+        Sensor sensor = entityManager.find(Sensor.class, sensorId);
+        if (sensor == null) throw new IllegalArgumentException("Sensor with id " + sensorId + " not found");
+
+        product.getUnitProducts().forEach(unitProduct -> {
+            unitProductBean.addSensorToTheUnitProduct(unitProduct.getId(), sensorId);
+        });
+
+        Hibernate.initialize(product.getUnitProducts());
+        product.getUnitProducts().forEach(unitProduct ->
+                {
+                    Hibernate.initialize(unitProduct.getPackageSensor());
+                    if (unitProduct.getPackageSensor() != null)
+                        Hibernate.initialize(unitProduct.getPackageSensor().getSensorValues());
+                }
+        );
+
+        return product.getUnitProducts();
+
     }
 }

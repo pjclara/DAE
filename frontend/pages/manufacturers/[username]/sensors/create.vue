@@ -27,7 +27,7 @@
 
 <script setup>
 const sensorForm = reactive({
-    source: "Produto",
+    source: "Product",
     type: null,
     unit: null,
     max: null,

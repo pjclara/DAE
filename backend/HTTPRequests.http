@@ -243,6 +243,13 @@ Content-Type: application/json
 }
 
 ### get all packages from product
+GET http://localhost:8080/backend/api/products/4/unitProducts
+
+### get all packages from product
+GET http://localhost:8080/backend/api/unitProducts/6
+
+
+### get all packages from product
 GET http://localhost:8080/backend/api/unitProducts/4
 ###
-GET http://localhost:8080/backend/api/unitProducts/4/sensors
+PUT http://localhost:8080/backend/api/unitProducts/4/addSensor/1

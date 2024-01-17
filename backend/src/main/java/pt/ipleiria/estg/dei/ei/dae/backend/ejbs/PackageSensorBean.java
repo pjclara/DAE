@@ -69,4 +69,12 @@ public class PackageSensorBean {
 
         entityManager.persist(sensorValue);
     }
+
+    public PackageSensor findUnitProduct(Long unitProductId) {
+        PackageSensor packageSensor = entityManager.createNamedQuery("getPackageSensorByUnitProductId", PackageSensor.class)
+                .setParameter("unitProductId", unitProductId)
+                .getSingleResult();
+
+        return packageSensor;
+    }
 }

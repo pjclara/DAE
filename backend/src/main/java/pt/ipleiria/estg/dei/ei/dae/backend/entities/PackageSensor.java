@@ -11,8 +11,11 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllPackageSensors",
-                query = "SELECT c FROM PackageSensor c ORDER BY c.id, c.aPackage.id"), // JPQL
+                query = "SELECT c FROM PackageSensor c ORDER BY c.id, c.aPackage.id"),
+        @NamedQuery(name = "getPackageSensorByUnitProductId",
+                query = "SELECT c FROM PackageSensor c WHERE c.unitProduct.id = :unitProductId"),
 })
+
 public class PackageSensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")

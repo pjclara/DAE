@@ -63,7 +63,7 @@ const username = route.params.username
 const id = route.params.id
 const idUnitProduct = route.params.idUnitProduct
 const { data: unitProduct, error, refresh } = await useFetch(`${api}/unitProducts/${idUnitProduct}`)
-const { data: sensors, errorSensors, refreshSensors } = await useFetch(`${api}/unitProducts/${idUnitProduct}/sensors`)
+const { data: sensors, errorSensors, refreshSensors } = await useFetch(`${api}/unitProducts/${idUnitProduct}/sensorsNotAttribute`)
 
 const goBack = () => {
     navigateTo('/manufacturers/' + username + '/products/' + id + '/unitProducts/')
@@ -84,7 +84,7 @@ const addSensor = async () => {
         },
     }
     sensorId.value.forEach(element => {
-        const { error } = useFetch(`${api}/unitProducts/${idUnitProduct}/sensors/` + element, requestOptions)
+        const { error } = useFetch(`${api}/unitProducts/${idUnitProduct}/addSensor/` + element, requestOptions)
         if (!error.value) {
             message.value = "Sensors added successfully"
             alert(message.value)
@@ -95,9 +95,10 @@ const addSensor = async () => {
         }
     });
 
-    if (!error.value)
-        //navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/details/')
+    if (!error.value) {
+        navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/unitProducts/')
         alert(message.value)
+    }
     else {
         message.value = error.value
         console.log(message.value)

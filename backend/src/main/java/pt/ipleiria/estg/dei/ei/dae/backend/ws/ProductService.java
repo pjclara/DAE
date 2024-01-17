@@ -45,6 +45,19 @@ public class ProductService {
                 .build();
     }
 
+    // get all sensors not attribute from a product
+    @GET
+    @Path("{id}/sensorsNotAttribute")
+    public Response getProductSensorsNotAttribute(@PathParam("id") Long id) throws MyEntityNotFoundException {
+        List<Sensor> sensors = productBean.getAllSensorsNotAttribute(id);
+        if (sensors.size() >= 0) {
+            return Response.ok(SensorDTO.toDTOs(sensors)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_SENSORS")
+                .build();
+    }
+
     // get all unit products from a product
     @GET
     @Path("{id}/unitProducts")
@@ -55,6 +68,18 @@ public class ProductService {
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_PRODUCT")
+                .build();
+    }
+
+    @PUT
+    @Path("{id}/addSensor/{sensorId}")
+    public Response addSensorToUnitProduct(@PathParam("id") Long productId, @PathParam("sensorId") Long sensorId) {
+        List<UnitProduct> unitProducts = productBean.addSensorToProduct(productId, sensorId);
+        if (!unitProducts.isEmpty() ) {
+            return Response.ok(unitProductDTOs(unitProducts)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_UNIT_PRODUCT")
                 .build();
     }
 

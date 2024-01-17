@@ -41,21 +41,21 @@ public class UnitProductService {
     }
 
     @GET
-    @Path("{id}/sensors")
-    public Response getUnitProductSensors(@PathParam("id") Long unitProductId) {
-        List<Sensor> sensors = unitProductsBean.findSensorsNotAttribute(unitProductId);
-        if (sensors.size() != 0) {
+    @Path("{id}/sensorsNotAttribute")
+    public Response getUnitProductSensorsNotAttribute(@PathParam("id") Long unitProductId) {
+        List<Sensor> sensors = unitProductsBean.getAllSensorsNotAttribute(unitProductId);
+        if (sensors.size() >= 0) {
             return Response.ok(sensorDTOs(sensors)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
-                .entity("ERROR_FINDING_UNIT_PRODUCT")
+                .entity("ERROR_FINDING_SENSORS")
                 .build();
     }
 
     @PUT
     @Path("{id}/addSensor/{sensorId}")
     public Response addSensorToUnitProduct(@PathParam("id") Long unitProductId, @PathParam("sensorId") Long sensorId) {
-        UnitProduct unitProduct = unitProductsBean.setSensorToTheUnitProduct(unitProductId, sensorId);
+        UnitProduct unitProduct = unitProductsBean.addSensorToTheUnitProduct(unitProductId, sensorId);
         if (unitProduct != null ) {
             return Response.ok(unitProduct).build();
         }

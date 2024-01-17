@@ -80,6 +80,7 @@ public class ConfigBean {
         try {
             productPackageBean.create(PackagingType.PRIMARY, "Vidro");
             productPackageBean.create(PackagingType.SECONDARY, "Cartão");
+            System.out.println("ProductPackage created");
         }catch (MyConstraintViolationException e) {
             logger.warning(e.getMessage());
         }
@@ -96,23 +97,14 @@ public class ConfigBean {
 
 
             try {
-                sensorBean.create("sensor1", "sensor1", "sensor1", "sensor1", "sensor1");
-                sensorBean.create("sensor2", "sensor2", "sensor2", "sensor2", "sensor2");
+                sensorBean.create("Product", "sensor1", "sensor1", "sensor1", "sensor1");
+                sensorBean.create("Order", "sensor2", "sensor2", "sensor2", "sensor2");
 
                 System.out.println("Sensor created");
             } catch (Exception e) {
                 logger.warning(e.getMessage());
             }
 
-            try{
-                packageSensorBean.create(1, 1);
-                System.out.println("PackageSensor created");
-
-                // add a unit product to the package
-
-            }catch(Exception e){
-                logger.warning(e.getMessage());
-            }
 
             try {
                 String data  = "{\n" +
@@ -134,17 +126,6 @@ public class ConfigBean {
                 logger.warning(e.getMessage());
             }
 
-            try{
-                packageSensorBean.create(1, 1);
-                System.out.println("PackageSensor created");
-
-                unitProductBean.update(1,1);
-
-                System.out.println("Unitproduct update");
-
-            }catch(Exception e){
-                logger.warning(e.getMessage());
-            }
 
             try {
                 orderItemBean.create(1, 1, 1);

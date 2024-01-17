@@ -19,7 +19,6 @@ public class PackageSensorDTO implements Serializable {
 
     }
 
-
     public PackageSensorDTO(Long id, List<SensorValueDTO> sensorValueDTOS, PackageDTO packageDTO) {
         this.id = id;
         this.sensorValueDTOS = sensorValueDTOS;
