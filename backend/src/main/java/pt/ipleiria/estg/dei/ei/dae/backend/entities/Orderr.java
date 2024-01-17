@@ -39,9 +39,8 @@ public class Orderr extends Versionable {
     @ManyToOne
     private LogisticsOperator logisticsOperators;
 
-    @OneToOne
-    @JoinColumn(name = "package_id")
-    private PackageOrder packageOrder;
+    @ManyToOne
+    private PackageSensor packageSensor;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems;
@@ -88,17 +87,29 @@ public class Orderr extends Versionable {
         this.logisticsOperators = logisticsOperators;
     }
 
-    public PackageOrder getOrderPackage() {
-        return packageOrder;
-    }
-
-    public void setPackageOrder(PackageOrder packageOrder) {
-        this.packageOrder = packageOrder;
-    }
-
-
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void removeOrderItem(OrderItem orderItem) {
+        this.orderItems.remove(orderItem);
+        orderItem.setOrder(null);
+    }
+
+    public PackageSensor getPackageSensor() {
+        return packageSensor;
+    }
+
+    public void setPackageSensor(PackageSensor packageSensor) {
+        this.packageSensor = packageSensor;
+    }
 }

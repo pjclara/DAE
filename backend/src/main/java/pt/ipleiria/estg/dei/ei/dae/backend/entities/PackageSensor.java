@@ -28,6 +28,9 @@ public class PackageSensor {
     @OneToOne
     private UnitProduct unitProduct;
 
+    @OneToMany(mappedBy = "packageSensor")
+    private List<Orderr> orders;
+
     public PackageSensor() {
         this.sensorValues = new ArrayList<>();
 
@@ -76,9 +79,13 @@ public class PackageSensor {
     }
 
     public void addSensorValue(SensorValue sensorValue) {
-
         sensorValue.setPackageSensor(this);
         this.sensorValues.add(sensorValue);
     }
 
+    public void addSensor(Sensor sensor) {
+        SensorValue sensorValue = new SensorValue(sensor, this);
+        sensorValue.setPackageSensor(this);
+        this.sensorValues.add(sensorValue);
+    }
 }

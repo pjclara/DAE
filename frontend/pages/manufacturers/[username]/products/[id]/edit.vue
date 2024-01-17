@@ -1,40 +1,46 @@
 <template>
     <div>
         <div v-if="productForm">
-            <v-col align="center">
-                <v-col cols="6">
-                    <h1>Editar Producto</h1>
-                    <form @submit.prevent="update">
-                        <div>
-                            <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
-                        </div>
-                        <div>
-                            <v-text-field v-model="productForm.stock" disabled label="Stock" />
-                        </div>
-                        <div>
-                            <v-select v-model="productForm.packageProductId" :items="packagesList" item-title="packagingMaterial"
-                            item-value="id" label="Package" />
-                        </div>
-                        <div>
-                            <v-file-input @change="createImage" label="Imagem" />
-                        </div>
-                        <div>
+            <v-card>
+                <v-row>
+                    <v-col cols="6">
+                        <h1>Editar Producto</h1>
+                        <form @submit.prevent="update"
+                            style="background-color: lightgray; color: black; border-radius: 5%; padding: 5px; border-color: black;">
                             <div>
-                                <v-btn block rounded="xl" size="x-large" @click="update" class="mb-2">Update</v-btn>
+                                <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
                             </div>
                             <div>
-                                <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
+                                <v-text-field v-model="productForm.stock" disabled label="Stock" />
                             </div>
-                        </div>
-                        <div v-if="message?.length > 0">
-                            <h2>Messages</h2>
-                            <div v-for="msg in message">
-                                <pre>{{ msg }}</pre>
+                            <div>
+                                <v-select v-model="productForm.packageProductId" :items="packagesList"
+                                    item-title="packagingMaterial" item-value="id" label="Package" />
                             </div>
-                        </div>
-                    </form>
-                </v-col>
-            </v-col>
+                            <div>
+                                <v-file-input @change="createImage" label="Imagem" />
+                            </div>
+                            <br>
+                            <div>
+                                <div>
+                                    <v-btn block rounded="xl" size="x-large" @click="update" class="mb-2">Update</v-btn>
+                                </div>
+                                <br>
+                                <div>
+                                    <v-btn block rounded="xl" size="x-large" @click="cancel">Cancel</v-btn>
+                                </div>
+                            </div>
+                            <div v-if="message?.length > 0">
+                                <h2>Messages</h2>
+                                <div v-for="msg in message">
+                                    <pre>{{ msg }}</pre>
+                                </div>
+                            </div>
+                        </form>
+                    </v-col>
+                </v-row>
+            </v-card>
+
         </div>
         <div v-else>
             <h1>Product not found</h1>

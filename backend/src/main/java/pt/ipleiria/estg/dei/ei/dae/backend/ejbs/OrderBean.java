@@ -112,7 +112,6 @@ public class OrderBean {
         if (packageId != 0){
             PackageOrder packageOrder = entityManager.find(PackageOrder.class, packageId);
             if (packageOrder == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
-            order.setPackageOrder(packageOrder);
         }
 
         entityManager.merge(order);
@@ -187,7 +186,6 @@ public class OrderBean {
         PackageOrder packageOrder = entityManager.find(PackageOrder.class, packageId);
         if (packageOrder == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
 
-        order.setPackageOrder(packageOrder);
         entityManager.merge(order);
 
     }

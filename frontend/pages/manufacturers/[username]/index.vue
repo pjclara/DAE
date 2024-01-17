@@ -1,3 +1,5 @@
 <template>
-    <h1>List of Package Product</h1>
+    <div>
+       <h2>Welcome !!!</h2>
+    </div>
 </template>

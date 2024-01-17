@@ -1,7 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.NamedQuery;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @NamedQuery(name = "getAllPackageOrders", query = "SELECT pp FROM PackageOrder pp ORDER BY pp.id")

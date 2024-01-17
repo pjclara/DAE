@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "unit_products")
 @NamedQuery(name = "getAllUnitProducts", query = "SELECT up FROM UnitProduct up ORDER BY up.product.name")
 @NamedQuery(name = "getUnitProductByProductId", query = "SELECT up FROM UnitProduct up WHERE up.product.id = :productId")
 @NamedQuery(name = "getUnitProductAvailableByProductId", query = "SELECT up FROM UnitProduct up WHERE up.product.id = :productId AND up.available = :available")
@@ -31,8 +32,12 @@ public class UnitProduct extends Versionable {
     private PackageSensor packageSensor;
 
     public UnitProduct() {
+    }
 
-        this.packageSensor = null;
+    public UnitProduct(Product product,  UUID serialNumber, boolean available) {
+        this.product = product;
+        this.serialNumber = serialNumber;
+        this.available = available;
     }
 
     public UnitProduct(Product product,  UUID serialNumber, boolean available, PackageSensor packageSensor) {
@@ -71,6 +76,7 @@ public class UnitProduct extends Versionable {
     }
 
     public PackageSensor getPackageSensor() {
+
         return packageSensor;
     }
     public void setPackageSensor(PackageSensor packageSensor) {
@@ -78,4 +84,10 @@ public class UnitProduct extends Versionable {
     }
 
 
+    public void addSensor(Sensor sensor) {
+        if (packageSensor == null) {
+            packageSensor = new PackageSensor();
+        }
+        packageSensor.addSensor(sensor);
+    }
 }

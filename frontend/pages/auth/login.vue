@@ -52,6 +52,16 @@ async function login() {
         // save token to local storage
         localStorage.setItem('token', token.value)
         await getUser();
+        if (user.value.role === "manufacturer") {
+            apiFormData.path = "manufacturers"
+            navigateTo(`/manufacturers/${user.value.username}`)
+        } else if (user.value.role === "logisticsOperator") {
+            apiFormData.path = "logisticsOperators"
+            navigateTo(`/logisticsOperators/${user.value.username}`)
+        } else if (user.value.role === "endConsumer") {
+            apiFormData.path = "endConsumers"
+            navigateTo(`/endConsumers/${user.value.username}`)
+        }
     }
 }
 function reset() {

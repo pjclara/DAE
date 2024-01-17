@@ -77,6 +77,11 @@ public class EndConsumerBean {
             Hibernate.initialize(order.getOrderItems());
             order.getOrderItems().forEach(orderItem -> {
                 Hibernate.initialize(orderItem.getUnitProduct());
+                if (orderItem.getUnitProduct().getPackageSensor() != null) {
+                    Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+                    Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+                }
+
             });
         });
 

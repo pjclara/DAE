@@ -26,11 +26,10 @@ public class Package extends Versionable {
     @NotNull
     private String packagingMaterial;
 
-    @ManyToOne
-    private PackageSensor packageSensor;
+    @OneToMany(mappedBy = "aPackage")
+    private List<PackageSensor> packageSensors;
 
     public Package() {
-
 
     }
     public Package(PackagingType packagingType, String packagingMaterial) {

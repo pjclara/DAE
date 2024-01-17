@@ -34,6 +34,14 @@ public class OrderDTO {
         this.packageId = id1;
     }
 
+    public OrderDTO(Long id, String status, String username, String username1, List<OrderItemDTO> orderItems) {
+        this.id = id;
+        this.status = status;
+        this.endConsumerName = username;
+        this.logisticsOperatorName = username1;
+        this.OrderItems = orderItems;
+    }
+
     public OrderDTO(Long id, String status, List<OrderItemDTO> orderItemDTOS) {
         this.id = id;
         this.status = status;

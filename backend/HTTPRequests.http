@@ -180,7 +180,7 @@ Content-Type: application/json
 }
 
 ### get all orders with order items
-GET http://localhost:8080/backend/api/endConsumers/endConsumer2/orders
+GET http://localhost:8080/backend/api/endConsumers/endConsumer1/orders
 
 ### post order with order items by endconsumer
 POST http://localhost:8080/backend/api/endConsumers/endConsumer2/orders
@@ -209,7 +209,7 @@ GET http://localhost:8080/backend/api/products/2
 GET http://localhost:8080/backend/api/orders
 
 ### get all units from product
-GET http://localhost:8080/backend/api/products/2/unitProducts
+GET http://localhost:8080/backend/api/products/1/unitProducts
 
 ### get all packages from product
 GET http://localhost:8080/backend/api/packageProducts/type/PRIMARY
@@ -242,5 +242,7 @@ Content-Type: application/json
 
 }
 
+### get all packages from product
+GET http://localhost:8080/backend/api/unitProducts/4
 ###
-GET http://localhost:8080/backend/api/sensors/source/Orders
+GET http://localhost:8080/backend/api/unitProducts/4/sensors

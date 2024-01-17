@@ -15,6 +15,10 @@ public class PackageSensorDTO implements Serializable {
 
     private String value;
 
+    public PackageSensorDTO() {
+
+    }
+
 
     public PackageSensorDTO(Long id, List<SensorValueDTO> sensorValueDTOS, PackageDTO packageDTO) {
         this.id = id;
@@ -28,9 +32,6 @@ public class PackageSensorDTO implements Serializable {
         this.sensorValueDTOS = sensorValueDTOS;
     }
 
-    public PackageSensorDTO() {
-
-    }
 
     // getters and setters
     public long getId() {

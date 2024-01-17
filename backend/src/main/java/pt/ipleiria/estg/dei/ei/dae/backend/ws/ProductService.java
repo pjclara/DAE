@@ -67,7 +67,8 @@ public class ProductService {
                 unitProduct.getId(),
                 unitProduct.getSerialNumber(),
                 unitProduct.getAvailable(),
-                productDTO(unitProduct.getProduct() == null ? null : unitProduct.getProduct())
+                productDTO(unitProduct.getProduct() == null ? null : unitProduct.getProduct()),
+                packageSensorToDTO(unitProduct.getPackageSensor() == null ? null : unitProduct.getPackageSensor())
         );
     }
 
@@ -81,11 +82,13 @@ public class ProductService {
     }
 
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
-        return new PackageSensorDTO(
-                packageSensor == null ? null : packageSensor.getId(),
-                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
-                packageDTO(packageSensor.getPackagging() == null ? null : packageSensor.getPackagging())
-        );
+        if (packageSensor != null)
+            return new PackageSensorDTO(
+                    packageSensor.getId(),
+                    sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
+                    packageDTO(packageSensor.getPackagging() == null ? null : packageSensor.getPackagging()));
+        else
+            return new PackageSensorDTO();
     }
 
     private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
@@ -101,6 +104,9 @@ public class ProductService {
     }
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
+                aPackage.getId(),
+                aPackage.getPackagingType(),
+                aPackage.getPackagingMaterial()
         );
     }
 

@@ -113,15 +113,12 @@ public class OrderService {
         }
         return Response.status(Response.Status.OK).entity(toDTO(order)).build();
     }
-
-
     private OrderDTO orderDto(Orderr orderr) {
         return new OrderDTO(
                 orderr.getId(),
                 orderr.getStatus(),
                 orderr.getEndConsumer().getName(),
                 orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
-                orderr.getOrderPackage() != null ? orderr.getOrderPackage().getId() : 0L,
                 ordersItemDTO(orderr.getOrderItems())
         );
     }
@@ -193,13 +190,11 @@ public class OrderService {
 
     private OrderDTO toDTO(Orderr order) {
         String logisticsOperatorName = order.getLogisticsOperators() != null ? order.getLogisticsOperators().getName() : null;
-        Long packageId = order.getOrderPackage() != null ? order.getOrderPackage().getId() : 0L;
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
                 order.getEndConsumer().getName(),
                 logisticsOperatorName,
-                packageId,
                 ordersItemDTO(order.getOrderItems())
         );
     }

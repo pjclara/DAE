@@ -139,14 +139,12 @@ public class EndConsumerService {
     }
     private OrderDTO orderToDTOs(Orderr order) {
         String logisticsOperatorName = order.getLogisticsOperators() != null ? order.getLogisticsOperators().getName() : null;
-        Long packageId = order.getOrderPackage() != null ? order.getOrderPackage().getId() : 0L;
 
         return new OrderDTO(
                 order.getId(),
                 order.getStatus(),
                 order.getEndConsumer().getName(),
                 logisticsOperatorName,
-                packageId,
                 orderItemsToDTOs(order.getOrderItems())
         );
     }
@@ -176,7 +174,7 @@ public class EndConsumerService {
         return new PackageSensorDTO(
                 packageSensor.getId(),
                 sensorValueDTOs(packageSensor.getSensorValues()),
-                packageDTO(packageSensor.getPackagging() == null ? new Package(): packageSensor.getPackagging()));
+                packageDTO(packageSensor.getPackagging() == null ? null : packageSensor.getPackagging()));
     }
 
     private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
@@ -203,6 +201,9 @@ public class EndConsumerService {
 
     private PackageDTO packageDTO(Package aPackage) {
         return new PackageDTO(
+                aPackage.getId(),
+                aPackage.getPackagingType(),
+                aPackage.getPackagingMaterial()
         );
     }
 

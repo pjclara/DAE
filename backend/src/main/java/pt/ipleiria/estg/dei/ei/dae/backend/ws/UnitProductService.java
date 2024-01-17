@@ -40,6 +40,45 @@ public class UnitProductService {
                 .build();
     }
 
+    @GET
+    @Path("{id}/sensors")
+    public Response getUnitProductSensors(@PathParam("id") Long unitProductId) {
+        List<Sensor> sensors = unitProductsBean.findSensorsNotAttribute(unitProductId);
+        if (sensors.size() != 0) {
+            return Response.ok(sensorDTOs(sensors)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_UNIT_PRODUCT")
+                .build();
+    }
+
+    @PUT
+    @Path("{id}/addSensor/{sensorId}")
+    public Response addSensorToUnitProduct(@PathParam("id") Long unitProductId, @PathParam("sensorId") Long sensorId) {
+        UnitProduct unitProduct = unitProductsBean.setSensorToTheUnitProduct(unitProductId, sensorId);
+        if (unitProduct != null ) {
+            return Response.ok(unitProduct).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_UNIT_PRODUCT")
+                .build();
+    }
+
+    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
+    }
+
+    private SensorDTO sensorDTO(Sensor sensor) {
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType(),
+                sensor.getUnit(),
+                sensor.getMax(),
+                sensor.getMin()
+        );
+    }
+
     private List<UnitProductDTO> toDTOs(List<UnitProduct> all) {
         return all.stream().map(this::toDTO).collect(Collectors.toList());
     }
