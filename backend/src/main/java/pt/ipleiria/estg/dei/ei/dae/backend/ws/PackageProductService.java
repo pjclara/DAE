@@ -38,7 +38,6 @@ public class PackageProductService {
                 .build();
     }
 
-    // FILTER BY PACKAGE TYPE
     @GET
     @Path("/type/{type}")
     public List<PackageProductDTO> getPackagesByType(@PathParam("type") String type) {
@@ -48,6 +47,13 @@ public class PackageProductService {
     @Path("/")
     public Response createNewPackage(PackageProductDTO packageProductDTO) {
         packageProductBean.create(packageProductDTO);
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response updatePackage(@PathParam("id") long id, PackageProductDTO packageProductDTO) throws MyEntityNotFoundException {
+        packageProductBean.update(id, packageProductDTO);
         return Response.ok().build();
     }
 

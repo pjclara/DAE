@@ -54,8 +54,6 @@ public class ManufacturerBean {
 
         if(manufacturer == null) throw new IllegalArgumentException("Manufacturer with username " + username + " not found in database");
 
-        if (manufacturer.getProducts().isEmpty()) throw new IllegalArgumentException("Manufacturer with username " + username + " has no products");
-
         if (!manufacturer.getProducts().isEmpty()){
             manufacturer.getProducts().forEach(product -> {
                 Hibernate.initialize(product.getUnitProducts());
@@ -67,8 +65,6 @@ public class ManufacturerBean {
                 });
             });
         }
-
-
 
         return manufacturer;
     }

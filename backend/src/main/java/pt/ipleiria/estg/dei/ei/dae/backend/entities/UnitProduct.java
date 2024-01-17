@@ -32,6 +32,7 @@ public class UnitProduct extends Versionable {
     private PackageSensor packageSensor;
 
     public UnitProduct() {
+
     }
 
     public UnitProduct(Product product,  UUID serialNumber, boolean available) {

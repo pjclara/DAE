@@ -10,8 +10,6 @@
         </template>
         <template v-slot:item.actions="{ item }">
             <v-icon small class="mr-2" @click="detailsOrder(item)">mdi-eye</v-icon>
-            <v-icon small class="mr-2" @click="sendOrder(item)">mdi-send</v-icon>
-            <v-icon small @click="cancelOrder(item)">mdi-close</v-icon>
         </template>
     </v-data-table>
 </template>
@@ -33,8 +31,8 @@ const headers = [
     },
     { title: 'Status', key: 'status', sortable: false },
     { title: 'Products (quantity)', key: 'orderItems', sortable: false },
-    { title: 'Package', key: 'packageId', sortable: false},
-    { title: 'Actions', key: 'actions', sortable: false },
+    { title: 'Package', key: 'packageOrder.packagingMaterial', sortable: false},
+    { title: 'Details', key: 'actions', sortable: false },
 ]
 
 const detailsOrder = (order) => {

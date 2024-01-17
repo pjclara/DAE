@@ -90,4 +90,17 @@ public class LogisticsOperatorService {
         return Response.ok().build();
     }
 
+    /// setin package to a order
+    @PUT
+    @Path("{username}/order/{orderId}/package/{packageId}")
+    public Response setPackage(@PathParam("username") String username, @PathParam("packageId") Long packageId,
+                               @PathParam("orderId") Long orderId) {
+        logisticsOperatorBean.setPackage(username, orderId, packageId);
+        LogisticsOperator logisticsOperator = logisticsOperatorBean.find(username);
+        if (logisticsOperator == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.status(Response.Status.CREATED).entity(toDTO(logisticsOperator)).build();
+    }
+
 }

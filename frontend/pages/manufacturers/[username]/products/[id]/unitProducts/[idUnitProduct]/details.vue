@@ -1,53 +1,46 @@
 <template>
     <v-card>
-        <v-card-title>
-            <span class="headline">Unit product details</span>
-        </v-card-title>
-        <v-card-text>
-            <v-container>
-                <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="unitProduct.serialNumber" label="Serial Number" readonly></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="unitProduct.available" label="Available" readonly></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="unitProduct.productDTO.name" label="Product Name" readonly></v-text-field>
-                    </v-col>
-                </v-row>
-            </v-container>
-            <v-container>
-                <v-row>
-                    <h3>List of sensors</h3>
-                </v-row>
-                <v-row v-for="sensor in unitProduct.packageSensorDTO.sensorValueDTOS">
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="sensor.sensorDTO.source" label="Source" readonly></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="sensor.sensorDTO.type" label="Type" readonly></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="sensor.value" label="Value" readonly></v-text-field>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-card-text>
-        <v-card-text>
-            <v-container>
-                <v-row>
-                    <h3>Add a Sensor</h3>
-                    <v-select v-model="sensorId" :items="sensors" item-title="type" item-value="id" label="Sensor"
+        <v-toolbar color="primary" dark>
+            <v-btn icon @click="goBack">
+                <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+            <v-toolbar-title>Add Sensors</v-toolbar-title>
+        </v-toolbar>
+        <v-container>
+            <v-row>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="unitProductItem.serialNumber" label="Serial Number" readonly></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+
+                    <v-text-field readonly>
+                        <v-chip color="green" v-if="unitProductItem.available">Available</v-chip>
+                        <v-chip color="red" v-else>Unavailable</v-chip>
+                    </v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12" sm="6" md="4" v-for="sensor in unitProductItem.packageSensorDTO?.sensorValueDTOS">
+                    <v-text-field v-if="sensor.sensorDTO.type" v-model="sensor.sensorDTO.type" label="Sensor"
+                        readonly></v-text-field>
+                </v-col>
+            </v-row>
+        </v-container>
+        <v-container v-if="sensorList.length > 0">
+            <v-row>
+                <h3>Add a Sensor to Unit Product</h3>
+            </v-row>
+            <v-row>
+                <v-col cols="12" sm="6" md="4">
+                    <v-select v-model="sensorId" :items="sensorList" item-title="type" item-value="id" label="Sensor"
                         multiple></v-select>
-                </v-row>
-                <v-row>
-                    <v-btn color="primary" @click="addSensor">Add Sensors</v-btn>
-                </v-row>
-            </v-container>
-        </v-card-text>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-btn color="primary" @click="addSensor">Add Sensors</v-btn>
+            </v-row>
+        </v-container>
     </v-card>
-    <v-btn color="primary" @click="goBack">Back</v-btn>
 </template>
 
 <script setup>
@@ -62,12 +55,27 @@ const route = useRoute()
 const username = route.params.username
 const id = route.params.id
 const idUnitProduct = route.params.idUnitProduct
-const { data: unitProduct, error, refresh } = await useFetch(`${api}/unitProducts/${idUnitProduct}`)
-const { data: sensors, errorSensors, refreshSensors } = await useFetch(`${api}/unitProducts/${idUnitProduct}/sensorsNotAttribute`)
+
+const unitProductItem = ref([])
+const sensorList = ref([])
+
+console.log(unitProductItem.value)
+console.log(sensorList.value)
+
+const getData = async () => {
+    const { data: unitProduct, error, refresh } = await useFetch(`${api}/unitProducts/${idUnitProduct}`)
+    const { data: sensors, errorSensors, refreshSensors } = await useFetch(`${api}/products/${id}/sensorsNotAttribute`)
+    unitProductItem.value = unitProduct.value
+    sensorList.value = sensors.value
+}
 
 const goBack = () => {
     navigateTo('/manufacturers/' + username + '/products/' + id + '/unitProducts/')
 }
+
+onMounted(async () => {
+    getData()
+})
 
 const addSensor = async () => {
     if (sensorId.value == null) {

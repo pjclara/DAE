@@ -27,7 +27,7 @@ const headers = ref([
 
 const editItem = (item) => {
     console.log(item)
-   // this.$router.push(`/manufacturers/${username}/packageProducts/${item.id}/edit`)
+    navigateTo(`/manufacturers/${username}/packageProducts/${item.id}/edit`)
 }
 
 const addPackageProduct = () => navigateTo(`/manufacturers/${username}/packageProducts/create`)

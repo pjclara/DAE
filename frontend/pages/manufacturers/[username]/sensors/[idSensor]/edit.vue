@@ -36,7 +36,7 @@ const config = useRuntimeConfig()
 const api = config.public.API_URL
 const { data: sensor, error, refresh } = await useFetch(`${api}/sensors/${idSensor}`)
 const sensorForm = reactive({
-    source: "Produto",
+    source: "Product",
     type: sensor.value.type,
     unit: sensor.value.unit,
     max: sensor.value.max,

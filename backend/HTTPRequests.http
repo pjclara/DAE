@@ -215,7 +215,7 @@ GET http://localhost:8080/backend/api/products/1/unitProducts
 GET http://localhost:8080/backend/api/packageProducts/type/PRIMARY
 
 ### create package
-POST http://localhost:8080/backend/api/packageProducts
+PUT http://localhost:8080/backend/api/packageProducts/1
 Content-Type: application/json
 
 {
@@ -243,13 +243,36 @@ Content-Type: application/json
 }
 
 ### get all packages from product
-GET http://localhost:8080/backend/api/products/4/unitProducts
+GET http://localhost:8080/backend/api/products/1/sensorsNotAttribute
 
 ### get all packages from product
-GET http://localhost:8080/backend/api/unitProducts/6
+GET http://localhost:8080/backend/api/unitProducts
 
 
 ### get all packages from product
 GET http://localhost:8080/backend/api/unitProducts/4
 ###
 PUT http://localhost:8080/backend/api/unitProducts/4/addSensor/1
+
+### get all packages from product
+GET http://localhost:8080/backend/api/manufacturers/manufacturer1/products
+
+### get all packages from product
+PUT http://localhost:8080/backend/api/products/2/unitProduct
+
+### get all packages from product
+PUT http://localhost:8080/backend/api/products/1
+Content-Type: application/json
+
+{
+  "name": "product_3_ddd",
+  "stock": 1,
+  "image": "imagem3",
+  "packageProductId": 1
+}
+
+### get all packages from product
+PUT http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1/order/1/package/2
+
+###
+GET http://localhost:8080/backend/api/orders/1

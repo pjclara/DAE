@@ -77,70 +77,51 @@ public class ConfigBean {
                 logger.warning(e.getMessage());
             }
 
-        try {
-            productPackageBean.create(PackagingType.PRIMARY, "Vidro");
-            productPackageBean.create(PackagingType.SECONDARY, "Cartão");
-            System.out.println("ProductPackage created");
-        }catch (MyConstraintViolationException e) {
-            logger.warning(e.getMessage());
-        }
+            // create PackageProduct
 
             try {
-                productBean.create("product1", 1, "image1", "manufacturer1",1);
-                productBean.create("product2", 2, "image2", "manufacturer2", 0);
-
+                productBean.create("product1", 2, "tete", "manufacturer1", 0);
                 System.out.println("Product created");
-            } catch (Exception e) {
+            }catch (MyConstraintViolationException e){
                 logger.warning(e.getMessage());
             }
 
-
+            try {
+                productPackageBean.create(PackagingType.PRIMARY, "Cartão");
+                System.out.println("ProductPackage created");
+            }catch (MyConstraintViolationException e){
+                logger.warning(e.getMessage());
+            }
 
             try {
-                sensorBean.create("Product", "sensor1", "sensor1", "sensor1", "sensor1");
-                sensorBean.create("Order", "sensor2", "sensor2", "sensor2", "sensor2");
+                sensorBean.create("Product", "sensor1", "sensor1", "asda","asd");
+                sensorBean.create("Orders", "sensor1", "sensor1", "asda","asd");
 
                 System.out.println("Sensor created");
-            } catch (Exception e) {
+            }catch (MyConstraintViolationException e){
                 logger.warning(e.getMessage());
             }
 
+            packageSensorBean.create(1, 1);
+            System.out.println("PackageSensor created");
+
+            productBean.setPackaging(1L, 1L);
+            System.out.println("ProductPackage created");
+
+            String data = "{\"status\":\"pending\",\"orderItems\":[{\"productId\":1,\"quantity\":1}]}";
 
             try {
-                String data  = "{\n" +
-                        "  \"status\": \"WAITING_PAYMENT\",\n" +
-                        "  \"orderItems\": [\n" +
-                        "    {\n" +
-                        "      \"quantity\": 1,\n" +
-                        "      \"productId\": \"1\"\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}";
-
-                long order = orderBean.create("endConsumer1", data );
-
+                orderBean.create("endConsumer1", data);
                 System.out.println("Order created");
 
-                //orderBean.addProductToOrder(order, 1, 1);
-            }catch (Exception e){
-                logger.warning(e.getMessage());
-            }
-
-
-            try {
-                orderItemBean.create(1, 1, 1);
+                orderItemBean.create(1L, 1L, 1);
                 System.out.println("OrderItem created");
-            }catch (Exception e){
+
+            }catch (MyConstraintViolationException e){
                 logger.warning(e.getMessage());
             }
 
-            try{
-                packageSensorBean.addSensorToPackage(1,1);
-                packageSensorBean.addSensorToPackage(1,2);
-                System.out.println("SensorValue add");
-            }catch (Exception e){
-                logger.warning(e.getMessage());
-            }
+            productBean.setPackaging(1L, 1L);
 
 
         }

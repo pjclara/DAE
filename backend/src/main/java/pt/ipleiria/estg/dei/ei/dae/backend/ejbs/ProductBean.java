@@ -50,18 +50,19 @@ public class ProductBean {
             entityManager.persist(product);
             manufacturer.addProduct(product);
 
-            PackageProduct productPackage = null;
+            PackageProduct packageProduct = null;
             if(packageProductId != 0) {
-                productPackage = entityManager.find(PackageProduct.class, packageProductId);
-                if (productPackage == null)
+                packageProduct = entityManager.find(PackageProduct.class, packageProductId);
+                packageProduct.addProduct(product);
+                if (packageProduct == null)
                     throw new MyEntityNotFoundException("Package with id " + packageProductId + " not found in database");
             }
 
             for (int i = 0; i < stock; i++) {
                 UnitProduct unitProduct = new UnitProduct(product, UUID.randomUUID(), true, null);
                 entityManager.persist(unitProduct);
-                if (productPackage != null) {
-                    PackageSensor packageSensor = new PackageSensor(productPackage, unitProduct);
+                if (packageProduct != null) {
+                    PackageSensor packageSensor = new PackageSensor(packageProduct, unitProduct);
                     entityManager.persist(packageSensor);
                     unitProduct.setPackageSensor(packageSensor);
                     entityManager.merge(unitProduct);
@@ -89,24 +90,21 @@ public class ProductBean {
         }
     }
 
-    public void update(Long id, String name, int stock, String manufacturerUsername, String image)
+    public void update(Long id, String name, int stock, String image, long packageProductId)
     throws MyEntityNotFoundException{
 
-        if (!exists(id)) {throw new MyEntityNotFoundException("Product with id " + id + " not found in database"); }
-
         Product product = entityManager.find(Product.class, id);
+        if (product == null) throw new MyEntityNotFoundException("Product with id " + id + " not found in database");
+
+        PackageProduct packageProduct = entityManager.find(PackageProduct.class, packageProductId);
+        if (packageProduct == null && packageProductId !=0 ) throw new MyEntityNotFoundException("Package with id " + packageProductId + " not found in database");
         entityManager.lock(product, LockModeType.OPTIMISTIC);
 
         product.setName(name);
         product.setStock(stock);
         product.setImage(image);
+        product.setPackageProduct(packageProduct);
 
-        if (manufacturerUsername != null && !manufacturerUsername.equals(product.getManufacturer().getUsername())) {
-            Manufacturer manufacturer = entityManager.find(Manufacturer.class, manufacturerUsername);
-
-            if (manufacturer == null) throw new MyEntityNotFoundException("Manufacturer with username " + manufacturerUsername + " not found in database");
-            product.setManufacturer(manufacturer);
-        }
         entityManager.merge(product);
     }
 

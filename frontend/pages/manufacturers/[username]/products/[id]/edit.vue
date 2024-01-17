@@ -14,8 +14,12 @@
                                 <v-text-field v-model="productForm.stock" disabled label="Stock" />
                             </div>
                             <div>
-                                <v-select v-model="productForm.packageProductId" :items="packagesList"
-                                    item-title="packagingMaterial" item-value="id" label="Package" />
+                                <v-select 
+                                    v-model="productForm.packageProductId" 
+                                    :items="packagesList"
+                                    item-title="packagingMaterial" 
+                                    item-value="id" 
+                                    label="Package Product" />
                             </div>
                             <div>
                                 <v-file-input @change="createImage" label="Imagem" />
@@ -60,7 +64,6 @@ const api = config.public.API_URL
 const route = useRoute()
 const id = route.params.id
 const username = route.params.username
-//const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packages/packagingType/PRIMARY`)
 
 const base64 = ref('')
 
@@ -70,7 +73,7 @@ function createImage(e) {
     reader.readAsDataURL(file)
     reader.onload = () => {
         base64.value = reader.result
-        productForm.value.image = base64.value
+        productForm.image = base64.value
     }
 }
 const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packageProducts/type/PRIMARY`)
@@ -84,9 +87,26 @@ const { data: product, error: productErr } = await useFetch(`${api}/products/${i
 
 console.log("product: ", product.value)
 
-const productForm = reactive(product)
+const productForm = reactive({
+    name: product.value.name,
+    stock: product.value.stock,
+    packageProductId: product.value.packageProductId,
+    image: product.value.image
+})
 
 async function update() {
+    //validate
+    if (productForm.name == null || productForm.name == "") {
+        message.value = "Please insert a name"
+        alert(message.value)
+        return
+    }
+    if (productForm.stock == null || productForm.stock == "") {
+        message.value = "Please insert a stock"
+        alert(message.value)
+        return
+    }
+    
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -94,10 +114,9 @@ async function update() {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token.value
         },
-        body: JSON.stringify(productForm.value)
+        body: JSON.stringify(productForm)
     }
     const { error } = await useFetch(`${api}/products/` + id, requestOptions)
-    console.log(base64.value)
     if (!error.value)
         navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/details/')
     else {

@@ -32,6 +32,9 @@ public class Product extends Versionable{
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<UnitProduct> unitProducts;
 
+    @ManyToOne
+    private PackageProduct packageProduct;
+
     public Product() {
     }
 
@@ -86,8 +89,12 @@ public class Product extends Versionable{
         return unitProducts;
     }
 
-    public void setUnitProducts(List<UnitProduct> unitProducts) {
-        this.unitProducts = unitProducts;
+    public PackageProduct getPackageProduct() {
+        return packageProduct;
+    }
+
+    public void setPackageProduct(PackageProduct packageProduct) {
+        this.packageProduct = packageProduct;
     }
 
 

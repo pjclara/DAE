@@ -41,7 +41,7 @@ public class OrderService {
     public Response get(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
         Orderr orderr = orderBean.getOrderProducts(orderId);
         if (orderr != null) {
-            var order = orderDto(orderr);
+            var order = toDTO(orderr);
             return Response.ok(order).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
@@ -86,7 +86,7 @@ public class OrderService {
                 orderDTO.getStatus(),
                 orderDTO.getEndConsumerName(),
                 orderDTO.getLogisticsOperatorName(),
-                orderDTO.getPackageId()
+                orderDTO.getPackageOrder().getId()
         );
         Orderr order = orderBean.findOrFail(id);
         if (order == null) {
@@ -102,26 +102,6 @@ public class OrderService {
         return Response.ok().build();
     }
 
-    @PUT
-    @Path("{id}/package/{packageId}")
-    public Response updateOrderPackage(@PathParam("id") Long id, @PathParam("packageId") Long packageId)
-            throws MyEntityNotFoundException {
-        orderBean.updateOrderPackage(id, packageId);
-        Orderr order = orderBean.findOrFail(id);
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.status(Response.Status.OK).entity(toDTO(order)).build();
-    }
-    private OrderDTO orderDto(Orderr orderr) {
-        return new OrderDTO(
-                orderr.getId(),
-                orderr.getStatus(),
-                orderr.getEndConsumer().getName(),
-                orderr.getLogisticsOperators() != null ? orderr.getLogisticsOperators().getName() : null,
-                ordersItemDTO(orderr.getOrderItems())
-        );
-    }
 
     private List<OrderItemDTO> ordersItemDTO(List<OrderItem> orderItems) {
         return orderItems.stream().map(this::orderItemDTO).collect(Collectors.toList());
@@ -183,7 +163,6 @@ public class OrderService {
         );
     }
 
-    // -----------------------------------------------------
     private List<OrderDTO> toDTOs(List<Orderr> orders) {
         return orders.stream().map(this::toDTO).collect(Collectors.toList());
     }
@@ -195,17 +174,17 @@ public class OrderService {
                 order.getStatus(),
                 order.getEndConsumer().getName(),
                 logisticsOperatorName,
-                ordersItemDTO(order.getOrderItems())
+                ordersItemDTO(order.getOrderItems()),
+                packageOrderDTO(order.getPackageOrder() == null ? null : order.getPackageOrder())
         );
     }
 
-    private ManufacturerDTO manufacturerDTO(Manufacturer manufacturer) {
-        return new ManufacturerDTO(
-                manufacturer.getUsername(),
-                manufacturer.getPassword(),
-                manufacturer.getName(),
-                manufacturer.getEmail(),
-                manufacturer.getRole()
+    private PackageOrderDTO packageOrderDTO(PackageOrder packageOrder) {
+        if (packageOrder == null) return null;
+        return new PackageOrderDTO(
+                packageOrder.getId(),
+                packageOrder.getPackagingType(),
+                packageOrder.getPackagingMaterial()
         );
     }
 

@@ -16,17 +16,15 @@ public class ProductPackageBean {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void create(PackagingType type, String material)  throws EntityExistsException, EntityNotFoundException, MyConstraintViolationException {
-        try {
-        var PackageProduct = new PackageProduct(
-                type,
-                material
-        );
+    public long create(PackagingType type, String material)  throws EntityExistsException, EntityNotFoundException, MyConstraintViolationException {
+
+        PackageProduct PackageProduct = new PackageProduct(type, material);
         entityManager.persist(PackageProduct);
 
-        } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(e);
-        }
+        if (PackageProduct == null) throw new EntityNotFoundException("Package with id " + PackageProduct.getId() + " not found in database");
+
+        return PackageProduct.getId();
+
     }
 
     public Package find(long l) {

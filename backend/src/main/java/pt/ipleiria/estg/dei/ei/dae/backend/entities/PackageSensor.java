@@ -31,8 +31,8 @@ public class PackageSensor {
     @OneToOne
     private UnitProduct unitProduct;
 
-    @OneToMany(mappedBy = "packageSensor")
-    private List<Orderr> orders;
+    @OneToOne
+    private Orderr order;
 
     public PackageSensor() {
         this.sensorValues = new ArrayList<>();
@@ -42,6 +42,12 @@ public class PackageSensor {
     public PackageSensor(Package aPackage, UnitProduct unitProducts) {
         this.aPackage = aPackage;
         this.unitProduct = unitProducts;
+        this.sensorValues = new ArrayList<>();
+    }
+
+    public PackageSensor(Package aPackage, Orderr order) {
+        this.aPackage = aPackage;
+        this.order = order;
         this.sensorValues = new ArrayList<>();
     }
 
@@ -91,4 +97,29 @@ public class PackageSensor {
         sensorValue.setPackageSensor(this);
         this.sensorValues.add(sensorValue);
     }
+
+    public void removeSensorValue(SensorValue sensorValue) {
+        this.sensorValues.remove(sensorValue);
+    }
+
+    public void setSensorValues(List<SensorValue> sensorValues) {
+        this.sensorValues = sensorValues;
+    }
+
+    public Orderr getOrder() {
+        return order;
+    }
+
+    public void setOrder(Orderr order) {
+        this.order = order;
+    }
+
+    public void removeOrder(Orderr order) {
+        this.order = null;
+    }
+
+    public void removeUnitProduct(UnitProduct unitProduct) {
+        this.unitProduct = null;
+    }
+
 }

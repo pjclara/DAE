@@ -16,7 +16,7 @@
                         <v-col cols="12" sm="6">
                             <span class="grey--text">Package: </span>
                             <select v-model="packageOrderId" style="background-color: aliceblue; width: 300px;">
-                                <option value="0">Please select one</option>
+                                <option value="">Please select one</option>
                                 <option v-for="packageOrder in packagesList" :key="packageOrder.id"
                                     :value="packageOrder.id">{{ packageOrder.packagingMaterial }}</option>
                             </select>
@@ -33,27 +33,42 @@
     </div>
 </template>
 <script setup>
+import { ref } from "vue";
+import { useAuthStore } from "~/store/auth-store.js"
+const authStore = useAuthStore()
+const { token, user } = storeToRefs(authStore)
+
 const config = useRuntimeConfig()
 const api = config.public.API_URL
+
 const route = useRoute()
 const username = route.params.username
 const idOrder = route.params.idOrder
 const { data: order, error } = await useFetch(`${api}/orders/${idOrder}`)
-const packageOrderId = ref(order.packageId)
+
+const packageOrderId = ref(order.value.packageOrder.id)
+
 
 const back = () => navigateTo(`/logisticsoperators/${username}/orders/${idOrder}/details`)
-const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packageProducts/type/SECONDARY`)
+const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packageOrders`)
+
+const { data: sensors, errorSensors, refreshSensors } = await useFetch(`${api}/order/${id}/sensorsNotAttribute`)
 
 const update = async () => {
     const requestOptions = {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token.value
+        },
     }
-    const { error } = await useFetch(`${api}/orders/${idOrder}/package/${packageOrderId.value}`, requestOptions)
-
-    if (error) {
-        console.log(error)
+    const { data : data,  errorData } = 
+    await useFetch(`${api}/logisticsOperators/${username}/order/${idOrder}/package/${packageOrderId.value}`, requestOptions)
+    if (errorData) {
+        console.log(errorData)
     } else {
+        console.log(data.value)
         navigateTo(`/logisticsoperators/${username}/orders/${idOrder}/details`)
     }
 }

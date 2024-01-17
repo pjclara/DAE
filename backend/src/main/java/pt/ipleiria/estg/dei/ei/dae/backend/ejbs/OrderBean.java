@@ -140,8 +140,6 @@ public class OrderBean {
         }
         return order;
     }
-
-
     public Orderr getOrderProducts(Long orderId) {
         Orderr order = entityManager.find(Orderr.class, orderId);
         if (order == null) throw new IllegalArgumentException("Order with id " + orderId + " not found");
@@ -152,15 +150,13 @@ public class OrderBean {
 
         order.getOrderItems().forEach(orderItem -> {
             Hibernate.initialize(orderItem.getUnitProduct());
-            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
-            Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+            if (orderItem.getUnitProduct().getPackageSensor() != null) {
+                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+                if (orderItem.getUnitProduct().getPackageSensor().getSensorValues() != null)
+                    Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+            }
         });
         return order;
-
-    }
-
-    public void addProductToOrder(long order, int i, int i1) throws MyEntityNotFoundException {
-
 
     }
 
@@ -171,22 +167,15 @@ public class OrderBean {
             Hibernate.initialize(orderr.getOrderItems());
             orderr.getOrderItems().forEach(orderItem -> {
                 Hibernate.initialize(orderItem.getUnitProduct());
-                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
-                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+                if (orderItem.getUnitProduct().getPackageSensor() != null) {
+                    Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+                    if (orderItem.getUnitProduct().getPackageSensor().getSensorValues() != null)
+                        Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+                }
             });
         });
         return orders;
 
     }
 
-    public void updateOrderPackage(Long id, Long packageId) {
-        Orderr order = entityManager.find(Orderr.class, id);
-        if (order == null) throw new IllegalArgumentException("Order with id " + id + " not found");
-
-        PackageOrder packageOrder = entityManager.find(PackageOrder.class, packageId);
-        if (packageOrder == null) throw new IllegalArgumentException("Package with id " + packageId + " not found");
-
-        entityManager.merge(order);
-
-    }
 }

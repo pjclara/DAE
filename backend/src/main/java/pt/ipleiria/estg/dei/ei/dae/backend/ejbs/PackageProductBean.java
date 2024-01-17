@@ -31,4 +31,16 @@ public class PackageProductBean {
     public List<PackageProduct> getPackagesByType(String type) {
         return entityManager.createNamedQuery("getPackagesByType", PackageProduct.class).setParameter("type", PackagingType.valueOf(type)).getResultList();
     }
+
+    public Long update(long id, PackageProductDTO packageProductDTO) {
+        var packageProduct = entityManager.find(PackageProduct.class, id);
+        if (packageProduct == null) throw new IllegalArgumentException("Package with id " + id + " not found in database");
+
+        packageProduct.setPackagingType(packageProductDTO.getPackagingType());
+        packageProduct.setPackagingMaterial(packageProductDTO.getPackagingMaterial());
+        entityManager.merge(packageProduct);
+
+        return packageProduct.getId();
+
+    }
 }

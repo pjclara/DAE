@@ -57,7 +57,7 @@ public class PackageSensorBean {
         if(packageSensor == null) throw new IllegalArgumentException("PackageSensor with id " + packageSensorId + " not found in database");
 
         Sensor sensor = entityManager.find(Sensor.class, sensorId);
-        if(sensor == null) throw new IllegalArgumentException("PackageSensor with id " + sensorId + " not found in database");
+        if(sensor == null) throw new IllegalArgumentException("Sensor with id " + sensorId + " not found in database");
 
         SensorValue sensorValue = new SensorValue(sensor,packageSensor);
 

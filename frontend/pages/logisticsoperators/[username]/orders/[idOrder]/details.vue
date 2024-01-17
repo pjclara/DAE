@@ -16,7 +16,7 @@
             <v-col cols="12" sm="6">
               <span class="grey--text">Package: </span>
               <span v-if="order.packageId == 0">No package ...</span>
-              <span v-else>{{ order.packageId }}</span>
+              <span v-else>{{ order.packageOrder?.packagingMaterial }}</span>
             </v-col>
           </v-row>
         

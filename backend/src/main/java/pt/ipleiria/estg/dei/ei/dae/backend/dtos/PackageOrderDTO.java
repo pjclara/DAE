@@ -15,7 +15,6 @@ public class PackageOrderDTO implements Serializable {
     public PackageOrderDTO() {
 
     }
-
     public PackageOrderDTO(Long id, PackagingType packagingType, String packagingMaterial) {
         this.id = id;
         this.packagingType = packagingType;
@@ -52,15 +51,4 @@ public class PackageOrderDTO implements Serializable {
         this.packagingMaterial = packagingMaterial;
     }
 
-    public static List<PackageOrderDTO> toDTOs(List<PackageOrder> packageOrder) {
-        return  packageOrder.stream().map(PackageOrderDTO::toDTO).collect(java.util.stream.Collectors.toList());
-    }
-
-    public static PackageOrderDTO toDTO(PackageOrder packageOrder) {
-        return new PackageOrderDTO(
-                packageOrder.getId(),
-                packageOrder.getPackagingType(),
-                packageOrder.getPackagingMaterial()
-        );
-    }
 }

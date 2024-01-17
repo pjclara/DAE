@@ -49,6 +49,14 @@ public class ProductDTO implements Serializable {
         this.packageProductId = packageProductId;
     }
 
+    public ProductDTO(Long id, String name, int stock, String image, long packageProductId) {
+        this.id = id;
+        this.name = name;
+        this.stock = stock;
+        this.image = image;
+        this.packageProductId = packageProductId;
+    }
+
     public ProductDTO(long id, String name, int stock, String image, String username, long packageProductId, String packagingMaterial) {
         this.id = id;
         this.name = name;
@@ -125,10 +133,8 @@ public class ProductDTO implements Serializable {
                 product.getStock(),
                 product.getImage(),
                 product.getManufacturer().getUsername(),
-                product.getUnitProducts().get(0).getPackageSensor() == null ? 0 :
-                        product.getUnitProducts().get(0).getPackageSensor().getPackagging().getId(),
-                product.getUnitProducts().get(0).getPackageSensor() == null ? null :
-                        product.getUnitProducts().get(0).getPackageSensor().getPackagging().getPackagingMaterial()
+                product.getPackageProduct() == null ? 0 : product.getPackageProduct().getId(),
+                product.getPackageProduct() == null ? null : product.getPackageProduct().getPackagingMaterial()
         );
     }
 

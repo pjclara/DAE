@@ -39,11 +39,14 @@ public class Orderr extends Versionable {
     @ManyToOne
     private LogisticsOperator logisticsOperators;
 
-    @ManyToOne
+    @OneToOne
     private PackageSensor packageSensor;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<OrderItem> orderItems;
+
+    @ManyToOne
+    private PackageOrder packageOrder;
 
     public Orderr() {
         this.orderItems = new ArrayList<>();
@@ -111,5 +114,13 @@ public class Orderr extends Versionable {
 
     public void setPackageSensor(PackageSensor packageSensor) {
         this.packageSensor = packageSensor;
+    }
+
+    public void setPackageOrder(PackageOrder packageOrder) {
+        this.packageOrder = packageOrder;
+    }
+
+    public PackageOrder getPackageOrder() {
+        return packageOrder;
     }
 }

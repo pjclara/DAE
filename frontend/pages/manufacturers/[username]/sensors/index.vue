@@ -22,7 +22,7 @@ const username = route.params.username
 
 const config = useRuntimeConfig()
 const api = config.public.API_URL
-const { data: sensors, error, refresh } = await useFetch(`${api}/sensors`)
+const { data: sensors, error, refresh } = await useFetch(`${api}/sensors/source/Orders`)
 
 const headers = ref([
     { title: 'Fonte', value: 'source', align: 'center' },

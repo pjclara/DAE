@@ -20,9 +20,11 @@
           <v-card-text>
             <p>Manufacturer: {{ product.manufacturerUsername }}</p>
           </v-card-text>
-          <v-card-text>
-            <p>Product Package: {{ product?.packagingMaterial }}</p>
-
+          <v-card-text v-if="product.packagingMaterial">
+            <p>Product Package: {{ product.packagingMaterial }}</p>
+          </v-card-text>
+          <v-card-text v-else>
+            <p>Product Package: No package ...</p>
           </v-card-text>
           <v-card-actions class="justify-center d-flex flex-wrap">
             <v-btn block rounded="xl" size="large" class="mb-2" @click="editItem">Editar</v-btn>

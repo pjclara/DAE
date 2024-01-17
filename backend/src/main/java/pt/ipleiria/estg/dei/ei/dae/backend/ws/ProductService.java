@@ -99,10 +99,13 @@ public class ProductService {
 
     private ProductDTO productDTO(Product product) {
         return new ProductDTO(
+                product.getId(),
                 product.getName(),
                 product.getStock(),
                 product.getImage(),
-                product.getManufacturer().getUsername()
+                product.getManufacturer().getUsername(),
+                product.getPackageProduct() == null ? 0 : product.getPackageProduct().getId(),
+                product.getPackageProduct() == null ? null : product.getPackageProduct().getPackagingMaterial()
         );
     }
 
@@ -113,7 +116,7 @@ public class ProductService {
                     sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
                     packageDTO(packageSensor.getPackagging() == null ? null : packageSensor.getPackagging()));
         else
-            return new PackageSensorDTO();
+            return null;
     }
 
     private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
@@ -162,8 +165,8 @@ public class ProductService {
                 id,
                 productDTO.getName(),
                 productDTO.getStock(),
-                productDTO.getManufacturerUsername(),
-                productDTO.getImage()
+                productDTO.getImage(),
+                productDTO.getPackageProductId()
         );
         Product product = productBean.find(id);
         if (product == null) {
