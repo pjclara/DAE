@@ -275,4 +275,5 @@ Content-Type: application/json
 PUT http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1/order/1/package/2
 
 ###
-GET http://localhost:8080/backend/api/orders/1
+PUT http://localhost:8080/backend/api/products/1/addSensor/1
+

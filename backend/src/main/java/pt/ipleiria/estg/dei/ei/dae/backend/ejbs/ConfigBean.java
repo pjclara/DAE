@@ -77,7 +77,7 @@ public class ConfigBean {
                 logger.warning(e.getMessage());
             }
 
-            // create PackageProduct
+            /*
 
             try {
                 productBean.create("product1", 2, "tete", "manufacturer1", 0);
@@ -123,6 +123,6 @@ public class ConfigBean {
 
             productBean.setPackaging(1L, 1L);
 
-
+*/
         }
     }

@@ -13,6 +13,7 @@ import java.util.List;
 @NamedQuery(name = "getSensorsByPackage", query = "SELECT s FROM Sensor s WHERE s.type = :package")
 @NamedQuery(name = "getSensorsBySource", query = "SELECT s FROM Sensor s WHERE s.source = :source")
 @NamedQuery(name = "getSensorsNotAttribute", query = "SELECT s FROM Sensor s WHERE s.id NOT IN (SELECT s.id FROM Sensor s JOIN s.packagging p WHERE p.id = :productId)")
+
 public class Sensor extends Versionable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")

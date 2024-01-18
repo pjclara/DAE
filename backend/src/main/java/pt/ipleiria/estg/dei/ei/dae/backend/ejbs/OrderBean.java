@@ -178,4 +178,19 @@ public class OrderBean {
 
     }
 
+    public List<Sensor> getSensorsNotInOrder(Long orderId) {
+        Orderr order = entityManager.find(Orderr.class, orderId);
+        if (order == null) throw new IllegalArgumentException("Order with id " + orderId + " not found");
+
+        List<Sensor> sensors = entityManager.createNamedQuery("getSensorsBySource", Sensor.class)
+                .setParameter("source", "Order")
+                .getResultList();
+
+        sensors.removeIf(sensor ->
+             order.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue ->
+                    sensorValue.getSensor().getId() == sensor.getId()));
+
+        return sensors;
+
+    }
 }

@@ -106,6 +106,19 @@ public class ProductBean {
         product.setPackageProduct(packageProduct);
 
         entityManager.merge(product);
+
+        product.getUnitProducts().forEach(unitProduct -> {
+            if(unitProduct.getPackageSensor() != null) {
+                unitProduct.getPackageSensor().setPackageProduct(packageProduct);
+                entityManager.merge(unitProduct.getPackageSensor());
+            }else if(packageProduct != null){
+                PackageSensor packageSensor = new PackageSensor(packageProduct, unitProduct);
+                entityManager.persist(packageSensor);
+                unitProduct.setPackageSensor(packageSensor);
+                entityManager.merge(unitProduct);
+            }
+        });
+
     }
 
     public boolean exists(long id) {

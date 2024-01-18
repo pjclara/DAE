@@ -102,6 +102,20 @@ public class OrderService {
         return Response.ok().build();
     }
 
+    // get sensors not in de order
+    @GET
+    @Path("{id}/sensorsNotInOrder")
+    public Response getSensorsNotInOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
+        Orderr order = orderBean.findOrFail(orderId);
+        if (order != null) {
+            var sensors = SensorDTO.toDTOs(orderBean.getSensorsNotInOrder(orderId));
+            return Response.ok(sensors).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_ORDER")
+                .build();
+    }
+
 
     private List<OrderItemDTO> ordersItemDTO(List<OrderItem> orderItems) {
         return orderItems.stream().map(this::orderItemDTO).collect(Collectors.toList());

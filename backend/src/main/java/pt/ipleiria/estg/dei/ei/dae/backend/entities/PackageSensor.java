@@ -122,4 +122,7 @@ public class PackageSensor {
         this.unitProduct = null;
     }
 
+    public void setPackageProduct(PackageProduct packageProduct) {
+        this.aPackage = packageProduct;
+    }
 }

@@ -26,7 +26,7 @@
                 </v-col>
             </v-row>
         </v-container>
-        <v-container v-if="sensorList.length > 0">
+        <v-container >
             <v-row>
                 <h3>Add a Sensor to Unit Product</h3>
             </v-row>
@@ -58,9 +58,6 @@ const idUnitProduct = route.params.idUnitProduct
 
 const unitProductItem = ref([])
 const sensorList = ref([])
-
-console.log(unitProductItem.value)
-console.log(sensorList.value)
 
 const getData = async () => {
     const { data: unitProduct, error, refresh } = await useFetch(`${api}/unitProducts/${idUnitProduct}`)
