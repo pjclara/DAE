@@ -116,6 +116,8 @@ public class OrderBean {
         entityManager.merge(order);
     }
 
+
+
     public List<OrderItem> getProductsByOrder(Long orderId) throws MyEntityNotFoundException {
         Orderr order = orderBean.findOrFail(orderId);
         return order.getOrderItems();
@@ -162,21 +164,6 @@ public class OrderBean {
 
     }
 
-    public List<Sensor> getSensorsNotInOrder(Long orderId) {
-        Orderr order = entityManager.find(Orderr.class, orderId);
-        if (order == null) throw new IllegalArgumentException("Order with id " + orderId + " not found");
-
-        List<Sensor> sensors = entityManager.createNamedQuery("getSensorsBySource", Sensor.class)
-                .setParameter("source", "Order")
-                .getResultList();
-
-        sensors.removeIf(sensor ->
-             order.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue ->
-                    sensorValue.getSensor().getId() == sensor.getId()));
-
-        return sensors;
-
-    }
 
     public long updateStatus(Long id, String status) {
         Orderr order = entityManager.find(Orderr.class, id);
@@ -204,5 +191,59 @@ public class OrderBean {
                     Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
             }
         });
+    }
+
+    public long addSensorToPackageOrder(Long id, Long sensorId) {
+        Orderr order = entityManager.find(Orderr.class, id);
+        if (order == null) throw new IllegalArgumentException("Order with id " + id + " not found");
+
+        Sensor sensor = entityManager.find(Sensor.class, sensorId);
+        if (sensor == null) throw new IllegalArgumentException("Sensor with id " + sensorId + " not found");
+
+        PackageSensor packageSensor = order.getPackageSensor();
+        if (packageSensor == null) throw new IllegalArgumentException("Order with id " + id + " has no package");
+
+        packageSensor.getSensorValues().forEach(sensorValue -> {
+            if (sensorValue.getSensor().getId() == sensor.getId()) {
+                throw new IllegalArgumentException("Order with id " + id + " already has sensor with id " + sensorId);
+            }
+        });
+
+        SensorValue sensorValue = new SensorValue(sensor, packageSensor);
+        entityManager.persist(sensorValue);
+
+        return order.getId();
+    }
+
+    public List<Sensor> getSensorsNotInOrder(Long orderId) {
+        Orderr order = entityManager.find(Orderr.class, orderId);
+        if (order == null) throw new IllegalArgumentException("Order with id " + orderId + " not found");
+
+        List<Sensor> sensors = entityManager.createNamedQuery("getSensorsBySource", Sensor.class)
+                .setParameter("source", "Orders")
+                .getResultList();
+
+        sensors.removeIf(sensor ->
+                order.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue ->
+                        sensorValue.getSensor().getId() != sensor.getId()));
+
+        return sensors;
+
+    }
+
+    public List<Sensor> getSensorsInOrder(Long orderId) {
+        Orderr order = entityManager.find(Orderr.class, orderId);
+        if (order == null) throw new IllegalArgumentException("Order with id " + orderId + " not found");
+
+        Hibernate.initialize(order.getPackageSensor());
+        if (order.getPackageSensor() == null) throw new IllegalArgumentException("Order with id " + orderId + " has no package");
+
+        Hibernate.initialize(order.getPackageSensor().getSensorValues());
+
+        if (order.getPackageSensor().getSensorValues().isEmpty())
+            return null;
+
+        return order.getPackageSensor().getSensorValues().stream().map(SensorValue::getSensor).toList();
+
     }
 }

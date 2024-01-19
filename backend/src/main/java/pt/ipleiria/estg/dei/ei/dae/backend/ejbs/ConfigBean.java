@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageOrderDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageProductDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
@@ -31,7 +33,11 @@ public class ConfigBean {
     private PackageSensorBean packageSensorBean;
 
     @EJB
-    private ProductPackageBean productPackageBean;
+    private PackageProductBean packageProductBean;
+
+    @EJB
+    private PackageOrderBean packageOrderBean;
+
     @EJB
     private OrderBean orderBean;
 
@@ -44,7 +50,7 @@ public class ConfigBean {
 
 
     @PostConstruct
-    public void populateDB() throws MyEntityNotFoundException {
+    public void populateDB() throws MyEntityNotFoundException, MyConstraintViolationException {
             System.out.println("Hello Java EE!");
 
             try {
@@ -76,6 +82,10 @@ public class ConfigBean {
             } catch (Exception e) {
                 logger.warning(e.getMessage());
             }
+
+
+
+
 
             /*
 

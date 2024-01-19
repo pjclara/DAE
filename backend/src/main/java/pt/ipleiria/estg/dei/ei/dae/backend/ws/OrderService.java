@@ -7,7 +7,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.*;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ManufacturerDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.OrderBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
@@ -106,14 +105,41 @@ public class OrderService {
     @GET
     @Path("{id}/sensorsNotInOrder")
     public Response getSensorsNotInOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
-        Orderr order = orderBean.findOrFail(orderId);
-        if (order != null) {
-            var sensors = SensorDTO.toDTOs(orderBean.getSensorsNotInOrder(orderId));
-            return Response.ok(sensors).build();
+        List<Sensor> sensors = orderBean.getSensorsNotInOrder(orderId);
+        if (sensors.size() >= 0) {
+            return Response.ok(sensorDTOs(sensors)).build();
         }
         return Response.status(Response.Status.NOT_FOUND)
                 .entity("ERROR_FINDING_ORDER")
                 .build();
+    }
+
+    // get sensors not the order
+    @GET
+    @Path("{id}/sensorsInOrder")
+    public Response getSensorsInOrder(@PathParam("id") Long orderId) throws MyEntityNotFoundException {
+        List<Sensor> sensors = orderBean.getSensorsInOrder(orderId);
+        if (sensors.size() >= 0) {
+            return Response.ok(sensorDTOs(sensors)).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("ERROR_FINDING_ORDER")
+                .build();
+    }
+
+    private List<SensorDTO> sensorDTOs(List<Sensor> sensors) {
+        return sensors.stream().map(this::sensorDTO).collect(Collectors.toList());
+    }
+
+    private SensorDTO sensorDTO(Sensor sensor) {
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getSource(),
+                sensor.getType(),
+                sensor.getUnit(),
+                sensor.getMax(),
+                sensor.getMin()
+        );
     }
 
     // uodate status
@@ -125,6 +151,22 @@ public class OrderService {
         long orderId = orderBean.updateStatus(
                 id,
                 status
+        );
+
+        if (orderId < 1) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    // set sensors to package order
+    @PUT
+    @Path("{id}/addSensor/{sensorId}")
+    public Response addSensorToPackageOrder(@PathParam("id") Long id,@PathParam("sensorId") Long sensorId)
+            throws MyEntityNotFoundException {
+        long orderId = orderBean.addSensorToPackageOrder(
+                id,
+                sensorId
         );
 
         if (orderId < 1) {

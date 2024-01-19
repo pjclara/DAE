@@ -49,6 +49,7 @@ async function create() {
     }
 
     const { error } = await useFetch(`${api}/sensors`, requestOptions)
+    
     if (!error.value) navigateTo(`/manufacturers/${username}/sensors`)
     console.log("error.value: ", error.value)
 }

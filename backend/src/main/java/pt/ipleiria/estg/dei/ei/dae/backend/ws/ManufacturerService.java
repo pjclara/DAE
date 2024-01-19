@@ -5,16 +5,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ManufacturerDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.PackageDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.ProductDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.backend.ejbs.ManufacturerBean;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
-import pt.ipleiria.estg.dei.ei.dae.backend.security.Authenticated;
 
 import java.util.List;
 
