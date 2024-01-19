@@ -46,7 +46,15 @@ const authStore = useAuthStore()
 const config = useRuntimeConfig()
 const api = config.public.API_URL
 const { data: products, error, refresh } = await useFetch(`${api}/products`)
+console.log("products: ", products);
+console.log("products.rawvalue: ", products.rawValue);
 
+console.log("products.value: ", products.value);
+
+const productsWithStock = () => products.rawValue.map(product => {
+    console.log("product.stock:", product.stock)
+}) 
+//TODO
 const modalOpen = ref(cartStore.cartModal);
 
 const totalItens = computed(() => {
@@ -56,7 +64,7 @@ const totalItens = computed(() => {
 const addToCart = (product) => {
     cartStore.add(product);
 }
-console.log("products: ", products);
+
 </script>
 
 <style scoped>

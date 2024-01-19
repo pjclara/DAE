@@ -11,10 +11,7 @@
             <v-btn block class="mb-2" rounded="xl" size="x-large" @click="login">LOGIN</v-btn>
             <v-btn block rounded="xl" size="x-large"><nuxt-link to="/endConsumers/create">REGISTAR</nuxt-link></v-btn>
             <div v-if="messages.length > 0">
-                <h2>Messages</h2>
-                <div v-for="message in messages">
-                    <pre>{{ message }}</pre>
-                </div>
+                <h2>Something went wrong!</h2>
             </div>
         </v-col>
     </v-col>
@@ -23,6 +20,7 @@
 import {useAuthStore} from "~/store/auth-store.js"
 const authStore = useAuthStore()
 const {token, user, username, userRole} = storeToRefs(authStore)
+//const router = useRouter()
 
 const config = useRuntimeConfig()
 const api = config.public.API_URL
@@ -54,13 +52,13 @@ async function login() {
         await getUser();
         if (user.value.role === "manufacturer") {
             apiFormData.path = "manufacturers"
-            navigateTo(`/manufacturers/${user.value.username}`)
+           //navigateTo(`/manufacturers/${user.value.username}`)
         } else if (user.value.role === "logisticsOperator") {
             apiFormData.path = "logisticsOperators"
-            navigateTo(`/logisticsOperators/${user.value.username}`)
+            //navigateTo(`/logisticsOperators/${user.value.username}`)
         } else if (user.value.role === "endConsumer") {
             apiFormData.path = "endConsumers"
-            navigateTo(`/endConsumers/${user.value.username}`)
+            //navigateTo(`/endConsumers/${user.value.username}`)
         }
     }
 }
@@ -83,9 +81,9 @@ async function getUser() {
         messages.value.push({ error: error.value.message })
     }
     if (data.value) {
-        messages.value.push({ payload: data.value })
         user.value = data.value;
         localStorage.setItem('user', JSON.stringify(user.value))
+        navigateTo('/')
     }
 }
 

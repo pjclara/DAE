@@ -3,14 +3,16 @@
 
     <v-list color="transparent" v-if="user?.role == 'Manufacturer'">
       <v-list-item prepend-icon="mdi-account-box" title="Fabricante"></v-list-item>
-      <v-list-item><v-btn><nuxt-link :to="`/manufacturers/${user?.username}`">Home page</nuxt-link></v-btn></v-list-item>
+      <!-- <v-list-item><v-btn><nuxt-link :to="`/manufacturers/${user?.username}`">Home page</nuxt-link></v-btn></v-list-item> -->
+      <v-list-item><v-btn><nuxt-link :to="`/`">Home page</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link :to="`/manufacturers/${user?.username}/products`">Lista de Produtos</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link :to="`/manufacturers/${user?.username}/packageProducts`">Lista de Embalagens</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link :to="`/manufacturers/${user?.username}/sensors`">Lista de Sensores</nuxt-link></v-btn></v-list-item>
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'LogisticsOperator'">
       <v-list-item prepend-icon="mdi-account-box" title="O. Logistica"></v-list-item>
-      <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/`">Home page</nuxt-link></v-btn></v-list-item>
+      <!-- <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/`">Home page</nuxt-link></v-btn></v-list-item> -->
+      <v-list-item><v-btn><nuxt-link :to="`/`">Home page</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/orders`">Lista de Encomendas</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/packageOrders`">Lista de Embalagens</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link :to="`/logisticsoperators/${user?.username}/sensors`">Lista de Sensores</nuxt-link></v-btn></v-list-item>
@@ -23,7 +25,7 @@
     </v-list>
     <v-list color="transparent" v-if="user?.role == 'Administrator'">
       <v-list-item prepend-icon="mdi-account-box" title="Administrador"></v-list-item>
-      <v-list-item><v-btn><nuxt-link to="/logisticsOperator/create">Criar O.Logistica</nuxt-link></v-btn></v-list-item>
+      <v-list-item><v-btn><nuxt-link to="/logisticsoperators/create">Criar O.Logistica</nuxt-link></v-btn></v-list-item>
       <v-list-item><v-btn><nuxt-link to="/manufacturers/create">Criar Fabricante</nuxt-link></v-btn></v-list-item>
     </v-list>
 

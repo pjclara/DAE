@@ -110,15 +110,17 @@ const isFormValid = computed(() => {
 })
 
 async function create() {
-    const requestOptions = {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(endConsumerForm)
+    if(isFormValid.value){
+        const requestOptions = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(endConsumerForm)
+        }
+        const { error } = await useFetch(`${api}/endConsumers`, requestOptions)
+        if (!error.value) {
+            navigateTo('/auth/login')
+        }
+        message.value = error.value
     }
-    const { error } = await useFetch(`${api}/endConsumers`, requestOptions)
-    if (!error.value) {
-        navigateTo('/auth/login')
-    }
-    message.value = error.value
 }
 </script>
