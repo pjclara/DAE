@@ -12,7 +12,6 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
@@ -148,14 +147,7 @@ public class OrderBean {
 
         if (order.getOrderItems().isEmpty()) throw new IllegalArgumentException("Order with id " + orderId + " has no products");
 
-        order.getOrderItems().forEach(orderItem -> {
-            Hibernate.initialize(orderItem.getUnitProduct());
-            if (orderItem.getUnitProduct().getPackageSensor() != null) {
-                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
-                if (orderItem.getUnitProduct().getPackageSensor().getSensorValues() != null)
-                    Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
-            }
-        });
+        hibernateOrderItems(order);
         return order;
 
     }
@@ -164,15 +156,7 @@ public class OrderBean {
         List<Orderr> orders = entityManager.createNamedQuery("getOrdersWithOrderItems", Orderr.class).getResultList();
 
         orders.forEach(orderr -> {
-            Hibernate.initialize(orderr.getOrderItems());
-            orderr.getOrderItems().forEach(orderItem -> {
-                Hibernate.initialize(orderItem.getUnitProduct());
-                if (orderItem.getUnitProduct().getPackageSensor() != null) {
-                    Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
-                    if (orderItem.getUnitProduct().getPackageSensor().getSensorValues() != null)
-                        Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
-                }
-            });
+            HibernateOrders(orderr);
         });
         return orders;
 
@@ -192,5 +176,33 @@ public class OrderBean {
 
         return sensors;
 
+    }
+
+    public long updateStatus(Long id, String status) {
+        Orderr order = entityManager.find(Orderr.class, id);
+        if (order == null) throw new IllegalArgumentException("Order with id " + id + " not found");
+
+        order.setStatus(status);
+        entityManager.merge(order);
+
+        HibernateOrders(order);
+
+        return order.getId();
+    }
+
+    private void HibernateOrders(Orderr order) {
+        Hibernate.initialize(order.getOrderItems());
+        hibernateOrderItems(order);
+    }
+
+    private void hibernateOrderItems(Orderr order) {
+        order.getOrderItems().forEach(orderItem -> {
+            Hibernate.initialize(orderItem.getUnitProduct());
+            if (orderItem.getUnitProduct().getPackageSensor() != null) {
+                Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor());
+                if (orderItem.getUnitProduct().getPackageSensor().getSensorValues() != null)
+                    Hibernate.initialize(orderItem.getUnitProduct().getPackageSensor().getSensorValues());
+            }
+        });
     }
 }
