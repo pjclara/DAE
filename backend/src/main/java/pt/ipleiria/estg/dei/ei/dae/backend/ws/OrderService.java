@@ -116,6 +116,23 @@ public class OrderService {
                 .build();
     }
 
+    // uodate status
+
+    @PUT
+    @Path("{id}/status/{status}")
+    public Response updateStatus(@PathParam("id") Long id,@PathParam("status") String status)
+            throws MyEntityNotFoundException {
+        long orderId = orderBean.updateStatus(
+                id,
+                status
+        );
+
+        if (orderId < 1) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).build();
+    }
+
 
     private List<OrderItemDTO> ordersItemDTO(List<OrderItem> orderItems) {
         return orderItems.stream().map(this::orderItemDTO).collect(Collectors.toList());
