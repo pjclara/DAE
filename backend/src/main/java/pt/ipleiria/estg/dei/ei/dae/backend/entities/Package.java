@@ -61,4 +61,12 @@ public class Package extends Versionable {
         this.packagingMaterial = packagingMaterial;
     }
 
+    public List<PackageSensor> getPackageSensors() {
+        return packageSensors;
+    }
+
+    public void setPackageSensors(List<PackageSensor> packageSensors) {
+        this.packageSensors = packageSensors;
+    }
+
 }

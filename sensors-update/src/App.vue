@@ -11,17 +11,22 @@
       <v-row class="justify-center py-4">
         <v-col cols="6" align="center">
           <v-select label="Selecione o tipo de embalagem" v-model="selectedPackageType" :items="packageType"></v-select>
-          {{ selectedPackageType }}
+
           <v-select label="Selecione a Encomenda" v-if="selectedPackageType == 'Orders'" v-model="selectedOrder"
-            :items="orders" item-title="name" item-value="id"></v-select>
+            :items="orders" item-title="id" item-value="id"></v-select>
+            {{ orders }}
 
           <v-select label="Selecione o tipo de Produto" v-if="selectedPackageType == 'Product'" v-model="selectedProduct"
             :items="products" item-title="name" item-value="id"></v-select>
+
           <v-select label="Selecione o Produto Unitário" v-if="selectedProduct" v-model="selectedUnitProduct"
             :items="unitaryProducts" item-title="serialNumber" item-value="id"></v-select>
+
           <v-select label="Selecione o sensor do Produto Unitário" v-if="sensorsData" :items="sensorsData"
             item-title="sensorName" item-value="sensorId" v-model="idSensor"></v-select>
+
           <v-text-field v-model="sensorValue" label="Insira valor"></v-text-field>
+
           <v-btn color="primary" @click="updateSensorValue" v-if="sensorValue">Atualizar</v-btn>
 
         </v-col>
@@ -85,11 +90,15 @@ async function fetchAllOrders() {
     });
 
     const data = await response.json();
-
     if (data) {
       console.log("data: ", data)
-      orders.value = data;
-      console.log("orders.value: ", orders.value)
+      data.forEach(element => {
+        orders.value.push({
+          data: element,
+          id: element.id,
+          endConsumerName: element.endConsumerName,
+        })
+      });
     }
   } catch (error) {
     console.error("Error fetching orders:", error);
