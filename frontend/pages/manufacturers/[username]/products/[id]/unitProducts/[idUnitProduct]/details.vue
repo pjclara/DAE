@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="primary" dark>
-            <v-btn icon @click="goBack">
+            <v-btn icon @click="back">
                 <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
             <v-toolbar-title>Add Sensors</v-toolbar-title>
@@ -66,7 +66,7 @@ const getData = async () => {
     sensorList.value = sensors.value
 }
 
-const goBack = () => {
+const back = () => {
     navigateTo('/manufacturers/' + username + '/products/' + id + '/unitProducts/')
 }
 
@@ -96,7 +96,7 @@ const addSensor = async () => {
         }
         else {
             message.value = error.value
-            console.log(message.value)
+            //console.log(message.value)
         }
     });
 
@@ -106,7 +106,7 @@ const addSensor = async () => {
     }
     else {
         message.value = error.value
-        console.log(message.value)
+        //console.log(message.value)
     }
 }   
 </script>

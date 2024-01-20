@@ -26,7 +26,7 @@ const headers = ref([
 ])
 
 const editItem = (item) => {
-    console.log(item)
+    //console.log(item)
     navigateTo(`/manufacturers/${username}/packageProducts/${item.id}/edit`)
 }
 

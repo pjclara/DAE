@@ -44,6 +44,6 @@ const headers = [
 
 const detailsOrder = (order) => {
     navigateTo(`/logisticsoperators/${username}/orders/${order.id}/details`)
-    console.log(order)
+    //console.log(order)
 }
 </script>

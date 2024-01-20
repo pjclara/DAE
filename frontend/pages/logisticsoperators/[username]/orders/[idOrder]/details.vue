@@ -19,7 +19,7 @@
               <span v-else>Sem Embalagem ...</span>
             </v-col>
             <v-col cols="12" sm="4">
-              <h3>Sensores:</h3>
+              <h3>Sensores Encomenda:</h3>
               <span v-if="order.packageSensorDTO?.sensorValueDTOS != []">
                 <v-chip v-for="sensor in order.packageSensorDTO?.sensorValueDTOS" :key="sensor.id" color="black" text-color="white">
                   {{ sensor.sensorDTO.type }}: {{ sensor.value == null ? '--':sensor.value  }} {{ sensor.sensorDTO.unit }}
@@ -40,7 +40,7 @@
               <h3>Quantidade:</h3>{{ item.quantity }}
             </v-col>
             <v-col>
-              <h3>Sensores:</h3>
+              <h3>Sensores Produtos:</h3>
               {{ }}
               <span v-if="item.unitProductDTO.packageSensorDTO.sensorValueDTOS.size != []">
                 <v-chip v-for="sensor in item.unitProductDTO.packageSensorDTO.sensorValueDTOS" :key="sensor.id" color="black" text-color="white">

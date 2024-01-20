@@ -55,7 +55,7 @@ const { data: products, error: productsErr } = await
       'Authorization': 'Bearer ' + token.value
     }
   })
-console.log("products :", products.value)
+//console.log("products :", products.value)
 
 const editItem = (item) => {
   navigateTo('/manufacturers/' + route.params.username + '/products/' + item.id + '/edit/')

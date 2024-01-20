@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="primary" dark>
-            <v-btn icon @click="goBack">
+            <v-btn icon @click="back">
                 <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
             <v-toolbar-title>Voltar</v-toolbar-title>
@@ -22,8 +22,8 @@
                         placeholder="material"
                         :rules="isPackagingMaterialValid ? [] : [formFeedback.packagingMaterial]"></v-text-field>
                 </div>
-                <v-btn type="reset">RESET</v-btn>
-                <v-btn type="submit">Atualizar</v-btn>
+                <v-btn block rounded="xl" size="x-large" class="mb-2" @click="update">Editar</v-btn>
+                <v-btn block rounded="xl" size="x-large" @click="back">Cancelar</v-btn>
             </form>
         </v-col>
     </v-col>
@@ -90,7 +90,7 @@ async function update() {
     }
 }
 
-const goBack = () => {
+const back = () => {
     navigateTo(`/manufacturers/${username}/packageProducts/`)
 }
 

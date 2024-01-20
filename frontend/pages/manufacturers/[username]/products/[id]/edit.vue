@@ -82,7 +82,7 @@ const { data: product, error: productErr } = await useFetch(`${api}/products/${i
     }
 })
 
-console.log("product: ", product.value)
+//console.log("product: ", product.value)
 
 const productForm = reactive({
     name: product.value.name,
@@ -120,7 +120,7 @@ async function update() {
     }
     else {
         message.value = error.value
-        console.log(message.value)
+        //console.log(message.value)
     }
 }
 

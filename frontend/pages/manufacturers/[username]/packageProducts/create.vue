@@ -17,7 +17,9 @@
                     <v-text-field v-model="packageForm.packagingMaterial" label="Material da Embalagem"
                     :rules="isPackagingMaterialValid ? [] : [formFeedback.packagingMaterial]" />
                 </div>
-                <v-btn block rounded="xl" size="x-large" @click="create">Criar</v-btn>
+                <v-btn block rounded="xl" size="x-large" class="mb-2" @click="create">Criar</v-btn>
+                <v-btn block rounded="xl" size="x-large" @click="back()">Cancelar</v-btn>
+
             </form>
         </v-col>
     </v-col>
@@ -40,7 +42,7 @@ const packageForm = ref({
 });
 
 const isPackagingTypeValid = computed(() => {
-    console.log("packageForm.value.packagingType:", packageForm.value.packagingType)
+    //console.log("packageForm.value.packagingType:", packageForm.value.packagingType)
     if (packageForm.value.packagingType === null) {
         formFeedback.packagingType = 'Tipo de Embalagem é obrigatório';
         return false;
@@ -86,7 +88,7 @@ async function create() {
         return;
     }
     // const package = {...packageForm, packageId: 0, timestamp: Date.now()}
-    console.log("JSON.stringify(packageForm.value) : ", JSON.stringify(packageForm.value))
+    //console.log("JSON.stringify(packageForm.value) : ", JSON.stringify(packageForm.value))
     const requestOptions = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
@@ -95,7 +97,11 @@ async function create() {
     const { error } = await useFetch(`${api}/packageProducts`, requestOptions)
     if (!error.value) navigateTo("/manufacturers/"+ username + "/packageProducts")
 
-    console.log("error: ", error)
-    console.log("error.value: ", error.value)
+    //console.log("error: ", error)
+    //console.log("error.value: ", error.value)
+}
+
+const back = () => {
+    navigateTo(`/manufacturers/${username}/packageProducts/`)
 }
 </script>

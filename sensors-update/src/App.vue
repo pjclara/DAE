@@ -71,7 +71,7 @@ const sensorValue = ref(null)
 
 watch(() => selectedPackageType.value,
   async (newPackageType) => {
-    console.log("newPackageType:", newPackageType);
+    //console.log("newPackageType:", newPackageType);
     if (newPackageType == 'Product') {
       await fetchAllProducts();
     } else {
@@ -92,7 +92,7 @@ async function fetchAllOrders() {
 
     const data = await response.json();
     if (data) {
-      console.log("data: ", data)
+      //console.log("data: ", data)
       data.forEach(element => {
         orders.value.push({
           data: element,
@@ -125,9 +125,9 @@ async function fetchAllProducts() {
     const data = await response.json();
 
     if (data) {
-      console.log("data: ", data)
+      //console.log("data: ", data)
       products.value = data;
-      console.log("products.value: ", products.value)
+      //console.log("products.value: ", products.value)
     }
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -136,9 +136,9 @@ async function fetchAllProducts() {
 
 watch(() => selectedProduct.value,
   async (newSelectedProduct) => {
-    console.log("newSelectedProduct:", newSelectedProduct);
+    //console.log("newSelectedProduct:", newSelectedProduct);
     if (newSelectedProduct) {
-      console.log("newSelectedProduct: ", newSelectedProduct);
+      //console.log("newSelectedProduct: ", newSelectedProduct);
       await fetchUnitaryProducts(newSelectedProduct);
     }
   }
@@ -156,7 +156,7 @@ async function fetchUnitaryProducts() {
     const data = await response.json();
 
     if (data) {
-      console.log("data: ", data)
+      //console.log("data: ", data)
       unitaryProductsList.value = [];
         if(!element.available)
        { unitaryProductsList.value.push({
@@ -165,7 +165,7 @@ async function fetchUnitaryProducts() {
           serialNumber: element.serialNumber,
         })}
       unitaryProducts.value = data;
-      console.log("unitaryProducts.value: ", unitaryProducts.value)
+      //console.log("unitaryProducts.value: ", unitaryProducts.value)
     }
   } catch (error) {
     console.error("Error fetching unitaryProducts:", error);
@@ -174,9 +174,9 @@ async function fetchUnitaryProducts() {
 
 watch(() => selectedUnitProduct.value,
   async (newSelectedUnitProduct) => {
-    console.log("newSelectedUnitProduct:", newSelectedUnitProduct);
+    //console.log("newSelectedUnitProduct:", newSelectedUnitProduct);
     if (newSelectedUnitProduct) {
-      console.log("newSelectedUnitProduct: ", newSelectedUnitProduct);
+      //console.log("newSelectedUnitProduct: ", newSelectedUnitProduct);
       await fetchSensors(newSelectedUnitProduct);
     }
   }
@@ -194,10 +194,10 @@ async function fetchSensors(id) {
     const data = await response.json();
 
     if (data) {
-      console.log("data: ", data)
+      //console.log("data: ", data)
       sensorsData.value = [];
       sensorValue.value = null;
-      console.log("sensorsData.value: ", data.packageSensorDTO.sensorValueDTOS)
+      //console.log("sensorsData.value: ", data.packageSensorDTO.sensorValueDTOS)
       data.packageSensorDTO.sensorValueDTOS.forEach(element => {
         sensorsData.value.push({
           sensorId: element.id,
@@ -223,7 +223,7 @@ async function updateSensorValue() {
     });
 
     const data = await response.json();
-    console.log("data: ", data)
+    //console.log("data: ", data)
 
     if (data) {   
       alert("Valor atualizado com sucesso!")   

@@ -93,7 +93,7 @@ async function create() {
         return;
     }
     const sensor = { ...sensorForm }
-    console.log("JSON.stringify(sensor) : ", JSON.stringify(sensor))
+    //console.log("JSON.stringify(sensor) : ", JSON.stringify(sensor))
     const requestOptions = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
@@ -102,7 +102,7 @@ async function create() {
 
     const { error } = await useFetch(`${api}/sensors`, requestOptions)
     if (!error.value) navigateTo(`/logisticsOperators/${username}/sensors`)
-    console.log("error.value: ", error.value)
+    //console.log("error.value: ", error.value)
 }
 
 const back = () => navigateTo(`/logisticsOperators/${username}/sensors`)

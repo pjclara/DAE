@@ -77,7 +77,7 @@ async function create() {
         return;
     }
     // const package = {...packageForm, packageId: 0, timestamp: Date.now()}
-    console.log("JSON.stringify(packageForm.value) : ", JSON.stringify(packageForm.value))
+    //console.log("JSON.stringify(packageForm.value) : ", JSON.stringify(packageForm.value))
     const requestOptions = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
@@ -86,8 +86,8 @@ async function create() {
     const { error } = await useFetch(`${api}/packageOrders`, requestOptions)
     if (!error.value) navigateTo("/logisticsoperators/" + username + "/packageOrders")
 
-    console.log("error: ", error)
-    console.log("error.value: ", error.value)
+    //console.log("error: ", error)
+    //console.log("error.value: ", error.value)
 }
 
 const back = () => navigateTo(`/logisticsOperators/${username}/packageOrders`)

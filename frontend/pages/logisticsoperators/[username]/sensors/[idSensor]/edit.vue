@@ -98,7 +98,7 @@ async function update() {
         return;
     }
     const sensor = { ...sensorForm }
-    console.log("JSON.stringify(sensor) : ", JSON.stringify(sensor))
+    //console.log("JSON.stringify(sensor) : ", JSON.stringify(sensor))
     const requestOptions = {
         method: 'PUT',
         headers: { "Content-Type": "application/json" },
@@ -107,7 +107,7 @@ async function update() {
 
     const { error } = await useFetch(`${api}/sensors/${idSensor}`, requestOptions)
     if (!error.value) navigateTo(`/logisticsoperators/${username}/sensors`)
-    console.log("error.value: ", error.value)
+    //console.log("error.value: ", error.value)
 }
 
 const back = () => navigateTo(`/logisticsoperators/${username}/sensors`)

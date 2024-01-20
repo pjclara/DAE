@@ -1,6 +1,6 @@
 <template>
     <v-toolbar color="primary" dark>
-        <v-btn icon @click="goBack">
+        <v-btn icon @click="back">
             <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <v-toolbar-title>Go Back</v-toolbar-title>
@@ -60,8 +60,8 @@ const username = route.params.username
 const unitProductList = ref([])
 const sensorList = ref([])
 
-console.log(unitProductList.value)
-console.log(sensorList.value)
+//console.log(unitProductList.value)
+//console.log(sensorList.value)
 
 const getData = async () => {
     const { data: unitProducts, error, refresh } = await useFetch(`${api}/products/${id}/unitProducts`)
@@ -86,7 +86,7 @@ const editItem = (item) => {
     navigateTo('/manufacturers/' + username + '/products/' + id + '/unitProducts/' + item.id + '/details/')
 }
 
-const goBack = () => {
+const back = () => {
     navigateTo('/manufacturers/' + username + '/products/' + id + '/details/')
 }
 
@@ -108,7 +108,7 @@ const addSensor = async () => {
         const { error } = useFetch(`${api}/products/${id}/addSensor/` + element, requestOptions)
         if (error.value) {
             message.value = error.value
-            console.log(message.value)
+            //console.log(message.value)
             alert(message.value)
         } else {
             alert("Sensor adicionado com successo")

@@ -138,7 +138,7 @@ const updatePackage = async () => {
     }
     const { data: data, errorData } = await useFetch(`${api}/logisticsOperators/${username}/order/${idOrder}/package/${packageOrderId.value}`, requestOptions)
     if (errorData) {
-        console.log(errorData)
+        //console.log(errorData)
     } else {
         //navigateTo(`/logisticsoperators/${username}/orders/${idOrder}/details`)
         alert("Order updated successfully")
@@ -156,7 +156,7 @@ const updateStatus = async () => {
     }
     const { data: data, errorData } = await useFetch(`${api}/orders/${idOrder}/status/${order.value.status}`, requestOptions)
     if (errorData) {
-        console.log(errorData)
+        //console.log(errorData)
     } else {
         //navigateTo(`/logisticsoperators/${username}/orders/${idOrder}/details`)
         alert("Status updated successfully")
@@ -175,7 +175,7 @@ const updateSensor = async () => {
     sensorId.value.forEach(element => {
         const { data: data, errorData } = useFetch(`${api}/orders/${idOrder}/addSensor/${element}`, requestOptions)
         if (errorData) {
-            console.log(errorData)
+            //console.log(errorData)
         } else {
             //navigateTo(`/logisticsoperators/${username}/orders/${idOrder}/details`)
             alert("Sensors updated successfully")

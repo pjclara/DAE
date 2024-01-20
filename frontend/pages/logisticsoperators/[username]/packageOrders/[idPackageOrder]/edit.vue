@@ -82,7 +82,7 @@ async function update() {
         alert('Por favor preencha os campos corretamente')
         return;
     }
-    console.log("JSON.stringify(packageForm.value) : ", JSON.stringify(packageForm.value))
+    //console.log("JSON.stringify(packageForm.value) : ", JSON.stringify(packageForm.value))
     const requestOptions = {
         method: 'PUT',
         headers: { "Content-Type": "application/json" },
@@ -91,8 +91,8 @@ async function update() {
     const { error } = await useFetch(`${api}/packageOrders/${idPackageOrder}`, requestOptions)
     if (!error.value) navigateTo("/logisticsoperators/" + username + "/packageOrders")
 
-    console.log("error: ", error)
-    console.log("error.value: ", error.value)
+    //console.log("error: ", error)
+    //console.log("error.value: ", error.value)
 }
 
 const back = () => navigateTo(`/logisticsOperators/${username}/packageOrders`)

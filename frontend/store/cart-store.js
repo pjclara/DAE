@@ -14,12 +14,12 @@ export const useCartStore = defineStore("cartStore", () => {
 
   const openDialog = () => {
     modalOpen.value = true;
-    console.log("open");
+    //console.log("open");
   };
 
   const closeDialog = () => {
     modalOpen.value = false;
-    console.log("close");
+    //console.log("close");
   };
 
   const add = (product) => {
@@ -62,7 +62,7 @@ export const useCartStore = defineStore("cartStore", () => {
 
   async function createOrderAPI(customer) {
     if (!customer) {
-      console.log("username :", customer);
+      //console.log("username :", customer);
       return;
     }
     const requestOptions = {
@@ -70,15 +70,15 @@ export const useCartStore = defineStore("cartStore", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData.value),
     };
-    console.log("requestOptions :", requestOptions.body);
+    //console.log("requestOptions :", requestOptions.body);
     const { data, error } = await useFetch(`${api}/endConsumers/${customer}/orders`, requestOptions);
     if (error.value) {
-      console.log("error :", error.value);
+      //console.log("error :", error.value);
       return;
     }
-    console.log("data :", data);
+    //console.log("data :", data);
     if (data) {
-      console.log("data :", data);
+      //console.log("data :", data);
       alert("Order created");
       cartItems.value = [];
       totalItens.value = 0;
