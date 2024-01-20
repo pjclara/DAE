@@ -12,18 +12,16 @@
         <v-col cols="6" align="center">
           <v-select label="Selecione o tipo de embalagem" v-model="selectedPackageType" :items="packageType"></v-select>
 
-          <v-select label="Selecione a Encomenda" v-if="selectedPackageType == 'Orders'" v-model="selectedOrder"
-            :items="orders" item-title="id" item-value="id"></v-select>
-
+          <v-select label="Selecione a Encomenda" v-if="selectedPackageType == 'Orders'" v-model="orderId" :items="orders"
+            item-title="endConsumerName" item-value="id"></v-select>
+          {{ selectedOrder }}
           <v-select label="Selecione o tipo de Produto" v-if="selectedPackageType == 'Product'" v-model="selectedProduct"
             :items="products" item-title="name" item-value="id"></v-select>
 
           <v-select label="Selecione o Produto Unitário" v-if="selectedProduct" v-model="selectedUnitProduct"
             :items="unitaryProducts" item-title="serialNumber" item-value="id"></v-select>
-{{ unitaryProductsList }}
           <v-select label="Selecione o sensor do Produto Unitário" v-if="sensorsData" :items="sensorsData"
             item-title="sensorName" item-value="sensorId" v-model="idSensor"></v-select>
-
           <v-text-field v-model="sensorValue" label="Insira valor"></v-text-field>
 
           <v-btn color="primary" @click="updateSensorValue" v-if="sensorValue">Atualizar</v-btn>
@@ -54,11 +52,14 @@ const selectedProduct = ref(null)
 const unitaryProducts = ref([])
 
 const unitaryProductsList = ref(null)
+
 const selectedUnitProduct = ref(null)
 
 const sensorsData = ref([])
 
 const idSensor = ref(null)
+
+const orderId = ref(null)
 
 // const sensors = ref([])
 // const selectedSensor = ref(null)
@@ -106,6 +107,31 @@ async function fetchAllOrders() {
   }
 }
 
+async function fetchOrder(id) {
+  try {
+    const response = await fetch(`http://localhost:8080/backend/api/orders/${id}`, {
+      method: 'get',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    if (data) {
+      console.log("data: ", data)
+      data.packageSensorDTO.sensorValueDTOS.forEach(element => {
+        sensorsData.value.push({
+          sensorId: element.id,
+          sensorName: element.sensorDTO.type,
+          sensorValue: element.value
+        })
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+  }
+}
+
 
 //Product
 
@@ -144,6 +170,17 @@ watch(() => selectedProduct.value,
   }
 );
 
+watch(() => orderId.value,
+  async (newOrderId) => {
+    console.log("newOrderId:", newOrderId);
+    if (newOrderId) {
+      console.log("newOrderId: ", newOrderId);
+      await fetchOrder(newOrderId);
+    }
+  }
+);
+
+
 async function fetchUnitaryProducts() {
   try {
     const response = await fetch(`http://localhost:8080/backend/api/products/${selectedProduct.value}/unitProducts`, {
@@ -158,12 +195,14 @@ async function fetchUnitaryProducts() {
     if (data) {
       console.log("data: ", data)
       unitaryProductsList.value = [];
-        if(!element.available)
-       { unitaryProductsList.value.push({
-          data: element,
-          id: element.id,
-          serialNumber: element.serialNumber,
-        })}
+      data.forEach(element => {
+        if (!element.available) {
+          unitaryProductsList.value.push({
+            id: element.id,
+            serialNumber: element.serialNumber,
+          })
+        }
+      });
       unitaryProducts.value = data;
       console.log("unitaryProducts.value: ", unitaryProducts.value)
     }
@@ -177,12 +216,12 @@ watch(() => selectedUnitProduct.value,
     console.log("newSelectedUnitProduct:", newSelectedUnitProduct);
     if (newSelectedUnitProduct) {
       console.log("newSelectedUnitProduct: ", newSelectedUnitProduct);
-      await fetchSensors(newSelectedUnitProduct);
+      await fetchSensorsUniproduct(newSelectedUnitProduct);
     }
   }
 );
 
-async function fetchSensors(id) {
+async function fetchSensorsUniproduct(id) {
   try {
     const response = await fetch(`http://localhost:8080/backend/api/unitProducts/${id}`, {
       method: 'get',
@@ -212,6 +251,11 @@ async function fetchSensors(id) {
 }
 
 async function updateSensorValue() {
+  if (!idSensor.value) {
+    alert("Selecione um sensor")
+    return;
+  }
+  
   try {
     const response = await fetch(`http://localhost:8080/backend/api/sensorValues/${idSensor.value}/updateSensorValue/${sensorValue.value}`, {
       method: 'put',
@@ -225,8 +269,8 @@ async function updateSensorValue() {
     const data = await response.json();
     console.log("data: ", data)
 
-    if (data) {   
-      alert("Valor atualizado com sucesso!")   
+    if (data) {
+      alert("Valor atualizado com sucesso!")
     }
   } catch (error) {
     console.error("Error fetching unitaryProducts:", error);
