@@ -33,8 +33,14 @@ public class SensorValue {
         return id;
     }
 
+
+
     public Sensor getSensor() {
         return sensor;
+    }
+
+    public PackageSensor getPackageSensor() {
+        return packageSensor;
     }
 
     public void setPackageSensor(PackageSensor packageSensor){
@@ -43,5 +49,9 @@ public class SensorValue {
 
     public String getValue() {
         return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

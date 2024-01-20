@@ -45,6 +45,7 @@ public class ProductService {
                 .build();
     }
 
+
     // get all sensors not attribute from a product
     @GET
     @Path("{id}/sensorsNotAttribute")

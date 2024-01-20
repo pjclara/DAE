@@ -65,7 +65,7 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" sm="6">
-                            <v-select :items="['IN_STOCK', 'IN_ORDER', 'CONFIRMED', 'RECEIVED', 'REJECTED']"
+                            <v-select :items="['PENDING', 'IN_TRANSIT', 'RECEIVED', 'CONFIRMED']"
                                 v-model="order.status" label="Status">
                             </v-select>
                         </v-col>

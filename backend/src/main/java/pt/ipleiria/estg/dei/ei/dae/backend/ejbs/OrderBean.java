@@ -227,6 +227,8 @@ public class OrderBean {
         // sensors.removeIf(sensor ->
         //         order.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue ->
         //                 sensorValue.getSensor().getId() != sensor.getId()));
+        if(order.getPackageSensor() == null) return sensors;
+
         sensors = sensors.stream().filter(sensor ->
                 order.getPackageSensor().getSensorValues().stream().noneMatch(sensorValue ->
                         sensorValue.getSensor().getId().equals(sensor.getId()))).collect(Collectors.toList());

@@ -56,7 +56,6 @@
                     <li>
                       <ul v-for="sensor in item.unitProductDTO.packageSensorDTO.sensorValueDTOS">
                         <li>Type:{{ sensor.sensorDTO.type }}</li>
-                        <li>Type:{{ sensor }}</li>
                         <li>Value:{{ sensor.value }}</li>
                       </ul>
                     </li>
