@@ -55,7 +55,8 @@ const cartItems = ref(cartStore.productsInCart())
 
 const createOrder = () => {
     cartStore.createOrderCart(user.value.username);
-    // refresh the page
-    location.reload();
+    setTimeout(() => {
+        navigateTo(`/endconsumers/${user.value.username}/orders`);
+      }, 2000);
 }
 </script>
