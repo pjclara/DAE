@@ -4,12 +4,12 @@
             <v-btn icon @click="back">
                 <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
-            <v-toolbar-title>Order Edit</v-toolbar-title>
+            <v-toolbar-title>Editar encomenda</v-toolbar-title>
         </v-toolbar>
-        <h1>Order Edit</h1>
+        <h1>Editar encomenda</h1>
         <v-card rounded="xl" style="margin: 20px;">
             <v-card-title>
-                <span class="grey--text">Consumer Name: </span>
+                <span class="grey--text">Nome do Cliente: </span>
                 <span class="headline">{{ order.endConsumerName }}</span>
             </v-card-title>
         </v-card>
@@ -18,7 +18,7 @@
             <v-card-text>
                 <v-container>
                     <v-row>
-                        <h3>Add or update the package</h3>
+                        <h3>Adicionar ou atualizar embalagens</h3>
                     </v-row>
                     <v-row>
                         <v-col cols="12" sm="6">
@@ -27,8 +27,7 @@
                             </v-select>
                         </v-col>
                         <v-col>
-                            <v-btn block rounded="xl" size="x-large" @click="updatePackage()" color="green">Update
-                                Package</v-btn>
+                            <v-btn block rounded="xl" size="x-large" @click="updatePackage()" color="green">Atualizar embalagem</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -39,7 +38,7 @@
             <v-card-text>
                 <v-container>
                     <v-row>
-                        <h3>Add or update the sensors</h3>
+                        <h3>Adicionar ou atualizar sensores</h3>
                     </v-row>
                     <v-row>
                         <v-col cols="12" sm="6">
@@ -49,8 +48,7 @@
                             </v-row>
                         </v-col>
                         <v-col cols="12" sm="6">
-                            <v-btn block rounded="xl" size="x-large" @click="updateSensor()" color="green">Update
-                                Sensors</v-btn>
+                            <v-btn block rounded="xl" size="x-large" @click="updateSensor()" color="green">Atualizar Sensores</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -61,7 +59,7 @@
             <v-card-text>
                 <v-container>
                     <v-row>
-                        <h3>Update the status of the order</h3>
+                        <h3>Atualize o estado da encomenda</h3>
                     </v-row>
                     <v-row>
                         <v-col cols="12" sm="6">
@@ -71,7 +69,7 @@
                         </v-col>
                         <v-col cols="12" sm="6">
                             <v-btn block rounded="xl" size="x-large" @click="updateStatus()" color="green">Update
-                                Status</v-btn>
+                                Estado</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -104,6 +102,7 @@ const sensorId = ref([])
 const { data: sensorInList } = await useFetch(`${api}/orders/${idOrder}/sensorsInOrder`)
 
 const { data: sensorNotInList } = await useFetch(`${api}/orders/${idOrder}/sensorsNotInOrder`)
+console.log("sensorNotInList: ",sensorNotInList)
 
 // get all packages in the order
 const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packageOrders`)

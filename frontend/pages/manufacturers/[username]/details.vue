@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nuxt-link :to="`/manufacturers/${username}/products`">List of my Products</nuxt-link>
+        <nuxt-link :to="`/manufacturers/${username}/products`">Lista dos meus Produtos</nuxt-link>
     </div>
 </template>
 <script setup>

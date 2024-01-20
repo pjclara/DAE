@@ -17,6 +17,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 
 import java.io.StringReader;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class OrderBean {
@@ -223,9 +224,12 @@ public class OrderBean {
                 .setParameter("source", "Orders")
                 .getResultList();
 
-        sensors.removeIf(sensor ->
-                order.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue ->
-                        sensorValue.getSensor().getId() != sensor.getId()));
+        // sensors.removeIf(sensor ->
+        //         order.getPackageSensor().getSensorValues().stream().anyMatch(sensorValue ->
+        //                 sensorValue.getSensor().getId() != sensor.getId()));
+        sensors = sensors.stream().filter(sensor ->
+                order.getPackageSensor().getSensorValues().stream().noneMatch(sensorValue ->
+                        sensorValue.getSensor().getId().equals(sensor.getId()))).collect(Collectors.toList());
 
         return sensors;
 

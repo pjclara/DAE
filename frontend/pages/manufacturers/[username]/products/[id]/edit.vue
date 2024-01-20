@@ -2,9 +2,9 @@
     <div>
         <div v-if="productForm">
             <v-card>
-                <v-row>
+                <v-row class="justify-center">
                     <v-col cols="6">
-                        <h1>Editar Producto</h1>
+                        <h1 class="text-center">Editar Producto</h1>
                         <form @submit.prevent="update"
                             style="background-color: lightgray; color: black; border-radius: 5%; padding: 5px; border-color: black;">
                             <div>

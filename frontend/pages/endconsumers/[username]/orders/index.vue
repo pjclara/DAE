@@ -1,6 +1,6 @@
 <template>
         <div>
-            <h1>List of Orders</h1>
+            <h1 class="text-center">Lista de Encomendas</h1>
             <div v-if="orders">
                 <v-data-table :headers="headers" :items="orders" :items-per-page="5" class="elevation-1">
                     <template v-slot:item.actions="{ item }">
@@ -15,7 +15,7 @@
                     </template>
                 </v-data-table>
             </div>
-            <div v-else>
+            <div class="text-center mt-2" v-else>
                 Sem Encomendas
             </div>
         </div>

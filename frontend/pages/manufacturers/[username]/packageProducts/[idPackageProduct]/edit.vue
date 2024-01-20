@@ -4,11 +4,11 @@
             <v-btn icon @click="goBack">
                 <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
-            <v-toolbar-title>Back</v-toolbar-title>
+            <v-toolbar-title>Voltar</v-toolbar-title>
         </v-toolbar>
     </v-card>
     <div>
-        <h1>Edit package</h1>
+        <h1>Editar embalagem</h1>
         <form @submit.prevent="update">
             <div>
                 <v-select v-model="packageForm.packagingType" :items="packagingTypes" item-value="value" item-text="title"
@@ -20,7 +20,7 @@
                     placeholder="material"></v-text-field>
             </div>
             <v-btn type="reset">RESET</v-btn>
-            <v-btn type="submit">update</v-btn>
+            <v-btn type="submit">Atualizar</v-btn>
         </form>
     </div>
 </template>

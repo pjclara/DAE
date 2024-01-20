@@ -6,7 +6,7 @@
             </v-row>
 
             <v-container class="grid">
-                <v-card v-for="product in products" :key="product.id">
+                <v-card v-for="product in productsWithStock()" :key="product.id">
                     <v-card-title justify="center">
                         {{ product.name }}
                     </v-card-title>
@@ -45,16 +45,11 @@ const cartStore = useCartStore()
 const authStore = useAuthStore()
 const config = useRuntimeConfig()
 const api = config.public.API_URL
+
 const { data: products, error, refresh } = await useFetch(`${api}/products`)
-console.log("products: ", products);
-console.log("products.rawvalue: ", products.rawValue);
 
-console.log("products.value: ", products.value);
+const productsWithStock = () => products.value.filter(product => product.stock > 0)
 
-const productsWithStock = () => products.rawValue.map(product => {
-    console.log("product.stock:", product.stock)
-}) 
-//TODO
 const modalOpen = ref(cartStore.cartModal);
 
 const totalItens = computed(() => {

@@ -22,7 +22,7 @@ public class PackageSensor {
     @Column(name="id")
     long id;
 
-    @OneToMany
+    @OneToMany(mappedBy = "packageSensor", fetch = FetchType.EAGER)
     private List<SensorValue> sensorValues;
 
     @ManyToOne

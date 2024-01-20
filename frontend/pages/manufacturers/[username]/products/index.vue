@@ -3,8 +3,6 @@
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Produtos do Fabricante : {{ username }}</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
           <v-btn @click="addNewItem" color="blue">
             Criar novo Produto
             <v-icon class="grey--text">mdi-plus</v-icon>
@@ -20,11 +18,11 @@
           mdi-eye
         </v-icon>
       </template>
-      <template v-slot:no-data>
+      <!-- <template v-slot:no-data>
         <v-btn color="primary" @click="initialize">
           Reset
         </v-btn>
-      </template>
+      </template> -->
     </v-data-table>
 </template>
 <script setup>

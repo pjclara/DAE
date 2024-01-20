@@ -1,8 +1,5 @@
 <template>
     <div>
-        <h1>List of sensors</h1>
-    </div>
-    <div>
         <v-row justify="space-between" class="ma-3">
             <h2>Lista de Sensores</h2>
             <v-btn @click="addSensor">Criar sensor</v-btn>

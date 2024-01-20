@@ -8,94 +8,127 @@
       </v-col>
     </v-app-bar>
     <v-main>
-      <div>
-        <v-col align="center">
-            <v-col cols="6">
-              <div v-if="!sensor">
-                <h3>Coloque o ID do Sensor</h3>
-                <form @submit.prevent="fetchSensor">
-                  <div>
-                      <v-text-field v-model="sensorId" label="Id" />
-                  </div>
-                  <v-btn block rounded="xl" size="x-large" @click="fetchSensor">Obter Dados</v-btn>
-                </form>
-              </div>
-              <div v-else>
-                <h1 v-if="!showUpdateForm">Detalhes Sensor</h1>
-                <h1 v-else>Editar Sensor</h1>
-                <form @submit.prevent="update">
-                  <div>
-                      <v-text-field v-model="sensor.source" :disabled="!showUpdateForm" label="Fonte" />
-                  </div>
-                  <div>
-                      <v-text-field v-model="sensor.type" :disabled="!showUpdateForm" label="Tipo" />
-                  </div>
-                  <div>
-                      <v-text-field v-model="sensor.value" :disabled="!showUpdateForm" label="Valor" />
-                  </div>
-                  <div>
-                      <v-text-field v-model="sensor.unit" :disabled="!showUpdateForm" label="Unidade" />
-                  </div>
-                  <div>
-                      <v-text-field v-model="sensor.max" :disabled="!showUpdateForm" label="Max" />
-                  </div>
-                  <div>
-                      <v-text-field v-model="sensor.min" :disabled="!showUpdateForm" label="Min" />
-                  </div>
-                  <div>
-                      <v-text-field v-model="sensor.packageId" :disabled="!showUpdateForm" label="Embalagem ID" />
-                  </div>
-                  <div>
-                      <v-text-field v-model="sensor.timestamp" :disabled="!showUpdateForm" label="Timestamp" />
-                  </div>
-                  <v-switch v-model="showUpdateForm" label="Modificar valores"></v-switch>
-                  <v-btn v-if="showUpdateForm" block rounded="xl" size="x-large" @click="update">Atualizar</v-btn>
-                </form>
-              </div>
-            </v-col>
+      <v-row class="justify-center py-4">
+        <v-col cols="6" align="center">
+          <v-select label="Selecione o tipo de Produto" v-model="selectedProduct" :items="products"  item-title="name" item-value="id"></v-select>
+          {{ selectedProduct }}
+          <v-select label="Selecione o Produto Unitário" v-model="selectedUnitProduct" :items="unitaryProducts"  item-title="serialNumber" item-value="id"></v-select>
+          <v-select label="Selecione o sensor do Produto Unitário" ></v-select>
+          <v-text-field v-model="sensorValue"></v-text-field>
         </v-col>
-      </div>
+      </v-row>
     </v-main>
   </v-app>
 </template>
 
 <script setup>
 import fetch from 'node-fetch';
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 
-const sensorId = ref(null)
-const sensor = ref(null)
-const showUpdateForm = ref(false);
+const products = ref([])
+const selectedProduct = ref(null)
 
-async function fetchSensor() {
-  const response = await fetch(`http://localhost:8080/backend/api/sensors/` + sensorId.value, {
-    method: 'get',
-    headers: {
-      'Accept': 'application/json'
-    }
-  })
-  const data = await response.json();
-  if(data){
-    sensor.value = data
-  }
-}
+const unitaryProducts = ref([])
+const selectedUnitProduct = ref(null)
 
-async function update() {
-  const requestOptions = {
-      method: 'PUT',
+// const sensors = ref([])
+// const selectedSensor = ref(null)
+
+//const sensorValue = ref(null)
+
+
+//const showUpdateForm = ref(false);
+
+onMounted(() => {
+  fetchAllProducts();
+})
+
+async function fetchAllProducts() {
+  try {
+    const response = await fetch(`http://localhost:8080/backend/api/products/`, {
+      method: 'get',
       headers: {
-          "Content-Type": "application/json",
-          'Accept': 'application/json'
-      },
-      body: JSON.stringify(sensor.value)
+        'Accept': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+
+    if (data) {
+      console.log("data: ", data)
+      products.value = data;
+      console.log("products.value: ", products.value)
+    }
+  } catch (error) {
+    console.error("Error fetching products:", error);
   }
-  const response = await fetch(`http://localhost:8080/backend/api/sensors/` + sensorId.value, requestOptions)
-  //console.log("response: ", response)
-  const data = await response.json();
-    if (data)
-      sensor.value = data
-      showUpdateForm.value = false
 }
+
+watch(() => selectedProduct.value,
+  async (newSelectedProduct) => {
+    console.log("newSelectedProduct:", newSelectedProduct);
+    if (newSelectedProduct) {
+      console.log("newSelectedProduct: ", newSelectedProduct);
+      await fetchUnitaryProducts(newSelectedProduct);
+      // Add other operations as needed
+    }
+  }
+);
+
+async function fetchUnitaryProducts() {
+  try {
+    const response = await fetch(`http://localhost:8080/backend/api/products/${selectedProduct.value}/unitProducts`, {
+      method: 'get',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+
+    if (data) {
+      console.log("data: ", data)
+      unitaryProducts.value = data;
+      console.log("unitaryProducts.value: ", unitaryProducts.value)
+    }
+  } catch (error) {
+    console.error("Error fetching unitaryProducts:", error);
+  }
+}
+
+watch(() => selectedUnitProduct.value,
+  async (newSelectedUnitProduct) => {
+    console.log("newSelectedUnitProduct:", newSelectedUnitProduct);
+    if (newSelectedUnitProduct) {
+      console.log("newSelectedUnitProduct: ", newSelectedUnitProduct);
+      await fetchSensors(newSelectedUnitProduct);
+      // Add other operations as needed
+    }
+  }
+);
+
+async function fetchSensors() {
+  try {
+    const response = await fetch(`http://localhost:8080/backend/api/products/${selectedProduct.value}/unitProducts`, {
+      method: 'get',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+
+    if (data) {
+      console.log("data: ", data)
+      unitaryProducts.value = data;
+      console.log("unitaryProducts.value: ", unitaryProducts.value)
+    }
+  } catch (error) {
+    console.error("Error fetching unitaryProducts:", error);
+  }
+}
+
+
 </script>
 
 <style>
