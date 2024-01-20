@@ -101,6 +101,7 @@ public class OrderService {
         return Response.ok().build();
     }
 
+
     // get sensors not in de order
     @GET
     @Path("{id}/sensorsNotInOrder")
@@ -248,7 +249,7 @@ public class OrderService {
                 order.getEndConsumer().getName(),
                 logisticsOperatorName,
                 ordersItemDTO(order.getOrderItems()),
-                packageOrderDTO(order.getPackageOrder() == null ? null : order.getPackageOrder()),
+                packageOrderDTO(order.getPackageOrder() == null ? null : order.getPackageOrder())
         );
     }
 
