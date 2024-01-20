@@ -12,12 +12,18 @@
         <v-col cols="6" align="center">
           <v-select label="Selecione o tipo de embalagem" v-model="selectedPackageType" :items="packageType"></v-select>
           {{ selectedPackageType }}
-          <v-select label="Selecione a Encomenda" v-if="selectedPackageType == 'Orders'" v-model="selectedOrder" :items="orders"  item-title="name" item-value="id"></v-select>
+          <v-select label="Selecione a Encomenda" v-if="selectedPackageType == 'Orders'" v-model="selectedOrder"
+            :items="orders" item-title="name" item-value="id"></v-select>
 
-          <v-select label="Selecione o tipo de Produto" v-if="selectedPackageType == 'Product'" v-model="selectedProduct" :items="products"  item-title="name" item-value="id"></v-select>
-          <v-select label="Selecione o Produto Unitário" v-if="selectedProduct" v-model="selectedUnitProduct" :items="unitaryProducts"  item-title="serialNumber" item-value="id"></v-select>
-          <v-select label="Selecione o sensor do Produto Unitário" v-if="selectedUnitProduct"></v-select>
+          <v-select label="Selecione o tipo de Produto" v-if="selectedPackageType == 'Product'" v-model="selectedProduct"
+            :items="products" item-title="name" item-value="id"></v-select>
+          <v-select label="Selecione o Produto Unitário" v-if="selectedProduct" v-model="selectedUnitProduct"
+            :items="unitaryProducts" item-title="serialNumber" item-value="id"></v-select>
+          <v-select label="Selecione o sensor do Produto Unitário" v-if="sensorsData" :items="sensorsData"
+            item-title="sensorName" item-value="sensorId" v-model="idSensor"></v-select>
           <v-text-field v-model="sensorValue" label="Insira valor"></v-text-field>
+          <v-btn color="primary" @click="updateSensorValue" v-if="sensorValue">Atualizar</v-btn>
+
         </v-col>
       </v-row>
     </v-main>
@@ -44,10 +50,14 @@ const selectedProduct = ref(null)
 const unitaryProducts = ref([])
 const selectedUnitProduct = ref(null)
 
+const sensorsData = ref([])
+
+const idSensor = ref(null)
+
 // const sensors = ref([])
 // const selectedSensor = ref(null)
 
-//const sensorValue = ref(null)
+const sensorValue = ref(null)
 
 
 //const showUpdateForm = ref(false);
@@ -58,7 +68,7 @@ watch(() => selectedPackageType.value,
     console.log("newPackageType:", newPackageType);
     if (newPackageType == 'Product') {
       await fetchAllProducts();
-    }else{
+    } else {
       await fetchAllOrders();
     }
   }
@@ -155,9 +165,9 @@ watch(() => selectedUnitProduct.value,
   }
 );
 
-async function fetchSensors() {
+async function fetchSensors(id) {
   try {
-    const response = await fetch(`http://localhost:8080/backend/api/products/${selectedProduct.value}/unitProducts`, {
+    const response = await fetch(`http://localhost:8080/backend/api/unitProducts/${id}`, {
       method: 'get',
       headers: {
         'Accept': 'application/json'
@@ -168,8 +178,38 @@ async function fetchSensors() {
 
     if (data) {
       console.log("data: ", data)
-      unitaryProducts.value = data;
-      console.log("unitaryProducts.value: ", unitaryProducts.value)
+      sensorsData.value = [];
+      sensorValue.value = null;
+      console.log("sensorsData.value: ", data.packageSensorDTO.sensorValueDTOS)
+      data.packageSensorDTO.sensorValueDTOS.forEach(element => {
+        sensorsData.value.push({
+          sensorId: element.id,
+          sensorName: element.sensorDTO.type,
+          sensorValue: element.value
+        })
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching unitaryProducts:", error);
+  }
+}
+
+async function updateSensorValue() {
+  try {
+    const response = await fetch(`http://localhost:8080/backend/api/sensorValues/${idSensor.value}/updateSensorValue/${sensorValue.value}`, {
+      method: 'put',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(sensorValue.value)
+    });
+
+    const data = await response.json();
+    console.log("data: ", data)
+
+    if (data) {   
+      alert("Valor atualizado com sucesso!")   
     }
   } catch (error) {
     console.error("Error fetching unitaryProducts:", error);
@@ -179,6 +219,4 @@ async function fetchSensors() {
 
 </script>
 
-<style>
-
-</style>
+<style></style>

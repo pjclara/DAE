@@ -90,7 +90,6 @@ const formFeedback = reactive({
 
 
 async function create() {
-    if (!isFormValid.value) return
 
     const sensor = { ...sensorForm }
     console.log("JSON.stringify(sensor) : ", JSON.stringify(sensor))

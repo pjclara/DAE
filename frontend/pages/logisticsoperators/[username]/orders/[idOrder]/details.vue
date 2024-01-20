@@ -41,13 +41,13 @@
                 <v-chip v-for="sensor in item.unitProductDTO.packageSensorDTO.sensorValueDTOS" :key="sensor.id" color="black" text-color="white">
                   {{ sensor.sensorDTO.type }}: {{ sensor.value == null ? '--':sensor.value  }} {{ sensor.sensorDTO.unit }}
                 </v-chip>
-              </span> -->
+              </span> 
               <span v-if="sensorsInOrder.length > 0">
                 <v-chip v-for="sensor in sensorsInOrder" :key="sensor.id" color="black" text-color="white">
                   {{ sensor.type }}
                 </v-chip>
               </span>
-              <span v-else>Sem sensores ...</span>
+              <span v-else>Sem sensores ...</span>-->
             </v-col>
           </v-row>
         </v-container>
@@ -69,7 +69,7 @@ const route = useRoute()
 const username = route.params.username
 const idOrder = route.params.idOrder
 const { data: order, error } = await useFetch(`${api}/orders/${idOrder}`)
-const { data: sensorsInOrder } = await useFetch(`${api}/orders/${idOrder}/sensorsInOrder`)
+//const { data: sensorsInOrder } = await useFetch(`${api}/orders/${idOrder}/sensorsInOrder`)
 
 
 const back = () => navigateTo(`/logisticsoperators/${username}/orders`)

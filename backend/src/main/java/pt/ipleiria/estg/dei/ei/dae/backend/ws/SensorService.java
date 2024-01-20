@@ -86,4 +86,5 @@ public class SensorService {
         sensorBean.delete(id);
         return Response.ok().build();
     }
+
 }

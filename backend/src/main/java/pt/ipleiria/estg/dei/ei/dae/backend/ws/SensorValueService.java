@@ -17,7 +17,7 @@ import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyEntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Path("/sensors")
+@Path("/sensorValues")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
 public class SensorValueService {
@@ -25,7 +25,7 @@ public class SensorValueService {
     private SensorValueBean sensorValueBean;
 
     @PUT
-    @Path("{id}/{value}")
+    @Path("{id}/updateSensorValue/{value}")
     public Response updateSensor(@PathParam("id") long id, @PathParam("value") String value) throws MyEntityNotFoundException, MyConstraintViolationException {
         sensorValueBean.update(
                 id,

@@ -6,6 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "sensor_values")
+@NamedQuery(name = "getAllSensorValues", query = "SELECT sv FROM SensorValue sv ORDER BY sv.id")
+@NamedQuery(name = "getSensorValueById", query = "SELECT sv FROM SensorValue sv WHERE sv.id = :id")
+@NamedQuery(name = "getSensorValueBySensorId", query = "SELECT sv FROM SensorValue sv WHERE sv.sensor.id = :sensorId")
 public class SensorValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "TBL_METADATA_ID_SEQ")

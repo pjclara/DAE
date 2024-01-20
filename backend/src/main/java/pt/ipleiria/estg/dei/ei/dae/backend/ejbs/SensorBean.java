@@ -5,10 +5,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorDTO;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Manufacturer;
+import pt.ipleiria.estg.dei.ei.dae.backend.dtos.SensorValueDTO;
+import pt.ipleiria.estg.dei.ei.dae.backend.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.backend.entities.Package;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Product;
-import pt.ipleiria.estg.dei.ei.dae.backend.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.backend.exceptions.MyConstraintViolationException;
 
 import java.util.List;
@@ -71,4 +70,5 @@ public class SensorBean {
                 .setParameter("source", source)
                 .getResultList();
     }
+
 }
