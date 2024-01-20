@@ -10,11 +10,12 @@
                         item-value="value"
                         item-text="title"
                         label="Tipo de Embalagem"
-                    >
+                        :rules="isPackagingTypeValid ? [] : [formFeedback.packagingType]">
                     </v-select>
                 </div>
                 <div>
-                    <v-text-field v-model="packageForm.packagingMaterial" label="Material da Embalagem" />
+                    <v-text-field v-model="packageForm.packagingMaterial" label="Material da Embalagem"
+                    :rules="isPackagingMaterialValid ? [] : [formFeedback.packagingMaterial]" />
                 </div>
                 <v-btn block rounded="xl" size="x-large" @click="create">Criar</v-btn>
             </form>
@@ -38,6 +39,32 @@ const packageForm = ref({
   packagingMaterial: null,
 });
 
+const isPackagingTypeValid = computed(() => {
+    console.log("packageForm.value.packagingType:", packageForm.value.packagingType)
+    if (packageForm.value.packagingType === null) {
+        formFeedback.packagingType = 'Tipo de Embalagem é obrigatório';
+        return false;
+    }
+    return true;
+});
+
+const isPackagingMaterialValid = computed(() => {
+    if (!packageForm.value.packagingMaterial) {
+        formFeedback.packagingMaterial = 'Material da Embalagem é obrigatório';
+        return false;
+    }
+    return true;
+});
+
+const isFormValid = computed(() => {
+    return isPackagingTypeValid.value && isPackagingMaterialValid.value;
+});
+
+const formFeedback = reactive({
+    packagingType: '',
+    packagingMaterial: '',
+});
+
 onMounted(() => {
     if(user.value.role === 'Manufacturer'){
         packagingTypes.value = [
@@ -54,6 +81,10 @@ onMounted(() => {
 });
 
 async function create() {
+    if(!isFormValid.value) {
+        alert('Por favor preencha os campos corretamente')
+        return;
+    }
     // const package = {...packageForm, packageId: 0, timestamp: Date.now()}
     console.log("JSON.stringify(packageForm.value) : ", JSON.stringify(packageForm.value))
     const requestOptions = {

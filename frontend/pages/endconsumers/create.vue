@@ -17,6 +17,8 @@
                     :rules="isEmailValid ? [] : [formFeedback.email]" required></v-text-field>
 
                 <v-btn block rounded="xl" size="x-large" class="mt-2" @click="create">Registar</v-btn>
+                <v-btn block rounded="xl" size="x-large" class="mt-2" @click="navigateTo('/auth/login')">Voltar</v-btn>
+                
             </v-form>
             {{ message }}
         </v-col>
@@ -110,17 +112,20 @@ const isFormValid = computed(() => {
 })
 
 async function create() {
-    if(isFormValid.value){
-        const requestOptions = {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(endConsumerForm)
-        }
-        const { error } = await useFetch(`${api}/endConsumers`, requestOptions)
-        if (!error.value) {
-            navigateTo('/auth/login')
-        }
-        message.value = error.value
+    if(!isFormValid.value) {
+        alert('Por favor preencha os campos corretamente')
+        return;
     }
+    const requestOptions = {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(endConsumerForm)
+    }
+    const { error } = await useFetch(`${api}/endConsumers`, requestOptions)
+    if (!error.value) {
+        navigateTo('/auth/login')
+    }
+    message.value = error.value
+    
 }
 </script>

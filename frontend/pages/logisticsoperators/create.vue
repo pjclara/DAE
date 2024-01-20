@@ -111,6 +111,10 @@ const isFormValid = computed(() => {
 })
 
 async function createLogisticOperator() {
+    if(!isFormValid.value) {
+        alert('Por favor preencha os campos corretamente')
+        return;
+    }
     const requestOptions = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },

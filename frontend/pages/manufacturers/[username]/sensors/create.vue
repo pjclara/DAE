@@ -14,12 +14,14 @@
                         :rules="isUnitValid ? [] : [formFeedback.unit]" />
                 </div>
                 <div>
-                    <v-text-field v-model="sensorForm.max" label="Max" />
+                    <v-text-field v-model="sensorForm.max" label="Max"
+                    :rules="isMaxValid ? [] : [formFeedback.max]" />
                 </div>
                 <div>
-                    <v-text-field v-model="sensorForm.min" label="Min" />
+                    <v-text-field v-model="sensorForm.min" label="Min"
+                    :rules="isMinValid ? [] : [formFeedback.min]" />
                 </div>
-                <v-btn block rounded="xl" size="x-large" @click="create">Criar</v-btn>
+                <v-btn block rounded="xl" size="x-large" class="mb-2" @click="create">Criar</v-btn>
                 <v-btn block rounded="xl" size="x-large" @click="back">Cancelar</v-btn>
 
             </form>
@@ -53,10 +55,8 @@ const isTypeValid = computed(() => {
 
 const isUnitValid = computed(() => {
     if (!sensorForm.unit) {
-        {
-            formFeedback.unit = 'unit is required'
-            return false
-        }
+        formFeedback.unit = 'unit is required'
+        return false
     }
     return true
 
@@ -67,6 +67,7 @@ const isMaxValid = computed(() => {
         formFeedback.max = 'max is required'
         return false
     }
+    return true
 })
 
 const isMinValid = computed(() => {
@@ -74,6 +75,7 @@ const isMinValid = computed(() => {
         formFeedback.min = 'min is required'
         return false
     }
+    return true
 })
 
 const isFormValid = computed(() => {
@@ -90,7 +92,10 @@ const formFeedback = reactive({
 
 
 async function create() {
-
+    if(!isFormValid.value) {
+        alert('Por favor preencha os campos corretamente')
+        return;
+    }
     const sensor = { ...sensorForm }
     console.log("JSON.stringify(sensor) : ", JSON.stringify(sensor))
     const requestOptions = {
