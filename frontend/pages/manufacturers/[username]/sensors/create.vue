@@ -10,7 +10,8 @@
                     </v-select>
                 </div>
                 <div>
-                    <v-text-field v-model="sensorForm.unit" label="Unidade" :rules="isUnitValid ? [] : [formFeedback.unit]"/>
+                    <v-text-field v-model="sensorForm.unit" label="Unidade"
+                        :rules="isUnitValid ? [] : [formFeedback.unit]" />
                 </div>
                 <div>
                     <v-text-field v-model="sensorForm.max" label="Max" />
@@ -47,14 +48,18 @@ const isTypeValid = computed(() => {
         formFeedback.type = 'type is required'
         return false
     }
+    return true
 })
 
 const isUnitValid = computed(() => {
     if (!sensorForm.unit) {
-       { formFeedback.unit = 'unit is required'
-        return false}
-        return true
+        {
+            formFeedback.unit = 'unit is required'
+            return false
+        }
     }
+    return true
+
 })
 
 const isMaxValid = computed(() => {
