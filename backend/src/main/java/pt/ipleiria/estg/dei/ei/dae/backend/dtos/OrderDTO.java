@@ -46,6 +46,7 @@ public class OrderDTO {
         this.endConsumerName = name;
         this.logisticsOperatorName = logisticsOperatorName;
         this.OrderItems = orderItemDTOS;
+        this.packageOrder = packageOrderDTO;
         this.packageSensorDTO = packageSensorDTO;
     }
 

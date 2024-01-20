@@ -272,7 +272,7 @@ Content-Type: application/json
 }
 
 ### get all packages from product
- http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1/order/1/edit
+PUT http://localhost:8080/backend/api/logisticsOperators/logisticsOperator1/order/1/package/2
 
 ###
 PUT http://localhost:8080/backend/api/orders/1/addSensor/1

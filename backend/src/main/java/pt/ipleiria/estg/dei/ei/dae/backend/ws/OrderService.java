@@ -195,7 +195,7 @@ public class OrderService {
                 unitProduct.getSerialNumber(),
                 unitProduct.getAvailable(),
                 productDTO(unitProduct.getProduct() == null ? new Product() : unitProduct.getProduct()),
-                packageSensorToDTO(unitProduct.getPackageSensor() == null ?  new PackageSensor() : unitProduct.getPackageSensor())
+                packageSensorToDTO(unitProduct.getPackageSensor() == null ?  null : unitProduct.getPackageSensor())
         );
     }
 
@@ -210,6 +210,7 @@ public class OrderService {
     }
 
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
+        if (packageSensor == null) return null;
         return new PackageSensorDTO(
                 packageSensor.getId(),
                 sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
