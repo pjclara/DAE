@@ -17,13 +17,13 @@
                             item-title="packagingMaterial" item-value="id" label="Package" />
                     </div>
                     <div>
-                        <v-file-input @change="createImage" label="Imagem" />
+                        <v-file-input @change="createImage" label="Selecionar imagem" />
                     </div>
                     <div>
-                        <v-btn block rounded @click="create" class="mb-2">Criar Produto</v-btn>
+                        <v-btn block rounded @click="create" class="mb-2" color="green">Criar Produto</v-btn>
                     </div>
                     <div>
-                        <v-btn block rounded @click="cancel">Cancelar</v-btn>
+                        <v-btn block rounded @click="cancel" color="grey">Cancelar</v-btn>
                     </div>
 
                 </form>
@@ -109,7 +109,7 @@ const isFormValid = computed(() => {
 
 async function create() {
     if (!isFormValid.value) {
-        message.value = 'Please fill the form correctly'
+        message.value = 'Por favor preencha os campos corretamente'
         alert(message.value)
         return
     }

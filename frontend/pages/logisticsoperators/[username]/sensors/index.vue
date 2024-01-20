@@ -25,7 +25,6 @@ const api = config.public.API_URL
 const { data: sensors, error, refresh } = await useFetch(`${api}/sensors/source/Orders`)
 
 const headers = ref([
-    { title: 'Fonte', value: 'source', align: 'center' },
     { title: 'Tipo', value: 'type', align: 'center' },
     { title: 'Unidade', value: 'unit', align: 'center' },
     { title: 'Máximo', value: 'max', align: 'center' },

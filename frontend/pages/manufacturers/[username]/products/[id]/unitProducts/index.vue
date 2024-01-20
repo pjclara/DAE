@@ -6,8 +6,8 @@
         <v-toolbar-title>Go Back</v-toolbar-title>
     </v-toolbar>
     <br>
-    <v-card color="green">
-        <h1>List of unit products</h1>
+    <v-card color="green" class="m-2">
+        <h1>Lista de productos unitários</h1>
         <v-data-table :headers="headers" :items="unitProductList" :items-per-page="5" class="elevation-1">
             <template v-slot:item.actions="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -38,7 +38,7 @@
                 <v-select v-model="sensorId" :items="sensorList" item-title="type" item-value="id" label="Sensor"
                     multiple></v-select>
             </v-row>
-            <v-row >
+            <v-row>
                 <v-btn color="primary" @click="addSensor">Add Sensors</v-btn>
             </v-row>
         </v-container>
@@ -110,17 +110,10 @@ const addSensor = async () => {
             message.value = error.value
             console.log(message.value)
             alert(message.value)
+        } else {
+            alert("Sensor adicionado com successo")
+            getData()
         }
     });
-
-    if (!error.value) {
-        message.value = "Sensors added successfully"
-        alert(message.value)
-        getData()
-    }
-    else {
-        message.value = error.value
-        console.log(message.value)
-    }
 }
 </script>

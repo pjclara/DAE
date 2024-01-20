@@ -8,21 +8,18 @@
                         <form @submit.prevent="update"
                             style="background-color: lightgray; color: black; border-radius: 5%; padding: 5px; border-color: black;">
                             <div>
-                                <v-text-field v-model="productForm.name" type="text" placeholder="Nome" />
+                                <v-text-field v-model="productForm.name" type="text" placeholder="Nome"
+                                    lable="Nome do producto" />
                             </div>
                             <div>
                                 <v-text-field v-model="productForm.stock" disabled label="Stock" />
                             </div>
                             <div>
-                                <v-select 
-                                    v-model="productForm.packageProductId" 
-                                    :items="packagesList"
-                                    item-title="packagingMaterial" 
-                                    item-value="id" 
-                                    label="Package Product" />
+                                <v-select v-model="productForm.packageProductId" :items="packagesList"
+                                    item-title="packagingMaterial" item-value="id" label="Embalagem do Producto" />
                             </div>
                             <div>
-                                <v-file-input @change="createImage" label="Imagem" />
+                                <v-file-input @change="createImage" label="Selecionar imagem" />
                             </div>
                             <br>
                             <div>
@@ -106,7 +103,7 @@ async function update() {
         alert(message.value)
         return
     }
-    
+
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -117,8 +114,10 @@ async function update() {
         body: JSON.stringify(productForm)
     }
     const { error } = await useFetch(`${api}/products/` + id, requestOptions)
-    if (!error.value)
+    if (!error.value) {
         navigateTo('/manufacturers/' + route.params.username + '/products/' + id + '/details/')
+        alert("Producto atualizado")
+    }
     else {
         message.value = error.value
         console.log(message.value)

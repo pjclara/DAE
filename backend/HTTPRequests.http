@@ -282,3 +282,6 @@ GET http://localhost:8080/backend/api/orders/1/sensorsNotInOrder
 
 ###
 GET http://localhost:8080/backend/api/orders/1/sensorsInOrder
+
+###
+GET http://localhost:8080/backend/api/orders/1

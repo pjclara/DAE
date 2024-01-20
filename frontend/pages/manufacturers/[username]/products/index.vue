@@ -37,15 +37,15 @@ const route = useRoute()
 const username = route.params.username
 const headers = [
   {
-    title: 'Product Name',
+    title: 'Producto',
     align: 'start',
     sortable: false,
     key: 'name',
   },
   { title: 'Stock', key: 'stock' },
-  { title: 'Package', key: 'packagingMaterial' },
-  { title: 'Image', key: 'image' },
-  { title: 'Actions', key: 'actions', sortable: false },
+  { title: 'Embalagem', key: 'packagingMaterial' },
+  { title: 'Imagem', key: 'image' },
+  { title: 'Detalhes', key: 'actions', sortable: false },
 ]
 const { data: products, error: productsErr } = await
   useFetch(`${api}/manufacturers/${username}/products`, {

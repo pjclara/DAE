@@ -4,7 +4,7 @@
             <v-btn icon @click="back">
                 <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
-            <v-toolbar-title>Editar encomenda</v-toolbar-title>
+            <v-toolbar-title>Detalhes da encomenda</v-toolbar-title>
         </v-toolbar>
         <h1>Editar encomenda</h1>
         <v-card rounded="xl" style="margin: 20px;">
@@ -27,14 +27,15 @@
                             </v-select>
                         </v-col>
                         <v-col>
-                            <v-btn block rounded="xl" size="x-large" @click="updatePackage()" color="green">Atualizar embalagem</v-btn>
+                            <v-btn block rounded="xl" size="x-large" @click="updatePackage()" color="green">Atualizar
+                                embalagem</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
             </v-card-text>
         </v-card>
 
-        <v-card rounded="xl" style="margin: 20px;" v-if="packageOrderId">
+        <v-card rounded="xl" style="margin: 20px;" v-if="sensorInList || sensorNotInList">
             <v-card-text>
                 <v-container>
                     <v-row>
@@ -43,12 +44,13 @@
                     <v-row>
                         <v-col cols="12" sm="6">
                             <v-row>
-                                <v-select v-model="sensorId" :items="sensorNotInList"
-                                    item-title="type" item-value="id" label="Sensor" multiple></v-select>
+                                <v-select v-model="sensorId" :items="sensorNotInList" item-title="type" item-value="id"
+                                    label="Sensor" multiple></v-select>
                             </v-row>
                         </v-col>
                         <v-col cols="12" sm="6">
-                            <v-btn block rounded="xl" size="x-large" @click="updateSensor()" color="green">Atualizar Sensores</v-btn>
+                            <v-btn block rounded="xl" size="x-large" @click="updateSensor()" color="green">Atualizar
+                                Sensores</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -75,6 +77,7 @@
                 </v-container>
             </v-card-text>
         </v-card>
+        {{ order }}
     </div>
 </template>
 <script setup>
@@ -91,7 +94,7 @@ const username = route.params.username
 const idOrder = route.params.idOrder
 const { data: order, error } = await useFetch(`${api}/orders/${idOrder}`)
 
-const packageOrderId = ref(order.value.status)
+const packageOrderId = ref(order.value.packageOrder?.id)
 
 const status = ref(order.value.status)
 
@@ -99,10 +102,25 @@ const sensorId = ref([])
 
 // get all sensors in the order
 
-const { data: sensorInList } = await useFetch(`${api}/orders/${idOrder}/sensorsInOrder`)
+const { data: sensorIn, errorSensorsIn } = await useFetch(`${api}/orders/${idOrder}/sensorsInOrder`)
 
-const { data: sensorNotInList } = await useFetch(`${api}/orders/${idOrder}/sensorsNotInOrder`)
-console.log("sensorNotInList: ",sensorNotInList)
+const { data: sensorNotIn, errorSensorsNotIn } = await useFetch(`${api}/orders/${idOrder}/sensorsNotInOrder`)
+
+const sensorInList = computed(() => {
+    if (errorSensorsIn) {
+        alert(errorSensorsIn)
+        return []
+    }
+    return sensorIn.value
+})
+
+const sensorNotInList = computed(() => {
+    if (errorSensorsNotIn) {
+        alert(errorSensorsNotIn)
+        return []
+    }
+    return sensorNotIn.value
+})
 
 // get all packages in the order
 const { data: packagesList, packageError: productsErr } = await useFetch(`${api}/packageOrders`)
