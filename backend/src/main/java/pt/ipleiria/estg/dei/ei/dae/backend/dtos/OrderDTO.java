@@ -85,4 +85,21 @@ public class OrderDTO {
     public String getLogisticsOperatorName() {
         return logisticsOperatorName;
     }
+
+    public PackageSensorDTO getPackageSensorDTO() {
+        return packageSensorDTO;
+    }
+
+
+    public void setPackageSensorDTO(PackageSensorDTO packageSensorDTO) {
+        this.packageSensorDTO = packageSensorDTO;
+    }
+
+    public void setEndConsumerName(String endConsumerName) {
+        this.endConsumerName = endConsumerName;
+    }
+
+    public void setOrderItems(List<OrderItemDTO> orderItems) {
+        OrderItems = orderItems;
+    }
 }

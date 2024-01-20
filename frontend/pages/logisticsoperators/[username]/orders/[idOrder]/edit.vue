@@ -77,7 +77,6 @@
                 </v-container>
             </v-card-text>
         </v-card>
-        {{ order }}
     </div>
 </template>
 <script setup>

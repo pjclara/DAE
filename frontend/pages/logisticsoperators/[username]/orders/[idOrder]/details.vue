@@ -18,10 +18,14 @@
               <span v-if="order.packageOrder">{{ order.packageOrder?.packagingMaterial }}</span>
               <span v-else>Sem Embalagem ...</span>
             </v-col>
-            <!-- <v-col cols="12" sm="4">
+            <v-col cols="12" sm="4">
               <h3>Sensores:</h3>
-              {{ order.packageOrder }}
-            </v-col> -->
+              <span v-if="order.packageSensorDTO?.sensorValueDTOS != []">
+                <v-chip v-for="sensor in order.packageSensorDTO?.sensorValueDTOS" :key="sensor.id" color="black" text-color="white">
+                  {{ sensor.sensorDTO.type }}: {{ sensor.value == null ? '--':sensor.value  }} {{ sensor.sensorDTO.unit }}
+                </v-chip>
+              </span>
+            </v-col> 
           </v-row>
         </v-container>
         <v-container>
@@ -37,17 +41,13 @@
             </v-col>
             <v-col>
               <h3>Sensores:</h3>
-              <!-- <span v-if="item.unitProductDTO.packageSensorDTO.sensorValueDTOS.length > 0">
+              {{ }}
+              <span v-if="item.unitProductDTO.packageSensorDTO.sensorValueDTOS.size != []">
                 <v-chip v-for="sensor in item.unitProductDTO.packageSensorDTO.sensorValueDTOS" :key="sensor.id" color="black" text-color="white">
                   {{ sensor.sensorDTO.type }}: {{ sensor.value == null ? '--':sensor.value  }} {{ sensor.sensorDTO.unit }}
                 </v-chip>
               </span> 
-              <span v-if="sensorsInOrder.length > 0">
-                <v-chip v-for="sensor in sensorsInOrder" :key="sensor.id" color="black" text-color="white">
-                  {{ sensor.type }}
-                </v-chip>
-              </span>
-              <span v-else>Sem sensores ...</span>-->
+              <span v-else>Sem sensores ...</span>
             </v-col>
           </v-row>
         </v-container>
@@ -59,7 +59,6 @@
     <br>
     <v-btn block rounded="xl" size="x-large" @click="back" color="gray">Voltar</v-btn>
   </div>
-  {{ order }}
 </template>
   
 <script setup>

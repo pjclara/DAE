@@ -14,14 +14,13 @@
 
           <v-select label="Selecione a Encomenda" v-if="selectedPackageType == 'Orders'" v-model="selectedOrder"
             :items="orders" item-title="id" item-value="id"></v-select>
-            {{ orders }}
 
           <v-select label="Selecione o tipo de Produto" v-if="selectedPackageType == 'Product'" v-model="selectedProduct"
             :items="products" item-title="name" item-value="id"></v-select>
 
           <v-select label="Selecione o Produto Unitário" v-if="selectedProduct" v-model="selectedUnitProduct"
             :items="unitaryProducts" item-title="serialNumber" item-value="id"></v-select>
-
+{{ unitaryProductsList }}
           <v-select label="Selecione o sensor do Produto Unitário" v-if="sensorsData" :items="sensorsData"
             item-title="sensorName" item-value="sensorId" v-model="idSensor"></v-select>
 
@@ -53,6 +52,8 @@ const products = ref([])
 const selectedProduct = ref(null)
 
 const unitaryProducts = ref([])
+
+const unitaryProductsList = ref(null)
 const selectedUnitProduct = ref(null)
 
 const sensorsData = ref([])
@@ -156,6 +157,13 @@ async function fetchUnitaryProducts() {
 
     if (data) {
       console.log("data: ", data)
+      unitaryProductsList.value = [];
+        if(!element.available)
+       { unitaryProductsList.value.push({
+          data: element,
+          id: element.id,
+          serialNumber: element.serialNumber,
+        })}
       unitaryProducts.value = data;
       console.log("unitaryProducts.value: ", unitaryProducts.value)
     }

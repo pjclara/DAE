@@ -210,12 +210,13 @@ public class OrderService {
     }
 
     private PackageSensorDTO packageSensorToDTO(PackageSensor packageSensor) {
-        if (packageSensor == null) return null;
-        return new PackageSensorDTO(
-                packageSensor.getId(),
-                sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
-                packageDTO(packageSensor.getPackagging() == null ? new Package() : packageSensor.getPackagging())
-        );
+        if (packageSensor != null)
+            return new PackageSensorDTO(
+                    packageSensor.getId(),
+                    sensorValueDTOs(packageSensor.getSensorValues() == null ? null : packageSensor.getSensorValues()),
+                    packageDTO(packageSensor.getPackagging() == null ? null : packageSensor.getPackagging()));
+        else
+            return null;
     }
 
     private List<SensorValueDTO> sensorValueDTOs(List<SensorValue> sensorValues) {
