@@ -5,19 +5,24 @@
             <form @submit.prevent="update">
                 <div>
                     <v-select v-model="sensorForm.type"
-                        :items="['Temperatura', 'Humidade', 'Pressão', 'Integridade', 'Localização']" label="Tipo">
+                        :items="['Temperatura', 'Humidade', 'Pressão', 'Integridade', 'Localização']" label="Tipo"
+                        :rules="isTypeValid ? [] : [formFeedback.type]">
                     </v-select>
                 </div>
                 <div>
-                    <v-text-field v-model="sensorForm.unit" label="Unidade" />
+                    <v-text-field v-model="sensorForm.unit" label="Unidade"
+                    :rules="isUnitValid ? [] : [formFeedback.unit]" />
                 </div>
                 <div>
-                    <v-text-field v-model="sensorForm.max" label="Max" />
+                    <v-text-field v-model="sensorForm.max" label="Max"
+                    :rules="isMaxValid ? [] : [formFeedback.max]" />
                 </div>
                 <div>
-                    <v-text-field v-model="sensorForm.min" label="Min" />
+                    <v-text-field v-model="sensorForm.min" label="Min"
+                    :rules="isMinValid ? [] : [formFeedback.min]" />
                 </div>
-                <v-btn block rounded="xl" size="x-large" @click="update">Editar</v-btn>
+                <v-btn block rounded="xl" size="x-large" class="mb-2" @click="update">Editar</v-btn>
+                <v-btn block rounded="xl" size="x-large" @click="back">Cancelar</v-btn>
             </form>
         </v-col>
     </v-col>
@@ -43,7 +48,55 @@ const sensorForm = reactive({
     min: sensor.value.min
 })
 
+const isTypeValid = computed(() => {
+    if (!sensorForm.type) {
+        formFeedback.type = 'type is required'
+        return false
+    }
+    return true
+})
+
+const isUnitValid = computed(() => {
+    if (!sensorForm.unit) {
+        formFeedback.unit = 'unit is required'
+        return false
+    }
+    return true
+
+})
+
+const isMaxValid = computed(() => {
+    if (!sensorForm.max) {
+        formFeedback.max = 'max is required'
+        return false
+    }
+    return true
+})
+
+const isMinValid = computed(() => {
+    if (!sensorForm.min) {
+        formFeedback.min = 'min is required'
+        return false
+    }
+    return true
+})
+
+const isFormValid = computed(() => {
+    return isTypeValid.value && isUnitValid.value && isMaxValid.value && isMinValid.value
+})
+
+const formFeedback = reactive({
+    type: '',
+    unit: '',
+    max: '',
+    min: ''
+})
+
 async function update() {
+    if(!isFormValid.value) {
+        alert('Por favor preencha os campos corretamente')
+        return;
+    }
     const sensor = { ...sensorForm }
     console.log("JSON.stringify(sensor) : ", JSON.stringify(sensor))
     const requestOptions = {
@@ -53,9 +106,9 @@ async function update() {
     }
 
     const { error } = await useFetch(`${api}/sensors/${idSensor}`, requestOptions)
-    if (!error.value) navigateTo(`/manufacturers/${username}/sensors`)
+    if (!error.value) navigateTo(`/logisticsoperators/${username}/sensors`)
     console.log("error.value: ", error.value)
 }
 
-const back = () => navigateTo(`/manufacturers/${username}/sensors`)
+const back = () => navigateTo(`/logisticsoperators/${username}/sensors`)
 </script>

@@ -73,13 +73,21 @@ public class OrderBean {
                 entityManager.merge(product);
 
                 UnitProduct unitProduct = unitProductBean.getUnitProductByProductId(productId);
-                unitProduct.setAvailable(false);
-                entityManager.merge(unitProduct);
+                //unitProduct.setAvailable(false);
+                //entityManager.merge(unitProduct);
 
                 OrderItem orderItem1 = new OrderItem(unitProduct, quantity, order);
                 orderItem1.setOrderr(order);
                 entityManager.persist(orderItem1);
+
+                List<UnitProduct> unitProducts = product.getUnitProducts();
+                for (int j = 0; j < Math.min(quantity, unitProducts.size()); j++) {
+                    UnitProduct unitProduct2 = unitProducts.get(j);
+                    unitProduct2.setAvailable(false);
+                    entityManager.merge(unitProduct2);
+                }
             }
+
 
             return order.getId();
         }catch (Exception e){
