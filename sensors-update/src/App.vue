@@ -34,7 +34,7 @@
 
 <script setup>
 import fetch from 'node-fetch';
-import { resolveTransitionHooks } from 'vue';
+
 import { ref, watch } from "vue";
 
 const packageType = ref(['Product', 'Orders'])
@@ -43,7 +43,7 @@ const selectedPackageType = ref(null)
 //Orders
 
 const orders = ref([])
-const selectedOrder = ref(null)
+
 
 //Products
 
@@ -182,7 +182,7 @@ watch(() => orderId.value,
 );
 
 watch(() => idSensor.value,
-  async (sensorValue) => {
+  async () => {
     sensorsData.value.forEach(element => {
       if (element.sensorId == idSensor.value) {
         if(element.sensorValue != null){
