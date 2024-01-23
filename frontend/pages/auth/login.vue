@@ -15,7 +15,7 @@
             </div>
         </v-col>
         <v-col>
-            administrator1 || manufacturer1 || endConsumer2 || logisticsOperator1
+            administrator1||manufacturer1||endConsumer2||logisticsOperator1
         </v-col>
     </v-col>
 </template>
